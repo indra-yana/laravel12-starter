@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import { usePage } from '@inertiajs/vue3';
 import AppLogoIcon from '@/components/AppLogoIcon.vue';
-import { Link, usePage } from '@inertiajs/vue3';
+import SiteSelect from '@/components/SiteSelect.vue';
 
 const page = usePage();
 const name = page.props.name;
@@ -12,14 +13,21 @@ defineProps<{
 </script>
 
 <template>
+
+    <div class="relative z-1">
+        <div class="absolute bottom-0 left-0 right-0 top-0 grid place-items-center py-8">
+            <SiteSelect />
+        </div>
+    </div>
+
     <div class="relative grid h-dvh flex-col items-center justify-center px-8 sm:px-0 lg:max-w-none lg:grid-cols-2 lg:px-0">
-        <div class="lg:p-16">
+        <div class="lg:p-21">
             <div class="flex w-full flex-col justify-start space-y-6 sm:w-[350px]">
                 <div class="flex flex-col space-y-2 text-center">
                     <div class="flex flex-col items-center gap-2">
                         <a :href="route('home')" class="flex flex-col items-center gap-2 font-medium">
                             <div class="flex h-16 w-16 items-center justify-center rounded-md">
-                                <AppLogoIcon class="mr-2 fill-current text-white" />
+                                <AppLogoIcon class="mr-2 fill-current text-dark dark:text-white" />
                             </div>
                             <span class="sr-only">MyCompany Inc.</span>
                             <h1 class="text-xl font-bold">
@@ -27,7 +35,7 @@ defineProps<{
                             </h1>
                         </a>
                         <div class="text-center text-xl text-muted-foreground">
-                            <span class="tracking-tight">{{ name }}</span> 
+                            <span class="tracking-tight">{{ name }}</span>
                             <p class="text-sm" v-if="description">{{ description }}</p>
                         </div>
                     </div>
