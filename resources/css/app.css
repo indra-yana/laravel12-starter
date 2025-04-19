@@ -124,9 +124,7 @@
   --sidebar-ring: hsl(217.2 91.2% 59.8%);
   --sidebar: hsl(0 0% 98%);
 }
-/* 215 28% 17% / 1
-hsl(222 47.37% 11.18%)
- */
+
 .dark {
   --radius: 0.75rem;
   --background: hsl(222 47.37% 11.18%);
@@ -172,6 +170,18 @@ hsl(222 47.37% 11.18%)
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.bg-backdrop-blur-sm {
+  @apply bg-background/15 dark:bg-background/35 backdrop-blur-sm;
+}
+
+#auth-wrapper .text-muted-foreground {
+  @apply dark:text-white/75;
+}
+
+#auth-wrapper input {
+  @apply dark:placeholder:text-white/70;
 }
 
 .video-container {

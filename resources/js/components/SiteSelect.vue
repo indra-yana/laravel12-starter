@@ -27,7 +27,7 @@ function handleChange(value: any): void {
 
 <template>
     <Select v-model="form.site" @update:model-value="handleChange">
-        <SelectTrigger class="w-[230px] rounded-full shadow" >
+        <SelectTrigger class="w-[230px] rounded-full shadow bg-backdrop-blur-sm" >
             <SelectValue placeholder="Visit other site" />
         </SelectTrigger>
         <SelectContent>
