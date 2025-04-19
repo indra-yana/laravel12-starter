@@ -34,7 +34,7 @@ defineProps<{
     </div>
 
     <div id="auth-wrapper" class="relative grid h-dvh flex-col items-center justify-center px-4 sm:px-0 lg:max-w-none lg:grid-cols-2 lg:px-0">
-        <div class="lg:p-21">
+        <div class="lg:ps-20">
             <div class="flex w-full flex-col justify-start space-y-6 sm:w-[400px] p-2 sm:p-4 lg:p-8 bg-backdrop-blur-sm rounded-2xl">
                 <div class="flex flex-col space-y-2 text-center ">
                     <div class="flex flex-col items-center gap-2">
@@ -55,9 +55,27 @@ defineProps<{
                 </div>
                 <slot />
             </div>
-            <div class="flex flex-col gap-2 leading-none mt-8">
+            <div class="hidden md:flex flex-col gap-2 leading-none mt-8">
                 <span class="text-sm font-medium dark:text-muted-foreground">By awesome stack</span>
-                <img src="/assets/images/fw-stack.png" alt="" width="250px">
+                <!-- <img src="/assets/images/fw-stack.png" alt="" width="250px"> -->
+                <div class="flex flex-wrap items-start gap-4 md:gap-8 text-center">
+                    <div class="size-10 lg:size-14">
+                        <img src="/assets/images/logo/laravel.png" alt="Laravel Logo Placeholder" class="rounded-lg mx-auto mb-2 size-10 lg:size-12">
+                        <p class="text-sm dark:text-muted-foreground">Laravel</p>
+                    </div>
+                    <div class="size-10 lg:size-14">
+                        <img src="/assets/images/logo/inertia.png" alt="Inertia.js Logo Placeholder" class="rounded-lg mx-auto mb-2 size-10 lg:size-12">
+                        <p class="text-sm dark:text-muted-foreground">Inertia.js</p>
+                    </div>
+                    <div class="size-10 lg:size-14">
+                        <img src="/assets/images/logo/vue.png" alt="Vue.js Logo Placeholder" class="rounded-lg mx-auto mb-2 size-10 lg:size-12">
+                        <p class="text-sm dark:text-muted-foreground">Vue.js</p>
+                    </div>
+                    <div class="size-10 lg:size-14">
+                        <img src="/assets/images/logo/tailwind.png" alt="Tailwind CSS Logo Placeholder" class="rounded-lg mx-auto mb-2 size-10 lg:size-12 object-contain">
+                        <p class="text-sm dark:text-muted-foreground">Tailwind</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
