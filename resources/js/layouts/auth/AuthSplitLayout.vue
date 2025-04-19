@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import AppLogoIcon from '@/components/AppLogoIcon.vue';
 import { Link, usePage } from '@inertiajs/vue3';
+import { SharedData } from '@/types';
+import AppLogoIcon from '@/components/AppLogoIcon.vue';
 
-const page = usePage();
+const page = usePage<SharedData>();
 const name = page.props.name;
 const version = page.props.version;
 const quote = page.props.quote;

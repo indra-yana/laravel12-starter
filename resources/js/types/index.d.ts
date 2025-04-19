@@ -20,6 +20,7 @@ export interface NavItem {
 
 export interface SharedData extends PageProps {
     name: string;
+    version: string;
     quote: { message: string; author: string };
     auth: Auth;
     ziggy: Config & { location: string };
