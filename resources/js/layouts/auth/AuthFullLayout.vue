@@ -15,14 +15,16 @@ defineProps<{
 </script>
 
 <template>
-    <!-- <div class="video-container z-10">
-        <video autoplay muted loop no-controls class="hidden md:flex" >
+    <div class="video-container z-10">
+        <img src="/assets/images/bg-dark.png" alt="Dark mode background" class="w-full h-full hidden dark:block">
+        <img src="/assets/images/bg-light.png" alt="Light mode background" class="w-full h-full block dark:hidden">
+        <!-- <video autoplay muted loop no-controls class="hidden md:flex" >
             <source src="/assets/images/login-v2.webm" type="video/mp4" />
         </video>
         <video autoplay muted loop no-controls class="flex md:hidden" >
             <source src="/assets/images/login-v2-mobile.webm" type="video/mp4" />
-        </video>
-    </div> -->
+        </video> -->
+    </div>
 
     <div class="relative z-2">
         <div class="absolute bottom-0 left-0 right-0 top-0 grid place-items-center py-8">
