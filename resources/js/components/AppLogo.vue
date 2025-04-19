@@ -1,8 +1,12 @@
 <script setup lang="ts">
+import { SharedData } from '@/types';
+import { usePage } from '@inertiajs/vue3';
 import AppLogoIcon from '@/components/AppLogoIcon.vue';
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
-const appVersion = import.meta.env.VITE_APP_VERSION || 'v1.0.0';
+const page = usePage<SharedData>();
+
+const appName = page.props.name;
+const appVersion = page.props.version;
 
 </script>
 
