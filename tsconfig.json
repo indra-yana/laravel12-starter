@@ -42,7 +42,8 @@
         "types": [
             "vite/client",
             "vue/tsx",
-            "./resources/js/types"
+            "./resources/js/types",
+            "./Modules/**/resources/js/types",
         ] /* Specify type package names to be included without being referenced in a source file. */,
         // "allowUmdGlobalAccess": true,                     /* Allow accessing UMD globals from modules. */
         // "moduleSuffixes": [],                             /* List of file name suffixes to search when resolving a module. */
@@ -123,6 +124,12 @@
         "resources/js/**/*.ts",
         "resources/js/**/*.d.ts",
         "resources/js/**/*.tsx", 
-        "resources/js/**/*.vue"
+        "resources/js/**/*.vue",
+        
+        // Load any module files
+        "./Modules/**/resources/assets/js/**/*.ts",
+        "./Modules/**/resources/assets/js/**/*.d.ts",
+        "./Modules/**/resources/assets/js/**/*.tsx", 
+        "./Modules/**/resources/assets/js/**/*.vue"
     ]
 }

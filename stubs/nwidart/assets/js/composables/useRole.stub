@@ -1,0 +1,36 @@
+import { usePage } from '@inertiajs/vue3';
+
+export default function useRole() {
+    const auth = usePage().props.auth;
+    const ROLE = {
+        ROOT: 'root',
+        ADMIN: 'admin',
+        GUEST: 'guest',
+    }
+
+    function hasRole(key) {
+        if (!auth?.check) {
+            return false;
+        }
+
+        const roles = auth?.roles || [];
+
+        return roles.includes(key);
+    }
+
+    function hasAnyRole(key) {
+        if (!auth?.check) {
+            return false;
+        }
+
+        if (typeof key === 'string') {
+            key = [key];
+        }
+
+        const roles = auth?.roles || [];
+
+        return key.some((role) => roles.includes(role));
+    }
+
+    return { hasRole, hasAnyRole, ROLE };
+}

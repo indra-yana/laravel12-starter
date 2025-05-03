@@ -1,0 +1,17 @@
+{
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite",
+    "build-ssr": "vite build && vite build --ssr"
+  },
+  "devDependencies": {
+    "axios": "^1.7.4",
+    "laravel-vite-plugin": "^1.0.6",
+    "sass": "^1.69.5",
+    "postcss": "^8.4.31",
+    "vite": "^5.0",
+    "vue": "^3.4.0"
+  }
+}

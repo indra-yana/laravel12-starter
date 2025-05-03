@@ -1,0 +1,7 @@
+import { usePage } from '@inertiajs/vue3';
+
+export default function useAuth() {
+    const auth = usePage().props.auth;
+
+    return { auth };
+}

@@ -1,0 +1,13 @@
+<script setup>
+
+</script>
+
+<style scoped>
+
+</style>
+
+<template>
+
+    <Head title="$PAGE_NAME$" />
+
+</template>

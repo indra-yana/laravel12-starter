@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import Heading from '@/components/Heading.vue';
 import { Button } from '@/components/ui/button';
+import { Link, usePage } from '@inertiajs/vue3';
 import { Separator } from '@/components/ui/separator';
 import { type NavItem } from '@/types';
-import { Link, usePage } from '@inertiajs/vue3';
+import Heading from '@/components/Heading.vue';
 
 const sidebarNavItems: NavItem[] = [
     {
@@ -18,11 +18,16 @@ const sidebarNavItems: NavItem[] = [
         title: 'Appearance',
         href: '/settings/appearance',
     },
+    {
+        title: 'Users',
+        href: '/settings/users',
+        isActive: ['permissions.index'].includes(route().current() || ''),
+    },
 ];
 
 const page = usePage();
-
 const currentPath = page.props.ziggy?.location ? new URL(page.props.ziggy.location).pathname : '';
+
 </script>
 
 <template>
@@ -36,7 +41,7 @@ const currentPath = page.props.ziggy?.location ? new URL(page.props.ziggy.locati
                         v-for="item in sidebarNavItems"
                         :key="item.href"
                         variant="ghost"
-                        :class="['w-full justify-start', { 'bg-muted': currentPath === item.href }]"
+                        :class="['w-full justify-start', { 'bg-muted': currentPath === item.href || item.isActive }]"
                         as-child
                     >
                         <Link :href="item.href">
@@ -48,8 +53,8 @@ const currentPath = page.props.ziggy?.location ? new URL(page.props.ziggy.locati
 
             <Separator class="my-6 md:hidden" />
 
-            <div class="flex-1 md:max-w-2xl">
-                <section class="max-w-xl space-y-12">
+            <div class="flex-1">
+                <section class="space-y-12">
                     <slot />
                 </section>
             </div>

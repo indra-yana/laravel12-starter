@@ -1,21 +1,37 @@
 <?php
 
 use App\Http\Controllers\Settings\PasswordController;
+use App\Http\Controllers\Settings\PermissionsController;
 use App\Http\Controllers\Settings\ProfileController;
+use App\Http\Controllers\Settings\UsersController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::middleware('auth')->group(function () {
-    Route::redirect('settings', '/settings/profile');
+Route::prefix('settings')->middleware('auth')->group(function () {
+    Route::redirect('/', '/settings/profile');
 
-    Route::get('settings/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('settings/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('settings/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::prefix('profile')->group(function () {
+        Route::get('/', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    });
 
-    Route::get('settings/password', [PasswordController::class, 'edit'])->name('password.edit');
-    Route::put('settings/password', [PasswordController::class, 'update'])->name('password.update');
+    Route::prefix('password')->group(function () {
+        Route::get('/', [PasswordController::class, 'edit'])->name('password.edit');
+        Route::put('/', [PasswordController::class, 'update'])->name('password.update');
+    });
 
-    Route::get('settings/appearance', function () {
-        return Inertia::render('settings/Appearance');
-    })->name('appearance');
+    Route::prefix('appearance')->group(function () {
+        Route::get('/', function () {
+            return Inertia::render('settings/Appearance');
+        })->name('appearance');
+    });
+
+    Route::prefix('users')->group(function () {
+        Route::get('/', [UsersController::class, 'index'])->name('users.index');
+    });
+
+    Route::prefix('permissions')->group(function () {
+        Route::get('/', [PermissionsController::class, 'index'])->name('permissions.index');
+    });
 });

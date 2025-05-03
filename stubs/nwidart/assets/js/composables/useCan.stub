@@ -1,0 +1,31 @@
+import { usePage } from '@inertiajs/vue3';
+
+export default function useCan() {
+    const auth = usePage().props.auth;
+
+    function can(key) {
+        if (!auth?.check) {
+            return false;
+        }
+
+        const permissions = auth?.permissions || [];
+
+        return permissions.includes(key);
+    }
+
+    function canAny(key) {
+        if (!auth?.check) {
+            return false;
+        }
+
+        if (typeof key === 'string') {
+            key = [key];
+        }
+
+        const permissions = auth?.permissions || [];
+
+        return key.some((permission) => permissions.includes(permission));
+    }
+
+    return { can, canAny };
+}

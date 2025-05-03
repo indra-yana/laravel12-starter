@@ -1,0 +1,40 @@
+/**
+ * Module $STUDLY_NAME$ Starter Script
+*/
+
+/*
+ * This script is not used, because it was handled by the core / main module,
+ * uncomment this if needed.
+*/
+
+// import '../css/app.css';
+// import './bootstrap';
+// import { createApp, h } from 'vue';
+// import { createInertiaApp } from '@inertiajs/vue3';
+// import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+// import { ZiggyVue } from '../../../../../vendor/tightenco/ziggy/dist/index.js';
+// import Translations from './Plugins/Translations';
+
+// const appName = import.meta.env.VITE_APP_NAME || 'Localhost';
+
+// createInertiaApp({
+//     title: (title) => `${title} - ${appName}`,
+//     resolve: (name) => resolvePageComponent([
+//         `./Pages/${name}.vue`,
+//         `./Components/*.vue`,
+//         `./Layouts/*.vue`,
+//     ],
+//         import.meta.glob('./Pages/**/*.vue'),
+//     ),
+//     setup({ el, App, props, plugin }) {
+//         return createApp({ render: () => h(App, props) })
+//             .use(plugin)
+//             .use(ZiggyVue)
+//             .use(Translations)
+//             .mount(el);
+//     },
+//     progress: {
+//         color: '#C29000ff',
+//         showSpinner: true
+//     },
+// });

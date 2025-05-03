@@ -32,9 +32,10 @@ export interface User {
     name: string;
     email: string;
     avatar?: string;
-    email_verified_at: string | null;
-    created_at: string;
-    updated_at: string;
+    email_verified_at?: string | null;
+    created_at?: string;
+    updated_at?: string;
+    status: 'active' | 'inactive',
 }
 
 export type BreadcrumbItemType = BreadcrumbItem;

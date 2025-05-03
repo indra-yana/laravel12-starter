@@ -1,0 +1,105 @@
+<?php
+
+namespace $CLASS_NAMESPACE$;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
+class $CLASS$ extends Controller
+{
+
+    public function __construct(
+       // public $STUDLY_NAME$Service $$LOWER_NAME$Service,
+    ) {
+    }
+
+    public function index()
+    {
+        return inertia('$STUDLY_NAME$/Index');
+    }
+
+    public function create()
+    {
+        return inertia('$STUDLY_NAME$/Create');
+    }
+
+    public function store(Request $request)
+    {
+        try {
+            Validator::make($request->all(), [
+                'name' => ['required', 'string'],
+            ])->validate();
+
+            $results = [];
+
+            return sendSuccess($results, __("Welldone! data saved successfully."));
+        } catch (\Throwable $th) {
+            return sendError($th);
+        }
+    }
+
+    public function show(Request $request)
+    {
+        try {
+            Validator::make($request->all(), [
+                'id' => ['required', 'numeric'],
+            ])->validate();
+
+            $results = [];
+
+            return inertia('$STUDLY_NAME$/Show', [
+                'results' => $results,
+            ]);
+        } catch (\Throwable $th) {
+            return sendError($th);
+        }
+    }
+
+    public function edit(Request $request)
+    {
+        try {
+            Validator::make($request->all(), [
+                'id' => ['required', 'numeric'],
+            ])->validate();
+
+            $results = [];
+
+            return inertia('$STUDLY_NAME$/Edit', [
+                'results' => $results,
+            ]);
+        } catch (\Throwable $th) {
+            return sendError($th);
+        }
+    }
+
+    public function update(Request $request)
+    {
+        try {
+            Validator::make($request->all(), [
+                'id' => 'required|numeric',
+            ])->validate();
+
+            $results = [];
+
+            return sendSuccess($results, __("Welldone! data updated successfully."));
+        } catch (\Throwable $th) {
+            return sendError($th);
+        }
+    }
+
+    public function delete(Request $request)
+    {
+        try {
+            Validator::make($request->all(), [
+                'id' => 'required|numeric',
+            ])->validate();
+
+            $results = [];
+
+            return sendSuccess($results, __("Welldone! data deleted successfully."));
+        } catch (\Throwable $th) {
+            return sendError($th);
+        }
+    }
+}
