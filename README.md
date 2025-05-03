@@ -23,7 +23,11 @@ In order to ensure that the Laravel community is welcoming to all, please review
 ## Docker
 Follow this documentation [Laravel Docker Examples Project](https://github.com/indra-yana/laravel12-starter/blob/main/docker/README.md)
 
-Note: The docker setup in this project is different from [original source](https://github.com/dockersamples/laravel-docker-examples) with a lot off modification to adjust my need
+- Note: The docker setup in this project is different from [original source](https://github.com/dockersamples/laravel-docker-examples) with a lot off modification to adjust my need
+
+- Jika terjadi error permission pada container check privilege user di mesin host, atau pastikan apakah kamu menjalankan docker compose dengan privelege root, jika ya dan terjadi error permission coba turunkan privilege user selain root misalnya www atau www-data. 
+
+- atau, Hint: adjust the `UID` and `GID` variables in the `.env` file to match your user ID and group ID. You can find these by running `id -u` and `id -g` in the terminal.
 
 ## License
 
