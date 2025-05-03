@@ -184,7 +184,7 @@ RUN sed -i "s/user = www-data/user = www/g" /usr/local/etc/php-fpm.d/www.conf &&
 WORKDIR /var/www
 
 # Copy the entrypoint script
-COPY ./docker/development/php-fpm/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY ./docker/common/php-fpm/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Switch back to the non-privileged user to run the application
