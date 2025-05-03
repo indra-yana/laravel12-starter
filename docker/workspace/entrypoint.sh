@@ -22,7 +22,7 @@ cd /var/www
 
 # Laravel directories setup
 echo "📂 Ensuring storage & cache directories exist..."
-mkdir -p storage/framework/{cache,sessions,views} bootstrap/cache
+sudo mkdir -p storage/framework/{cache,sessions,views} bootstrap/cache
 
 # Fix file ownership and permissions using the passed UID and GID
 # echo "🔐 Fixing file permissions with UID=${USER_ID} and GID=${GROUP_ID}..."
@@ -89,7 +89,7 @@ else
 fi
 
 # Build FE asset 
-if [[ "$APP_ENV" == "production" || "$APP_ENV" == "development" || "$APP_ENV" == "staging" ]]; then
+if [ "$APP_ENV" = "production" ] || [ "$APP_ENV" = "development" ] || [ "$APP_ENV" = "staging" ]; then
     echo "🚀 Building frontend assets for production..."
     npm run build
 else
