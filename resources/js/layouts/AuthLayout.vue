@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AuthLayout from '@/layouts/auth/AuthFullLayout.vue';
+import AuthLayout from '@/layouts/auth/AuthSplitLayout.vue';
 
 defineProps<{
     title?: string;

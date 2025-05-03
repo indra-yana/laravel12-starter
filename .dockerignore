@@ -1,0 +1,32 @@
+# Ignore Git and environment files
+.git
+# .gitignore
+# .env
+# .env.example
+
+# Node modules and frontend build artifacts
+# node_modules
+# npm-debug.log
+# yarn-error.log
+# public/hot
+# public/storage
+# storage/*.key
+# vite.config.js
+
+# Composer dependencies
+# vendor
+
+# Laravel caches
+# storage/logs
+# storage/framework/cache
+# storage/framework/sessions
+# storage/framework/views
+
+# OS/Editor/system-specific files
+.DS_Store
+.idea
+.vscode
+
+# Docker-related files that shouldn't go into the image
+# docker-compose.yml
+# docker/
