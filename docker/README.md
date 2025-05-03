@@ -118,6 +118,7 @@ docker compose -f compose.dev.yaml up -d
 ```bash
 docker compose -f compose.dev.yaml exec workspace bash
 composer install
+php artisan key:generate
 npm install
 npm run dev
 ```
