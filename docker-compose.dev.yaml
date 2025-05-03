@@ -108,6 +108,20 @@ services:
       timeout: 5s
       retries: 5
 
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: laravel_pgadmin
+    restart: unless-stopped
+    ports:
+      - 5055:80
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@pgadmin.com
+      - PGADMIN_DEFAULT_PASSWORD=secret
+    networks:
+      - laravel-network
+    depends_on:
+      - postgres
+
   redis:
     image: redis:alpine
     restart: unless-stopped  # Automatically restart unless the service is explicitly stopped
