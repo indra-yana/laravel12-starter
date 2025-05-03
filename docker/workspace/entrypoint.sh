@@ -26,8 +26,8 @@ mkdir -p storage/framework/{cache,sessions,views} bootstrap/cache
 
 # Fix file ownership and permissions using the passed UID and GID
 # echo "🔐 Fixing file permissions with UID=${USER_ID} and GID=${GROUP_ID}..."
-# sudo chown -R ${USER_ID}:${GROUP_ID} /var/www || echo "chown: Some files could not be changed"
-# sudo chmod -R 755 /var/www/storage /var/www/bootstrap/cache || echo "chmod Some files could not be changed"
+sudo chown -R ${USER_ID}:${GROUP_ID} /var/www || echo "chown: Some files could not be changed"
+sudo chmod -R 755 /var/www/storage /var/www/bootstrap/cache || echo "chmod Some files could not be changed"
 
 # Composer install
 echo "🚀 Running composer install..."
@@ -62,18 +62,18 @@ if command -v php >/dev/null 2>&1; then
     echo "🚀 Starting Laravel deployment commands..."
 
     # Optional: put app in maintenance mode
-    try php artisan down
+    php artisan down
 
-    try php artisan migrate --force
-    try php artisan optimize:clear
-    try php artisan storage:link
-    try php artisan schedule:clear-cache
+    php artisan migrate --force
+    php artisan optimize:clear
+    php artisan storage:link
+    php artisan schedule:clear-cache
 
     # For production or staging ready 
     php artisan optimize
 
     # Optional: bring app back up
-    try php artisan up
+    php artisan up
 
     echo "✅ Laravel deployment tasks completed."
 else
@@ -89,7 +89,7 @@ else
 fi
 
 # Build FE asset 
-if [[ "$APP_ENV" == "production" || "$APP_ENV" == "development" ]]; then
+if [[ "$APP_ENV" == "production" || "$APP_ENV" == "development" || "$APP_ENV" == "staging" ]]; then
     echo "🚀 Building frontend assets for production..."
     npm run build
 else
