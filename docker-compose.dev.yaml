@@ -5,14 +5,21 @@ services:
       # Mount the application code for live updates
       - ./:/var/www
       # Mount the Nginx configuration file
-      - ./docker/development/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./docker/common/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      # Mount the 'laravel-storage' volume to '/var/www/storage' inside the container.
+      # -----------------------------------------------------------
+      # This volume stores persistent data like uploaded files and cache.
+      # The ':ro' option mounts it as read-only in the 'web' service because Nginx only needs to read these files.
+      # The 'php-fpm' service mounts the same volume without ':ro' to allow write operations.
+      # -----------------------------------------------------------
+      - laravel-storage:/var/www/storage:ro
     ports:
       # Map port 80 inside the container to the port specified by 'NGINX_PORT' on the host machine
-      - "9090:80"
+      - "${NGINX_PORT:-9090}:80"
     environment:
       - NGINX_HOST=localhost
     networks:
-      - laravel-development
+      - laravel-network
     depends_on:
       php-fpm:
         condition: service_started  # Wait for php-fpm to start
@@ -39,8 +46,9 @@ services:
     volumes:
       # Mount the application code for live updates
       - ./:/var/www
+      - laravel-storage:/var/www/storage  # Mount the storage volume
     networks:
-      - laravel-development
+      - laravel-network
     depends_on:
       postgres:
         condition: service_started  # Wait for postgres to start
@@ -49,7 +57,7 @@ services:
    # For the workspace service, we will also create a custom image to install and setup all the necessary stuff.
     build:
       context: .
-      dockerfile: ./docker/development/workspace/Dockerfile
+      dockerfile: ./docker/workspace/Dockerfile
       args:
         UID: ${UID:-1000}
         GID: ${GID:-1000}
@@ -65,36 +73,60 @@ services:
       - .env
     volumes:
       - ./:/var/www
+      - laravel-storage:/var/www/storage  # Mount the storage volume
     ports:
       # Map port 9001 (supervisor)
       - "9001:9001"
       # Map port 5173 (vite)
       - "5173:5173"
     networks:
-      - laravel-development
+      - laravel-network
 
   postgres:
     image: postgres:16
     ports:
       - "${POSTGRES_PORT:-5433}:5432"
     environment:
-      - POSTGRES_DB=app
-      - POSTGRES_USER=laravel
-      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=${POSTGRES_DATABASE:-app}
+      - POSTGRES_USER=${POSTGRES_USERNAME:-laravel}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-secret}
     volumes:
-      - postgres-data-development:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
       - ./docker/common/postgres/postgres.conf:/etc/postgresql/postgresql.conf
     command: ["postgres", "-c", "config_file=/etc/postgresql/postgresql.conf"]
     networks:
-      - laravel-development
+      - laravel-network
+    # Health check for PostgreSQL
+    # -----------------------------------------------------------
+    # Health checks allow Docker to determine if a service is operational.
+    # The 'pg_isready' command checks if PostgreSQL is ready to accept connections.
+    # This prevents dependent services from starting before the database is ready.
+    # -----------------------------------------------------------
+    healthcheck:
+      test: [ "CMD", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   redis:
     image: redis:alpine
+    restart: unless-stopped  # Automatically restart unless the service is explicitly stopped
     networks:
-      - laravel-development
+      - laravel-network
+    # Health check for Redis
+    # -----------------------------------------------------------
+    # Checks if Redis is responding to the 'PING' command.
+    # This ensures that the service is not only running but also operational.
+    # -----------------------------------------------------------
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
 networks:
-  laravel-development:
+  laravel-network:
 
 volumes:
-  postgres-data-development:
+  postgres-data:
+  laravel-storage:
