@@ -1,4 +1,4 @@
-# docker/development/workspace/Dockerfile
+# docker/workspace/Dockerfile
 # Use the official PHP CLI image as the base
 FROM php:8.3-cli
 
@@ -72,7 +72,7 @@ RUN if getent group ${GID}; then \
     echo 'www ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 # Copy the initialization script
-COPY ./docker/development/workspace/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY ./docker/workspace/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 RUN chown www:www /usr/local/bin/entrypoint.sh
 

@@ -49,7 +49,7 @@ services:
    # For the workspace service, we will also create a custom image to install and setup all the necessary stuff.
     build:
       context: .
-      dockerfile: ./docker/development/workspace/Dockerfile
+      dockerfile: ./docker/workspace/Dockerfile
       args:
         UID: ${UID:-1000}
         GID: ${GID:-1000}
