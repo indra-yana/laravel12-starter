@@ -20,9 +20,10 @@ Thank you for considering contributing to our starter kit! The contribution guid
 
 In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-## Dockerize
+## Docker
 Follow this documentation [Laravel Docker Examples Project](https://github.com/indra-yana/laravel12-starter/blob/main/docker/README.md)
-Note: The docerize setup is different from [original source](https://github.com/dockersamples/laravel-docker-examples) with a lot off modification based on my need implementation
+
+Note: The docker setup in this project is different from [original source](https://github.com/dockersamples/laravel-docker-examples) with a lot off modification to adjust my need
 
 ## License
 
