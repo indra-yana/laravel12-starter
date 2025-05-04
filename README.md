@@ -21,13 +21,15 @@ Thank you for considering contributing to our starter kit! The contribution guid
 In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
 ## Docker
-Follow this documentation [Laravel Docker Examples Project](https://github.com/indra-yana/laravel12-starter/blob/main/docker/README.md)
+Follow this documentation [docker/README.md](https://github.com/indra-yana/laravel12-starter/blob/main/docker/README.md)
 
-- Note: The docker setup in this project is different from [original source](https://github.com/dockersamples/laravel-docker-examples) with a lot off modification to adjust my need
+Attention:
 
-- Jika terjadi error permission pada container check privilege user di mesin host, atau pastikan apakah kamu menjalankan docker compose dengan privelege root, jika ya dan terjadi error permission coba turunkan privilege user selain root misalnya www atau www-data. 
+- The docker setup or the structure in this project is different from [original source](https://github.com/dockersamples/laravel-docker-examples) with a lot off modification to adjust my need
 
-- atau, Hint: adjust the `UID` and `GID` variables in the `.env` file to match your user ID and group ID. You can find these by running `id -u` and `id -g` in the terminal.
+- If you encounter a permission error inside the container, check the user privileges on the host machine, try to lowering the user privilege to a non-root user, such as www or www-data in host machine when run docker compose.
+
+- Hint: adjust the `UID` and `GID` variables in the `.env` file to match your user ID and group ID. You can find these by running `id -u` and `id -g` in the terminal.
 
 ## License
 
