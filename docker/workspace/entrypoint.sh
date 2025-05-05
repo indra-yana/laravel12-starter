@@ -69,8 +69,13 @@ if command -v php >/dev/null 2>&1; then
     php artisan storage:link
     php artisan schedule:clear-cache
 
-    # For production or staging ready 
-    php artisan optimize
+    # Run optimize only in production
+    if [ "$APP_ENV" = "production" ]; then
+        echo "⚙️ Running optimization for production..."
+        php artisan optimize
+    else
+        echo "ℹ️ Skipping optimize - APP_ENV is not production (current: $APP_ENV)"
+    fi
 
     # Optional: bring app back up
     php artisan up

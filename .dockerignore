@@ -5,16 +5,16 @@
 # .env.example
 
 # Node modules and frontend build artifacts
-# node_modules
+node_modules
 # npm-debug.log
 # yarn-error.log
-# public/hot
-# public/storage
+public/hot
+public/storage
 # storage/*.key
 # vite.config.js
 
 # Composer dependencies
-# vendor
+vendor
 
 # Laravel caches
 # storage/logs
