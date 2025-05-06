@@ -1,6 +1,9 @@
+version: "3.9"
+
 services:
   web:
-    image: nginx:latest # Using the default Nginx image with custom configuration.
+    image: nginx:latest
+    container_name: laravel-web
     volumes:
       # Mount the application code for live updates
       - ./:/var/www
@@ -21,11 +24,11 @@ services:
     networks:
       - laravel-network
     depends_on:
-      php-fpm:
-        condition: service_started  # Wait for php-fpm to start
+      # Wait for php-fpm to start
+      - php-fpm
 
+  # For the php-fpm service, we will create a custom image to install the necessary PHP extensions and setup proper permissions.
   php-fpm:
-    # For the php-fpm service, we will create a custom image to install the necessary PHP extensions and setup proper permissions.
     build:
       context: .
       dockerfile: ./docker/common/php-fpm/Dockerfile
@@ -39,6 +42,7 @@ services:
         XDEBUG_IDE_KEY: ${XDEBUG_IDE_KEY:-DOCKER}
         XDEBUG_LOG: /dev/stdout
         XDEBUG_LOG_LEVEL: 0
+    container_name: laravel-php-fpm
     env_file:
       # Load the environment variables from the Laravel application
       - .env
@@ -50,11 +54,12 @@ services:
     networks:
       - laravel-network
     depends_on:
-      postgres:
-        condition: service_started  # Wait for postgres to start
+      # Wait for postgres to start
+      - postgres
+      - workspace
 
+  # For the workspace service, we will also create a custom image to install and setup all the necessary stuff.
   workspace:
-   # For the workspace service, we will also create a custom image to install and setup all the necessary stuff.
     build:
       context: .
       dockerfile: ./docker/workspace/Dockerfile
@@ -67,6 +72,7 @@ services:
         XDEBUG_IDE_KEY: ${XDEBUG_IDE_KEY:-DOCKER}
         XDEBUG_LOG: /dev/stdout
         XDEBUG_LOG_LEVEL: 0
+    container_name: laravel-workspace
     tty: true  # Enables an interactive terminal
     stdin_open: true  # Keeps standard input open for 'docker exec'
     env_file:
@@ -84,6 +90,7 @@ services:
 
   postgres:
     image: postgres:16
+    container_name: laravel-postgres
     ports:
       - "${POSTGRES_PORT:-5433}:5432"
     environment:
@@ -103,14 +110,14 @@ services:
     # This prevents dependent services from starting before the database is ready.
     # -----------------------------------------------------------
     healthcheck:
-      test: [ "CMD", "pg_isready" ]
+      test: ["CMD", "pg_isready"]
       interval: 10s
       timeout: 5s
       retries: 5
 
   pgadmin:
     image: dpage/pgadmin4
-    container_name: laravel_pgadmin
+    container_name: laravel-pgadmin
     restart: unless-stopped
     ports:
       - 5055:80
@@ -124,6 +131,7 @@ services:
 
   redis:
     image: redis:alpine
+    container_name: laravel-redis
     restart: unless-stopped  # Automatically restart unless the service is explicitly stopped
     networks:
       - laravel-network

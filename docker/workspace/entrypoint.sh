@@ -110,7 +110,7 @@ else
     echo "🚀 Building frontend assets for local development..."
     # Build for first time for local development then run "npm run dev" manualy directly in host machine
     # npm run dev
-    npm run build && npm run dev
+    npm run build
 fi
 
 echo "🚀 Done! app is running..."
