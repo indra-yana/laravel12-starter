@@ -8,13 +8,23 @@ import vue from '@vitejs/plugin-vue';
 
 async function getConfig() {
     const paths = [
-        // 'resources/css/app.css',
+        'resources/css/app.css',
         'resources/js/app.ts'
     ];
 
     const allPaths = await collectModuleAssetsPaths(paths, 'Modules');
 
     return defineConfig({
+        server: {
+            cors: true,
+            host: '0.0.0.0',
+            watch: {
+                usePolling: true,
+            },
+            hmr: {
+                host: 'localhost',
+            },
+        },
         plugins: [
             laravel({
                 input: allPaths,
