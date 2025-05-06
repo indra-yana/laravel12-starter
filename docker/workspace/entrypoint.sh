@@ -25,23 +25,13 @@ echo "📂 Ensuring storage & cache directories exist..."
 sudo mkdir -p storage/framework/{cache,sessions,views} bootstrap/cache
 
 # Fix file ownership and permissions using the passed UID and GID
-# echo "🔐 Fixing file permissions with UID=${USER_ID} and GID=${GROUP_ID}..."
+echo "🔐 Fixing file permissions with UID=${USER_ID} and GID=${GROUP_ID}..."
 sudo chown -R ${USER_ID}:${GROUP_ID} /var/www || echo "chown: Some files could not be changed"
 sudo chmod -R 755 /var/www/storage /var/www/bootstrap/cache || echo "chmod Some files could not be changed"
 
 # Composer install
 echo "🚀 Running composer install..."
 composer install --no-interaction --prefer-dist --optimize-autoloader
-
-# Source NVM manually so npm is available
-export NVM_DIR="$HOME/.nvm"
-# shellcheck disable=SC1090
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-
-# NPM install
-echo "🚀 Running npm install..."
-npm --version
-npm install
 
 # Copy .env if not exists
 if [ ! -f /var/www/.env ]; then
@@ -61,29 +51,40 @@ fi
 if command -v php >/dev/null 2>&1; then
     echo "🚀 Starting Laravel deployment commands..."
 
-    # Optional: put app in maintenance mode
+    # Put app in maintenance mode
+    echo "🚀 Put app in maintenance mode..."
     php artisan down
 
     php artisan migrate --force
-    php artisan optimize:clear
     php artisan storage:link
+    php artisan optimize:clear
     php artisan schedule:clear-cache
 
     # Run optimize only in production
-    if [ "$APP_ENV" = "production" ]; then
+    if [ "$APP_ENV" = "production" ] || [ "$APP_ENV" = "staging" ]; then
         echo "⚙️ Running optimization for production..."
         php artisan optimize
     else
         echo "ℹ️ Skipping optimize - APP_ENV is not production (current: $APP_ENV)"
     fi
 
-    # Optional: bring app back up
-    php artisan up
-
     echo "✅ Laravel deployment tasks completed."
 else
-    echo "⚠️ PHP binary not found in container."
+    echo "⚠️ Laravel deployment commands: PHP binary not found in container."
 fi
+
+# Source NVM manually so npm is available
+export NVM_DIR="$HOME/.nvm"
+# shellcheck disable=SC1090
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+
+# NPM install
+echo "🚀 Running npm install using: npm $(npm -v), node $(node -v)..."
+npm install
+
+# Build FE asset 
+echo "📦 Building frontend assets..."
+npm run build
 
 # Start cron service
 if command -v cron >/dev/null 2>&1; then
@@ -102,15 +103,12 @@ if command -v supervisorctl >/dev/null 2>&1; then
     sudo supervisorctl restart all
 fi
 
-# Build FE asset 
-if [ "$APP_ENV" = "production" ] || [ "$APP_ENV" = "development" ] || [ "$APP_ENV" = "staging" ]; then
-    echo "🚀 Building frontend assets for production..."
-    npm run build
+# Bring app back up
+if command -v php >/dev/null 2>&1; then
+    echo "🚀 Bring app back up..."
+    php artisan up
 else
-    echo "🚀 Building frontend assets for local development..."
-    # Build for first time for local development then run "npm run dev" manualy directly in host machine
-    # npm run dev
-    npm run build
+    echo "⚠️ artisan up: PHP binary not found in container."
 fi
 
 echo "🚀 Done! app is running..."

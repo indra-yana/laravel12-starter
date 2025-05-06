@@ -43,6 +43,7 @@ services:
         XDEBUG_LOG: /dev/stdout
         XDEBUG_LOG_LEVEL: 0
     container_name: laravel-php-fpm
+    restart: unless-stopped
     env_file:
       # Load the environment variables from the Laravel application
       - .env
