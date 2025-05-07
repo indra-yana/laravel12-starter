@@ -40,7 +40,8 @@ services:
       - ./:/var/www
       - laravel-storage:/var/www/storage
     ports:
-      - ":9001"       # Map port 9001 (supervisor)
+      - ":9000"       # Map port 9000 (php-fpm)
+      - "9001:9001"   # Map port 9001 (supervisor)
       - "5173:5173"   # Map port 5173 (vite)
     networks:
       - laravel-network
