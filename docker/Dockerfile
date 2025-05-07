@@ -1,11 +1,19 @@
-# docker/workspace/Dockerfile
-# Use the official PHP CLI image as the base
-FROM php:8.3-cli
+# docker/Dockerfile
+# Use the official php:8.3-fpm as the builder
+FROM php:8.3-fpm AS builder
 
 # Set environment variables for user and group ID
 ARG UID=1000
 ARG GID=1000
+
+# Use ARG to define environment variables passed from the Docker build command or Docker Compose.
 ARG NODE_VERSION=20.19.1
+ARG XDEBUG_ENABLED
+ARG XDEBUG_MODE
+ARG XDEBUG_HOST
+ARG XDEBUG_IDE_KEY
+ARG XDEBUG_LOG
+ARG XDEBUG_LOG_LEVEL
 
 # Install system dependencies and build libraries
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -42,14 +50,6 @@ RUN apt-get update && apt-get install -y libldap2-dev \
 # Clean all downloaded file after install and remove apt cache
 RUN apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Use ARG to define environment variables passed from the Docker build command or Docker Compose.
-ARG XDEBUG_ENABLED
-ARG XDEBUG_MODE
-ARG XDEBUG_HOST
-ARG XDEBUG_IDE_KEY
-ARG XDEBUG_LOG
-ARG XDEBUG_LOG_LEVEL
-
 # Configure Xdebug if enabled
 RUN if [ "${XDEBUG_ENABLED}" = "true" ]; then \
     docker-php-ext-enable xdebug && \
@@ -71,15 +71,31 @@ RUN if getent group ${GID}; then \
     usermod -aG sudo www && \
     echo 'www ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
+# Dynamically update php-fpm to use the new user and group
+RUN sed -i "s/user = www-data/user = www/g" /usr/local/etc/php-fpm.d/www.conf && \
+sed -i "s/group = www-data/group = $group_name/g" /usr/local/etc/php-fpm.d/www.conf
+
+# Use the recommended production PHP configuration
+# -----------------------------------------------------------
+# PHP provides development and production configurations.
+# Here, we replace the default php.ini with the production
+# version to apply settings optimized for performance and
+# security in a live environment.
+# -----------------------------------------------------------
+RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+
+# Enable PHP-FPM status page by modifying zz-docker.conf with sed
+RUN sed -i '/\[www\]/a pm.status_path = /status' /usr/local/etc/php-fpm.d/zz-docker.conf
+
 # Copy the initialization script
-COPY ./docker/workspace/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY ./docker/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 RUN chown www:www /usr/local/bin/entrypoint.sh
 
 RUN chown -R www:www /var/www
 
 # Laravel cron for task scheduler, place here after www user created and Ensure correct permissions and ownership
-COPY ./docker/common/cron/laravel-cron /etc/cron.d/laravel-cron
+COPY ./docker/cron/laravel-cron /etc/cron.d/laravel-cron
 RUN chmod 0644 /etc/cron.d/laravel-cron && \
     crontab /etc/cron.d/laravel-cron
 RUN touch /var/log/laravel-cron.log && \
@@ -93,8 +109,8 @@ ARG USER_ID=${UID:-1000}
 ARG GROUP_ID=${GID:-1000}
 
 # supervisord
-COPY ./docker/common/supervisor/supervisord.conf /etc/supervisor/supervisord.conf
-COPY ./docker/common/supervisor/laravel-workers.conf /etc/supervisor/conf.d/laravel-workers.conf
+COPY ./docker/supervisor/supervisord.conf /etc/supervisor/supervisord.conf
+COPY ./docker/supervisor/laravel-workers.conf /etc/supervisor/conf.d/laravel-workers.conf
 RUN chown -R ${USER_ID}:${GROUP_ID} /etc/supervisor/conf.d/laravel-workers.conf || echo "Some files could not be changed"
 
 # Install NVM (Node Version Manager) as the www user

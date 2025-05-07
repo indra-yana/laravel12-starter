@@ -37,8 +37,8 @@ RUN apt-get update && apt-get install -y libldap2-dev \
 RUN apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # supervisord
-COPY ./docker/common/supervisor/supervisord.conf /etc/supervisor/supervisord.conf
-COPY ./docker/common/supervisor/laravel-workers.conf /etc/supervisor/conf.d/laravel-workers.conf
+COPY ./docker/supervisor/supervisord.conf /etc/supervisor/supervisord.conf
+COPY ./docker/supervisor/laravel-workers.conf /etc/supervisor/conf.d/laravel-workers.conf
 RUN chown -R www-data:www-data /etc/supervisor/conf.d/laravel-workers.conf
 
 # Set the working directory inside the container
@@ -86,7 +86,7 @@ RUN curl -o /usr/local/bin/php-fpm-healthcheck \
     && chmod +x /usr/local/bin/php-fpm-healthcheck
 
 # Copy the initialization script
-COPY ./docker/common/php-fpm/entrypoint.init.sh /usr/local/bin/entrypoint.sh
+COPY ./docker/php-fpm/entrypoint.init.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Copy the initial storage structure
@@ -184,7 +184,7 @@ RUN sed -i "s/user = www-data/user = www/g" /usr/local/etc/php-fpm.d/www.conf &&
 WORKDIR /var/www
 
 # Copy the entrypoint script
-COPY ./docker/common/php-fpm/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY ./docker/php-fpm/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Switch back to the non-privileged user to run the application
