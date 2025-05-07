@@ -88,7 +88,7 @@ RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 RUN sed -i '/\[www\]/a pm.status_path = /status' /usr/local/etc/php-fpm.d/zz-docker.conf
 
 # Copy the initialization script
-COPY ./docker/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY ./docker/php-fpm/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 RUN chown www:www /usr/local/bin/entrypoint.sh
 
@@ -130,7 +130,6 @@ RUN echo 'export NVM_DIR="$HOME/.nvm"' >> /home/www/.bashrc && \
 WORKDIR /var/www
 
 # Override the entrypoint to avoid the default php entrypoint
-# ENTRYPOINT []
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 # Default command to keep the container running
