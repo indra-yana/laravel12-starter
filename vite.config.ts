@@ -15,16 +15,6 @@ async function getConfig() {
     const allPaths = await collectModuleAssetsPaths(paths, 'Modules');
 
     return defineConfig({
-        server: {
-            cors: true,
-            host: '0.0.0.0',
-            watch: {
-                usePolling: true,
-            },
-            hmr: {
-                host: 'localhost',
-            },
-        },
         plugins: [
             laravel({
                 input: allPaths,
