@@ -133,4 +133,8 @@ WORKDIR /var/www
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 # Default command to keep the container running
-CMD ["bash"]
+# CMD ["bash"]
+
+# Expose port 9000 and start php-fpm server
+EXPOSE 9000
+CMD ["php-fpm"]

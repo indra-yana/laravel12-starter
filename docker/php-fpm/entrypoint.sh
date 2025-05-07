@@ -18,12 +18,12 @@ try() {
 }
 
 # Start PHP
-if pgrep -x "php-fpm" > /dev/null; then
-  echo "✅ php-fpm is already running."
-else
-  echo "🚀 Starting php-fpm..."
-  php-fpm -D
-fi
+# if pgrep -x "php-fpm" > /dev/null; then
+#   echo "✅ php-fpm is already running."
+# else
+#   echo "🚀 Starting php-fpm..."
+#   php-fpm -D
+# fi
 
 echo "⚙️ Entrypoint started, entering work directory..."
 cd /var/www
