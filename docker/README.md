@@ -51,6 +51,9 @@ docker compose -f docker-compose.yaml up --build -d
 # To build spesific container after Dockerfile updated
 docker compose -f docker-compose.yaml build --no-cache <container-name>
 docker compose -f docker-compose.yaml up -d <container-name>
+
+# Run this when deploy to cloud
+docker compose -f docker-compose.yaml build --build-arg PHP_ENV=<dev or prod> <container-name>
 ```
 
 3. Install Laravel Dependencies:

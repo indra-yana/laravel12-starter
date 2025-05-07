@@ -5,6 +5,7 @@ FROM php:8.3-fpm AS builder
 # Set environment variables for user and group ID
 ARG UID=1000
 ARG GID=1000
+ARG PHP_ENV=dev
 
 # Use ARG to define environment variables passed from the Docker build command or Docker Compose.
 ARG NODE_VERSION=20.19.1
@@ -82,7 +83,8 @@ sed -i "s/group = www-data/group = $group_name/g" /usr/local/etc/php-fpm.d/www.c
 # version to apply settings optimized for performance and
 # security in a live environment.
 # -----------------------------------------------------------
-RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+# RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+COPY ./docker/php-fpm/php.${PHP_ENV}.ini /usr/local/etc/php/conf.d/docker-php.${PHP_ENV}.ini
 
 # Enable PHP-FPM status page by modifying zz-docker.conf with sed
 RUN sed -i '/\[www\]/a pm.status_path = /status' /usr/local/etc/php-fpm.d/zz-docker.conf
