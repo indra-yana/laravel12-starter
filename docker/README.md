@@ -7,7 +7,7 @@ Thanks for this awesome [Laravel Docker Examples Project](https://github.com/doc
 - Supervisor
 - Npm 
 - Sudo to run command inside container as root user (avoid privileges error)
-- Auto deployment script to update or install the project, see: `docker/workspace/entrypoint.sh`
+- Auto deployment script to update or install the project, see: `docker/php-fpm/entrypoint.sh`
 - and more
 
 ## Getting Started
