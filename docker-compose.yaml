@@ -47,7 +47,8 @@ services:
       - laravel-network
     depends_on:
       - postgres
-      - workspace
+      - redis
+      - pgadmin
 
   postgres:
     image: postgres:16
