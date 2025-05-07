@@ -25,8 +25,6 @@ Follow this documentation [docker/README.md](https://github.com/indra-yana/larav
 
 Attention:
 
-- The docker setup or the structure in this project is different from [original source](https://github.com/dockersamples/laravel-docker-examples) with my customization to work with my environment and development behavior.
-
 - If you encounter a permission error inside the container, check the user privileges on the host machine, try to lowering the user privilege to a non-root user, such as www or www-data in host machine when run docker compose.
 
 - Hint: adjust the `UID` and `GID` variables in the `.env` file to match your user ID and group ID. You can find these by running `id -u` and `id -g` in the terminal.

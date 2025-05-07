@@ -126,6 +126,18 @@ RUN echo 'export NVM_DIR="$HOME/.nvm"' >> /home/www/.bashrc && \
     echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> /home/www/.bashrc && \
     echo '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"' >> /home/www/.bashrc
 
+    
+# Switch back to root to create global symlinks
+USER root
+
+# link node/npm to global system path
+RUN ln -sf "/home/www/.nvm/versions/node/v${NODE_VERSION}/bin/node" /usr/local/bin/node && \
+    ln -sf "/home/www/.nvm/versions/node/v${NODE_VERSION}/bin/npm" /usr/local/bin/npm && \
+    ln -sf "/home/www/.nvm/versions/node/v${NODE_VERSION}/bin/npx" /usr/local/bin/npx
+
+# Switch back to www if needed
+USER www
+
 # Set the working directory
 WORKDIR /var/www
 

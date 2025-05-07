@@ -45,15 +45,20 @@ Hint: adjust the `UID` and `GID` variables in the `.env` file to match your user
 2. Start the Docker Compose Services:
 
 ```bash
-docker compose -f docker-compose.dev.yaml up -d
+docker compose -f docker-compose.yaml up -d
+docker compose -f docker-compose.yaml up --build -d
+
+# To build spesific container after Dockerfile updated
+docker compose -f docker-compose.yaml build --no-cache <container-name>
+docker compose -f docker-compose.yaml up -d <container-name>
 ```
 
 3. Install Laravel Dependencies:
 
-This step is optional because there is auto deployment script to update or install the project, see: `docker/workspace/entrypoint.sh`
+This step is optional because there is auto deployment script to update or install the project, see: `docker/php-fpm/entrypoint.sh`
 
 ```bash
-docker compose -f docker-compose.dev.yaml exec workspace bash
+docker compose -f docker-compose.yaml exec <container-name> bash
 composer install
 php artisan key:generate
 npm install
@@ -63,7 +68,7 @@ npm run dev
 4. Run Migrations:
 
 ```bash
-docker compose -f docker-compose.dev.yaml exec workspace php artisan migrate
+docker compose -f docker-compose.yaml exec <container-name> php artisan migrate
 ```
 
 5. Access the Application:
@@ -79,37 +84,37 @@ Here are some common commands and tips for using the development environment:
 The workspace sidecar container includes Composer, Node.js, NPM, and other tools necessary for Laravel development (e.g. assets building).
 
 ```bash
-docker compose -f docker-compose.dev.yaml exec workspace bash
+docker compose -f docker-compose.yaml exec <container-name> bash
 ```
 
 ### Run Artisan Commands:
 
 ```bash
-docker compose -f docker-compose.dev.yaml exec workspace php artisan migrate
+docker compose -f docker-compose.yaml exec <container-name> php artisan migrate
 ```
 
 ### Rebuild Containers:
 
 ```bash
-docker compose -f docker-compose.dev.yaml up -d --build
+docker compose -f docker-compose.yaml up -d --build
 ```
 
 ### Stop Containers:
 
 ```bash
-docker compose -f docker-compose.dev.yaml down
+docker compose -f docker-compose.yaml down
 ```
 
 ### View Logs:
 
 ```bash
-docker compose -f docker-compose.dev.yaml logs -f
+docker compose -f docker-compose.yaml logs -f
 ```
 
 For specific services, you can use:
 
 ```bash
-docker compose -f docker-compose.dev.yaml logs -f web
+docker compose -f docker-compose.yaml logs -f web
 ```
 
 ## Technical Details
