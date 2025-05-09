@@ -35,7 +35,7 @@ sudo mkdir -p storage/framework/{cache,sessions,views} bootstrap/cache
 # Fix file ownership and permissions using the passed UID and GID
 echo "🔐 Fixing file permissions with UID=${USER_ID} and GID=${GROUP_ID}..."
 sudo chown -R ${USER_ID}:${GROUP_ID} /var/www || echo "chown: Some files could not be changed"
-sudo chmod -R 755 /var/www/storage /var/www/bootstrap/cache || echo "chmod Some files could not be changed"
+# sudo chmod -R 755 /var/www/storage /var/www/bootstrap/cache || echo "chmod Some files could not be changed"
 
 # Composer install
 echo "🚀 Running composer install..."
