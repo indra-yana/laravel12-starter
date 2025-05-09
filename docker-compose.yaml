@@ -56,10 +56,12 @@ services:
     container_name: laravel-postgres
     ports:
       - "${POSTGRES_PORT:-5433}:5432"
+    env_file:
+      - .env
     environment:
-      - POSTGRES_DB=${POSTGRES_DATABASE:-app}
-      - POSTGRES_USER=${POSTGRES_USERNAME:-laravel}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-secret}
+      - POSTGRES_DB=${DB_DATABASE:-app}
+      - POSTGRES_USER=${DB_USERNAME:-laravel}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-secret}
     volumes:
       - postgres-data:/var/lib/postgresql/data
       - ./docker/postgres/postgres.conf:/etc/postgresql/postgresql.conf
@@ -78,9 +80,11 @@ services:
     restart: unless-stopped
     ports:
       - 5055:80
+    env_file:
+      - .env
     environment:
-      - PGADMIN_DEFAULT_EMAIL=admin@pgadmin.com
-      - PGADMIN_DEFAULT_PASSWORD=secret
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL:-admin@pgadmin.com}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD:-secret}
     networks:
       - laravel-network
     depends_on:
