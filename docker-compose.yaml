@@ -7,7 +7,7 @@ services:
     volumes:
       - ./:/var/www
       - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - laravel-storage:/var/www/storage
+      # - laravel-storage:/var/www/storage
     ports:
       # Map port 9001 (for web / main app)
       - "${NGINX_PORT:-9090}:80"
@@ -39,7 +39,7 @@ services:
     user: "${UID:-1000}:${GID:-1000}"
     volumes:
       - ./:/var/www
-      - laravel-storage:/var/www/storage
+      # - laravel-storage:/var/www/storage
     ports:
       - ":9000"       # Map port 9000 (php-fpm)
       - "9001:9001"   # Map port 9001 (supervisor)
