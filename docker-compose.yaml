@@ -9,7 +9,9 @@ services:
       - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       # - laravel-storage:/var/www/storage
     ports:
-      - "${NGINX_PORT:-9090}:80"    # Map port 9090 (main app)
+      - "${APP_PORT:-9090}:80"    # Map port 9090 (main app)
+    env_file:
+      - .env
     environment:
       - NGINX_HOST=localhost
     networks:
@@ -58,14 +60,13 @@ services:
     env_file:
       - .env
     environment:
-      - TZ=Asia/Jakarta
       - POSTGRES_DB=${DB_DATABASE:-app}
       - POSTGRES_USER=${DB_USERNAME:-laravel}
       - POSTGRES_PASSWORD=${DB_PASSWORD:-secret}
     volumes:
       - postgres-data:/var/lib/postgresql/data
-      - ./docker/postgres/postgres.conf:/etc/postgresql/postgresql.conf
-      - ./docker/postgres/log:/var/lib/postgresql/data/log
+      - ./docker/postgres/postgres.conf:/etc/postgresql/postgresql.conf:ro
+      - ./docker/postgres/log:/var/lib/postgresql/log
     command: ["postgres", "-c", "config_file=/etc/postgresql/postgresql.conf"]
     networks:
       - laravel-network
