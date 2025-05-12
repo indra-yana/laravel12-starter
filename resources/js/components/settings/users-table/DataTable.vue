@@ -1,8 +1,10 @@
 <script setup lang="ts" generic="TData, TValue">
-import { computed } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
 import { DeleteIcon, EyeIcon, WrenchIcon } from 'lucide-vue-next';
 import { FlexRender, getCoreRowModel, getExpandedRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useVueTable, } from '@tanstack/vue-table';
+import { router } from '@inertiajs/vue3';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from '@/components/ui/table';
+import { User } from '@/types';
 import { useUserTableStore } from './useUserTableStore';
 import Button from '@/components/ui/button/Button.vue';
 import DropdownMenu from '@/components/ui/dropdown-menu/DropdownMenu.vue';
@@ -13,18 +15,51 @@ import DropdownMenuSeparator from '@/components/ui/dropdown-menu/DropdownMenuSep
 import DropdownMenuTrigger from '@/components/ui/dropdown-menu/DropdownMenuTrigger.vue';
 import Input from '@/components/ui/input/Input.vue';
 import Pagination from './Pagination.vue';
-import type { ColumnDef } from '@tanstack/vue-table';
 
-const props = defineProps<{
-    columns: ColumnDef<TData, TValue>[]
-    data: TData[]
-}>()
+export interface PaginationLink {
+  url: string | null
+  label: string
+  active: boolean
+}
+
+export interface Pagination {
+    firstPageUrl: string,
+    lastPageUrl: string,
+    prevPageUrl: string,
+    nextPageUrl: string,
+    totalPage: number,
+    perPage: number,
+    currentPage: number,
+    lastPage: number,
+    links: PaginationLink[],
+}
+
+const props = defineProps(['columns', 'data', 'filters']);
+const users = ref<User[]>(props.data.data);
+const pagination = reactive<Pagination>({
+    firstPageUrl: props.data.first_page_url,
+    lastPageUrl: props.data.last_page_url,
+    prevPageUrl: props.data.prev_page_url,
+    nextPageUrl: props.data.next_page_url,
+    totalPage: props.data.total,
+    perPage: props.data.per_page,
+    currentPage: props.data.current_page,
+    lastPage: props.data.last_page,
+    links: props.data.links,
+});
+
+const pageIndex = ref(pagination.currentPage - 1);
+const pageSize = ref(pagination.perPage || 10);
+
+onMounted(() => {
+    console.log(props.data);
+})
 
 const selectedRows = computed(() => table.getSelectedRowModel().rows.map(row => row.original));
 const userTableStore = useUserTableStore();
 
 const table = useVueTable({
-    get data() { return props.data },
+    get data() { return users },
     get columns() { return props.columns },
     state: {
         get sorting() { return userTableStore.sorting },
@@ -39,13 +74,38 @@ const table = useVueTable({
     onColumnVisibilityChange: userTableStore.setColumnVisibility,
     onRowSelectionChange: userTableStore.setRowSelection,
     onExpandedChange: userTableStore.setExpanded,
-    onPaginationChange: userTableStore.setPagination,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getExpandedRowModel: getExpandedRowModel(),
+    
+    getPaginationRowModel: getPaginationRowModel(),
+    manualPagination: true,
+    rowCount: pagination.totalPage,
+    // onPaginationChange: userTableStore.setPagination,
+    onPaginationChange: (updater) => {
+        // const nextPage = typeof updater === 'function'
+        // ? updater({ pageIndex: pageIndex.value }).pageIndex
+        // : updater.pageIndex;
+
+        userTableStore.setPagination(updater);
+        pageIndex.value = userTableStore.pagination.pageIndex;
+        pageSize.value = userTableStore.pagination.pageSize;
+        
+        router.get(route('users.index'), {
+            page: pageIndex.value + 1,
+            per_page: pageSize.value,
+            ...props.filters,
+        }, {
+            preserveState: true,
+            replace: true,
+        })
+    },
 })
+
+const handlePageChanged = (newIndex: number) => {
+  table.setPageIndex(newIndex);
+}
 
 function deleteSelected() {
     const idsToDelete = selectedRows.value.map((r) => r.id);
@@ -134,6 +194,6 @@ function deleteSelected() {
             {{ table.getFilteredSelectedRowModel().rows.length }} of
             {{ table.getFilteredRowModel().rows.length }} row(s) selected.
         </div>
-        <Pagination class="space-x-2 py-4" :table="table" />
+        <Pagination class="space-x-2 py-4" :table="table" :pagination="pagination" @pageChanged="handlePageChanged" />
     </div>
 </template>
