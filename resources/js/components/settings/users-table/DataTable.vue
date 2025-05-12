@@ -17,9 +17,10 @@ import Input from '@/components/ui/input/Input.vue';
 import Pagination from './Pagination.vue';
 
 export interface PaginationLink {
-  url: string | null
-  label: string
-  active: boolean
+  url: string | null;
+  separator: string | null;
+  label: string;
+  active: boolean;
 }
 
 export interface Pagination {

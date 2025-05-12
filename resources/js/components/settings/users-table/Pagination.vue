@@ -5,6 +5,7 @@ import { Pagination, PaginationLink } from './DataTable.vue';
 import { router } from '@inertiajs/vue3';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from '@/components/ui/select';
 import { type Table } from '@tanstack/vue-table';
+import { computed } from 'vue';
 
 interface DataTablePaginationProps {
     table: Table<TData>,
@@ -14,8 +15,58 @@ interface DataTablePaginationProps {
 const props = defineProps<DataTablePaginationProps>()
 const emit = defineEmits(['pageChanged'])
 
+// const range = (start: number, end: number) =>
+//     Array.from({ length: end - start + 1 }, (_, i) => start + i)
+
+// const visiblePages = computed(() => {
+//     const total = props.pagination.lastPage
+//     const current = props.pagination.currentPage
+
+//     if (total <= 7) {
+//         return range(1, total)
+//     }
+
+//     const pages = new Set<number | string>()
+
+//     pages.add(1)
+//     pages.add(total)
+
+//     if (current <= 4) {
+//         range(2, 5).forEach(p => pages.add(p))
+//         pages.add('...')
+//     } else if (current >= total - 3) {
+//         pages.add('...')
+//         range(total - 4, total - 1).forEach(p => pages.add(p))
+//     } else {
+//         pages.add('...')
+//         range(current - 1, current + 1).forEach(p => pages.add(p))
+//         pages.add('...')
+//     }
+
+//     return Array.from(pages)
+// })
+
+// const numericLinks = computed(() => {
+//     const items = props.pagination.links.filter(link => isNumberLabel(link.label))
+//     const pages: (typeof items[0] | { label: string; separator: true })[] = []
+
+//     let prev = 0
+//     for (const link of items) {
+//         const pageNum = parseInt(link.label)
+
+//         if (prev && pageNum - prev > 1) {
+//             pages.push({ label: '...', separator: true })
+//         }
+
+//         pages.push(link)
+//         prev = pageNum
+//     }
+
+//     return pages;
+// })
+
 function goToPage(link: PaginationLink) {
-    if (!link.url) return;
+    if (!link.url || link.separator) return
 
     router.visit(link.url, {
         preserveScroll: true,
