@@ -66,7 +66,7 @@ const emit = defineEmits(['pageChanged'])
 // })
 
 function goToPage(link: PaginationLink) {
-    if (!link.url || link.separator) return
+    if (!link.url || link.separator || Number(link.label) === props.pagination.currentPage) return;
 
     router.visit(link.url, {
         preserveScroll: true,
