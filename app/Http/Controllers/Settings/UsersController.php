@@ -17,21 +17,7 @@ class UsersController extends Controller
      */
     public function index(Request $request): Response
     {
-        $users = User::query()
-            ->when($request->search, fn($q) =>
-                $q->where('name', 'like', "%{$request->search}%")
-                ->orWhere('email', 'like', "%{$request->search}%")
-            )
-            ->when($request->name, fn ($q) => $q->where('name', 'like', "%{$request->name}%"))
-            ->when($request->email, fn ($q) => $q->where('email', 'like', "%{$request->email}%"))
-            ->orderBy('id', 'desc')
-            ->paginate($request->input('per_page', 10))
-            ->withQueryString();
-
-        return Inertia::render('settings/Users', [
-            'users' => $users,
-            'filters' => $request->only(['search', 'name', 'email', 'per_page']),
-        ]);
+        return Inertia::render('settings/Users', []);
     }
 
     /**
@@ -59,5 +45,23 @@ class UsersController extends Controller
     {
         // TODO
         return redirect('/');
+    }
+
+    function dataTable(Request $request)
+    {
+        $users = User::query()
+            ->when(
+                $request->search,
+                fn($q) =>
+                $q->where('name', 'like', "%{$request->search}%")
+                    ->orWhere('email', 'like', "%{$request->search}%")
+            )
+            ->when($request->name, fn($q) => $q->where('name', 'like', "%{$request->name}%"))
+            ->when($request->email, fn($q) => $q->where('email', 'like', "%{$request->email}%"))
+            ->orderBy('id', 'desc')
+            ->paginate($request->input('per_page', 10))
+            ->withQueryString();
+
+        return response()->json($users);
     }
 }

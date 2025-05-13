@@ -29,6 +29,7 @@ Route::prefix('settings')->middleware('auth')->group(function () {
 
     Route::prefix('users')->group(function () {
         Route::get('/', [UsersController::class, 'index'])->name('users.index');
+        Route::get('data-table', [UsersController::class, 'dataTable'])->name('users.datatable');
     });
 
     Route::prefix('permissions')->group(function () {
