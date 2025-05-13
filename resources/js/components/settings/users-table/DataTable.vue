@@ -18,7 +18,7 @@ import Pagination from './Pagination.vue';
 
 export interface PaginationLink {
   url: string | null;
-  separator: string | null;
+  separator: string | boolean | null | true;
   label: string;
   active: boolean;
 }
@@ -98,7 +98,8 @@ const table = useVueTable({
             per_page: pageSize.value,
             ...props.filters,
         }, {
-            preserveState: true,
+            preserveScroll: true,
+            preserveState: false,
             replace: true,
         })
     },

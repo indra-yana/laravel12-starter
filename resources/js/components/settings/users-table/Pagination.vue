@@ -1,11 +1,10 @@
 <script setup lang="ts" generic="TData, TValue">
 import { ArrowLeftIcon, ArrowRightIcon, ChevronLeftIcon, ChevronRightIcon } from 'lucide-vue-next';
 import { Button } from '@/components/ui/button';
+import { computed } from 'vue';
 import { Pagination, PaginationLink } from './DataTable.vue';
-import { router } from '@inertiajs/vue3';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from '@/components/ui/select';
 import { type Table } from '@tanstack/vue-table';
-import { computed } from 'vue';
 
 interface DataTablePaginationProps {
     table: Table<TData>,
@@ -15,69 +14,61 @@ interface DataTablePaginationProps {
 const props = defineProps<DataTablePaginationProps>()
 const emit = defineEmits(['pageChanged'])
 
-// const range = (start: number, end: number) =>
-//     Array.from({ length: end - start + 1 }, (_, i) => start + i)
+const numericLinks = computed((): PaginationLink[] => {
+    const items = props.pagination.links.filter(link => isNumberLabel(link.label))
+    const currentPage = items.find(link => link.active)
+    const current = currentPage ? parseInt(currentPage.label) : 1
+    const total = props.pagination.lastPage
+    const pageNumbers: (PaginationLink | { label: string; separator: true })[] = []
 
-// const visiblePages = computed(() => {
-//     const total = props.pagination.lastPage
-//     const current = props.pagination.currentPage
+    const addPage = (page: number) => {
+        const exists = pageNumbers.some(p => p.label === page.toString())
+        if (exists) return
+        const link = items.find(l => parseInt(l.label) === page)
+        if (link) pageNumbers.push(link)
+    }
 
-//     if (total <= 7) {
-//         return range(1, total)
-//     }
+    // Selalu tampilkan halaman pertama
+    addPage(1)
 
-//     const pages = new Set<number | string>()
+    // Ellipsis sebelum current jika gap dari halaman 2
+    if (current > 3) {
+        pageNumbers.push({
+            label: '...',
+            separator: true
+        })
+    }
 
-//     pages.add(1)
-//     pages.add(total)
-
-//     if (current <= 4) {
-//         range(2, 5).forEach(p => pages.add(p))
-//         pages.add('...')
-//     } else if (current >= total - 3) {
-//         pages.add('...')
-//         range(total - 4, total - 1).forEach(p => pages.add(p))
-//     } else {
-//         pages.add('...')
-//         range(current - 1, current + 1).forEach(p => pages.add(p))
-//         pages.add('...')
-//     }
-
-//     return Array.from(pages)
-// })
-
-// const numericLinks = computed(() => {
-//     const items = props.pagination.links.filter(link => isNumberLabel(link.label))
-//     const pages: (typeof items[0] | { label: string; separator: true })[] = []
-
-//     let prev = 0
-//     for (const link of items) {
-//         const pageNum = parseInt(link.label)
-
-//         if (prev && pageNum - prev > 1) {
-//             pages.push({ label: '...', separator: true })
-//         }
-
-//         pages.push(link)
-//         prev = pageNum
-//     }
-
-//     return pages;
-// })
-
-function goToPage(link: PaginationLink) {
-    if (!link.url || link.separator || Number(link.label) === props.pagination.currentPage) return;
-
-    router.visit(link.url, {
-        preserveScroll: true,
-        preserveState: true,
-        replace: true,
-        onSuccess: () => {
-            const url = new URL(link?.url || '');
-            const page = url.searchParams.get('page') || 1;
-            emit('pageChanged', Number(page) - 1);
+    // Halaman sekitar current
+    for (let i = current - 1; i <= current + 1; i++) {
+        if (i > 1 && i < total) {
+            addPage(i)
         }
-    })
+    }
+
+    // Ellipsis setelah current jika gap ke last page
+    if (current < total - 1) {
+        pageNumbers.push({
+            label: '...',
+            separator: true
+        })
+    }
+
+    // Selalu tampilkan halaman terakhir (jika lebih dari 1)
+    if (total > 1) {
+        addPage(total)
+    }
+
+    return pageNumbers as PaginationLink[];
+})
+
+function goToPage(link: PaginationLink | number) {
+    if (typeof link === 'object' && link !== null) {
+        if (!link.url || link.separator || Number(link.label) === props.pagination.currentPage) return;
+        emit('pageChanged', Number(link.label) - 1);
+    } else {
+        emit('pageChanged', Number(link) - 1);
+    }
 }
 
 const isNumberLabel = (label: string) => /^\d+$/.test(label);
@@ -89,7 +80,7 @@ const isNumberLabel = (label: string) => /^\d+$/.test(label);
         <div class="flex items-center space-x-6 lg:space-x-8">
             <div class="flex items-center space-x-2">
                 <p class="text-sm font-medium">Display</p>
-                <Select :model-value="`${table.getState().pagination.pageSize}`" @update:model-value="table.setPageSize as any">
+                <Select :model-value="`${table.getState().pagination.pageSize}`" @update:model-value="(table.setPageSize as any)">
                     <SelectTrigger class="h-8 w-[70px]">
                         <SelectValue :placeholder="`${table.getState().pagination.pageSize}`" />
                     </SelectTrigger>
@@ -113,7 +104,7 @@ const isNumberLabel = (label: string) => /^\d+$/.test(label);
                     <span class="sr-only">Go to previous page</span>
                     <ChevronLeftIcon class="w-4 h-4" />
                 </Button>
-                <Button v-for="link in props.pagination.links.filter(l => isNumberLabel(l.label))" :variant="link.active ? 'secondary' : 'outline'" :key="link.label" :disabled="!link.url" @click="goToPage(link)" :class="[
+                <Button v-for="link in numericLinks" :variant="link.active ? 'secondary' : 'outline'" :key="link.label" :disabled="!link.url" @click="goToPage(link)" :class="[
                     'w-8 h-8 p-0 ',
                     !link.url ? 'cursor-not-allowed' : ''
                 ]">

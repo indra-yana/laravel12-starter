@@ -55,7 +55,7 @@ export const columns: ColumnDef<User>[] = [
         }, () => ['Status', h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })]
         )),
         cell: ({ row }) => {
-            const status = row.getValue('status') as string;
+            const status = row.original.is_active ? 'Active' : 'Inactive';
 
             return h('div', { class: 'text-center font-medium' }, status)
         },

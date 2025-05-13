@@ -36,6 +36,7 @@ export interface User {
     created_at?: string;
     updated_at?: string;
     status: 'active' | 'inactive',
+    is_active: boolean,
 }
 
 export type BreadcrumbItemType = BreadcrumbItem;
