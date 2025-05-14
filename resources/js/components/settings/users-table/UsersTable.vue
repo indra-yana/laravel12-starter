@@ -4,6 +4,7 @@ import { computed, onMounted, reactive, ref, watch } from 'vue';
 import { DeleteIcon, EyeIcon, WrenchIcon } from 'lucide-vue-next';
 import { FlexRender, getCoreRowModel, getExpandedRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useVueTable, } from '@tanstack/vue-table';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from '@/components/ui/table';
+import { useDebounceFn } from '@vueuse/core';
 import { User } from '@/types';
 import { useUserTableStore } from './useUserTableStore';
 import axios from 'axios';
@@ -55,10 +56,6 @@ export interface PropsData extends PageProps {
 	users: Pagination<User>;
 }
 
-const filters = reactive({
-	search: ''
-});
-
 const pagination = reactive<Pagination<User>>({
 	data: [],
 	firstPageUrl: '',
@@ -82,6 +79,7 @@ onMounted(async () => {
 
 const table = useVueTable({
 	manualPagination: true,
+	manualFiltering: true,
 	get data() { return pagination.data },
 	get columns() { return columns },
 	get rowCount() { return pagination.totalPage },
@@ -108,14 +106,14 @@ const table = useVueTable({
 	getPaginationRowModel: getPaginationRowModel(),
 })
 
-const fetchData = async () => {
+async function fetchData() {
 	isFetching.value = true
 	try {
 		const response = await axios.get<UsersResponse<User>>(route('users.datatable'), {
 			params: {
 				page: table.getState().pagination.pageIndex + 1,
 				per_page: table.getState().pagination.pageSize,
-				search: filters.search,
+				search: table.getState().globalFilter,
 				...userTableStore.columnFilters,
 			},
 		});
@@ -139,10 +137,18 @@ const fetchData = async () => {
 	}
 }
 
+async function debounceFetchData() {
+	table.setPageIndex(0);
+	await fetchData();
+}
+
 watch([
 	() => table.getState().pagination.pageIndex,
-	() => table.getState().pagination.pageSize
-], fetchData)
+	() => table.getState().pagination.pageSize,
+], fetchData);
+
+// 800ms debounce for globalFilter changes
+watch(() => table.getState().globalFilter, useDebounceFn(debounceFetchData, 800));
 
 const handlePageChanged = (newIndex: number) => {
 	table.setPageIndex(newIndex);
@@ -158,7 +164,8 @@ function deleteSelected() {
 <template>
 	<div class="flex items-center space-x-2 py-4">
 		<div class="flex-1">
-			<Input class="max-w-sm" placeholder="Filter emails..." :model-value="table.getColumn('email')?.getFilterValue() as string" @update:model-value="table.getColumn('email')?.setFilterValue($event)" />
+			<!-- <Input class="max-w-sm" placeholder="Filter emails..." :model-value="table.getColumn('email')?.getFilterValue() as string" @update:model-value="table.getColumn('email')?.setFilterValue($event)" /> -->
+			<Input type="search" class="max-w-sm" placeholder="Search..." :model-value="table.getState().globalFilter" @update:model-value="table.setGlobalFilter($event)"  />
 		</div>
 		<div class="flex items-center justify-between space-x-2 px-2">
 			<DropdownMenu>
@@ -206,7 +213,7 @@ function deleteSelected() {
 				</TableRow>
 			</TableHeader>
 			<TableBody>
-				<template v-if="table.getRowModel().rows?.length && !isFetching">
+				<template v-if="table.getRowModel().rows?.length ">
 					<template v-for="row in table.getRowModel().rows" :key="row.id">
 						<TableRow :data-state="row.getIsSelected() ? 'selected' : undefined">
 							<TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">

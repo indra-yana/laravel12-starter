@@ -12,13 +12,13 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         // User admin tetap
-        User::factory()->create([
-            'name' => 'Admin User',
-            'email' => 'admin@laravel.com',
-            'email_verified_at' => now(),
-            'password' => Hash::make('password'),
-            'is_active' => true,
-        ]);
+        // User::factory()->create([
+        //     'name' => 'Admin User',
+        //     'email' => 'admin@laravel.com',
+        //     'email_verified_at' => now(),
+        //     'password' => Hash::make('password'),
+        //     'is_active' => true,
+        // ]);
 
         // 1000 user dummy
         User::factory(1000)->create()->each(function ($user) {

@@ -64,6 +64,7 @@ export const columns: ColumnDef<User>[] = [
         id: 'actions',
         enableSorting: false,
         enableHiding: false,
+        enableGlobalFilter: false,
         header: () => h('div', { class: 'text-center' }, 'Actions'),
         cell: ({ row }) => {
             const user = row.original;
