@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { valueUpdater } from '@/components/ui/table/utils';
-import type { SortingState, ColumnFiltersState, VisibilityState, RowSelectionState, ExpandedState, PaginationState, Updater, GlobalFilterTableState, } from '@tanstack/table-core';
+import type { SortingState, ColumnFiltersState, VisibilityState, RowSelectionState, ExpandedState, PaginationState, Updater, } from '@tanstack/table-core';
 
 export const useUserTableStore = defineStore('userTable', () => {
 	const sorting = ref<SortingState>([{
@@ -9,9 +9,7 @@ export const useUserTableStore = defineStore('userTable', () => {
 		id: 'name',
 	}]);
 	const columnFilters = ref<ColumnFiltersState>([]);
-	const globalFilter = ref<GlobalFilterTableState>({
-		globalFilter: null,
-	});
+	const globalFilter = ref<string | null>(null);
 	const columnVisibility = ref<VisibilityState>({});
 	const rowSelection = ref<RowSelectionState>({});
 	const expanded = ref<ExpandedState>({});
@@ -30,7 +28,7 @@ export const useUserTableStore = defineStore('userTable', () => {
 		pagination,
 		setSorting: (updater: Updater<SortingState>) => valueUpdater(updater, sorting),
 		setColumnFilters: (updater: Updater<ColumnFiltersState>) => valueUpdater(updater, columnFilters),
-		setGlobalFilter: (updater: Updater<GlobalFilterTableState>) => valueUpdater(updater, globalFilter),
+		setGlobalFilter: (updater: Updater<string | null>) => valueUpdater(updater, globalFilter),
 		setColumnVisibility: (updater: Updater<VisibilityState>) => valueUpdater(updater, columnVisibility),
 		setRowSelection: (updater: Updater<RowSelectionState>) => valueUpdater(updater, rowSelection),
 		setExpanded: (updater: Updater<ExpandedState>) => valueUpdater(updater, expanded),
