@@ -16,7 +16,7 @@ class UserSeeder extends Seeder
             'name' => 'Admin User',
             'email' => 'admin@laravel.com',
             'email_verified_at' => now(),
-            'password' => Hash::make('password'),
+            'password' => Hash::make('supersecret'),
             'is_active' => true,
         ]);
 
