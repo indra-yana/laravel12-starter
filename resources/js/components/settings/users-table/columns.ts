@@ -3,6 +3,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { h } from 'vue';
 import { User } from '@/types';
 import Actions from './Actions.vue';
+import Badge from '@/components/ui/badge/Badge.vue';
 import Button from '@/components/ui/button/Button.vue';
 import type { ColumnDef, } from '@tanstack/vue-table';
 
@@ -57,7 +58,9 @@ export const columns: ColumnDef<User>[] = [
         cell: ({ row }) => {
             const status = row.original.is_active ? 'Active' : 'Inactive';
 
-            return h('div', { class: 'text-center font-medium' }, status)
+            return h('div', { class: 'text-center font-medium' }, h(Badge, {
+                variant: status === 'Active' ? 'success' : 'destructive',
+            }, status))
         },
     },
     {
