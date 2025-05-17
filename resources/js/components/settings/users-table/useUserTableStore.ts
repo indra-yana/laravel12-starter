@@ -6,7 +6,7 @@ import type { SortingState, ColumnFiltersState, VisibilityState, RowSelectionSta
 export const useUserTableStore = defineStore('userTable', () => {
 	const sorting = ref<SortingState>([{
 		desc: false,
-    	id: 'name',
+		id: 'name',
 	}]);
 	const columnFilters = ref<ColumnFiltersState>([]);
 	const globalFilters = ref<GlobalFilterTableState>({
@@ -20,34 +20,6 @@ export const useUserTableStore = defineStore('userTable', () => {
 		pageSize: 10,
 	});
 
-	function setSorting(updater: Updater<SortingState>) {
-		return valueUpdater(updater, sorting);
-	}
-
-	function setColumnFilters(updater: Updater<ColumnFiltersState>) {
-		return valueUpdater(updater, columnFilters);
-	}
-
-	function setGlobalFilters(updater: Updater<GlobalFilterTableState>) {
-		return valueUpdater(updater, globalFilters);
-	}
-
-	function setColumnVisibility(updater: Updater<VisibilityState>) {
-		return valueUpdater(updater, columnVisibility);
-	}
-
-	function setRowSelection(updater: Updater<RowSelectionState>) {
-		return valueUpdater(updater, rowSelection);
-	}
-
-	function setExpanded(updater: Updater<ExpandedState>) {
-		return valueUpdater(updater, expanded);
-	}
-
-	function setPagination(updater: Updater<PaginationState>) {
-		return valueUpdater(updater, pagination);
-	}
-
 	return {
 		sorting,
 		columnFilters,
@@ -56,13 +28,13 @@ export const useUserTableStore = defineStore('userTable', () => {
 		rowSelection,
 		expanded,
 		pagination,
-		setSorting,
-		setColumnFilters,
-		setGlobalFilters,
-		setColumnVisibility,
-		setRowSelection,
-		setExpanded,
-		setPagination,
+		setSorting: (updater: Updater<SortingState>) => valueUpdater(updater, sorting),
+		setColumnFilters: (updater: Updater<ColumnFiltersState>) => valueUpdater(updater, columnFilters),
+		setGlobalFilters: (updater: Updater<GlobalFilterTableState>) => valueUpdater(updater, globalFilters),
+		setColumnVisibility: (updater: Updater<VisibilityState>) => valueUpdater(updater, columnVisibility),
+		setRowSelection: (updater: Updater<RowSelectionState>) => valueUpdater(updater, rowSelection),
+		setExpanded: (updater: Updater<ExpandedState>) => valueUpdater(updater, expanded),
+		setPagination: (updater: Updater<PaginationState>) => valueUpdater(updater, pagination),
 	};
 }, {
 	persist: true,
