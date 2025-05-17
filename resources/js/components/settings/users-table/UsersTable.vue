@@ -80,6 +80,7 @@ onMounted(async () => {
 const table = useVueTable({
 	manualPagination: true,
 	manualFiltering: true,
+	manualSorting: true,
 	get data() { return pagination.data },
 	get columns() { return columns },
 	get rowCount() { return pagination.totalPage },
@@ -114,6 +115,8 @@ async function fetchData() {
 				page: table.getState().pagination.pageIndex + 1,
 				per_page: table.getState().pagination.pageSize,
 				search: table.getState().globalFilter,
+				sorting: table.getState().sorting[0]?.id,
+				direction: table.getState().sorting[0]?.desc ? 'desc' : 'asc',
 				...userTableStore.columnFilters,
 			},
 		});
@@ -137,7 +140,7 @@ async function fetchData() {
 	}
 }
 
-async function debounceFetchData() {
+async function debounceFilter() {
 	table.setPageIndex(0);
 	await fetchData();
 }
@@ -147,8 +150,8 @@ watch([
 	() => table.getState().pagination.pageSize,
 ], fetchData);
 
-// 800ms debounce for globalFilter changes
-watch(() => table.getState().globalFilter, useDebounceFn(debounceFetchData, 800));
+watch(() => table.getState().globalFilter, useDebounceFn(debounceFilter, 800));
+watch(() => table.getState().sorting, useDebounceFn(fetchData, 500));
 
 const handlePageChanged = (newIndex: number) => {
 	table.setPageIndex(newIndex);

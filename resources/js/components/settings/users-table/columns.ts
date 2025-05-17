@@ -1,4 +1,4 @@
-import { ArrowUpDown } from 'lucide-vue-next';
+import { ArrowDownZA, ArrowUpAZ, ArrowUpDown } from 'lucide-vue-next';
 import { Checkbox } from '@/components/ui/checkbox';
 import { h } from 'vue';
 import { User } from '@/types';
@@ -27,9 +27,14 @@ export const columns: ColumnDef<User>[] = [
         accessorKey: 'name',
         enableSorting: true,
         header: ({ column }) => h('div', { class: 'text-center' }, h(Button, {
-            variant: 'ghost',
+            variant: column.getIsSorted() ? 'outline' : 'ghost',
             onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
-        }, () => ['Name', h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })]
+        }, () => [
+            'Name',
+            column.getIsSorted() === 'asc'
+                ? h(ArrowUpAZ, { class: 'ml-2 h-4 w-4' }) : column.getIsSorted() === 'desc' ? h(ArrowDownZA, { class: 'ml-2 h-4 w-4' })
+                    : h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })
+        ]
         )),
         cell: ({ row }) => {
             const name = row.getValue('name') as string;
@@ -41,26 +46,36 @@ export const columns: ColumnDef<User>[] = [
         accessorKey: 'email',
         enableSorting: true,
         header: ({ column }) => h('div', { class: 'text-center' }, h(Button, {
-            variant: 'ghost',
+            variant: column.getIsSorted() ? 'outline' : 'ghost',
             onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
-        }, () => ['Email', h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })]
+        }, () => [
+            'Email',
+            column.getIsSorted() === 'asc'
+                ? h(ArrowUpAZ, { class: 'ml-2 h-4 w-4' }) : column.getIsSorted() === 'desc' ? h(ArrowDownZA, { class: 'ml-2 h-4 w-4' })
+                    : h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })
+        ]
         )),
         cell: ({ row }) => h('div', { class: 'lowercase' }, row.getValue('email')),
     },
     {
-        accessorKey: 'status',
+        accessorKey: 'is_active',
         enableSorting: true,
         header: ({ column }) => h('div', { class: 'text-center' }, h(Button, {
-            variant: 'ghost',
+            variant: column.getIsSorted() ? 'outline' : 'ghost',
             onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
-        }, () => ['Status', h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })]
+        }, () => [
+            'Status',
+            column.getIsSorted() === 'asc'
+                ? h(ArrowUpAZ, { class: 'ml-2 h-4 w-4' }) : column.getIsSorted() === 'desc' ? h(ArrowDownZA, { class: 'ml-2 h-4 w-4' })
+                    : h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })
+        ]
         )),
         cell: ({ row }) => {
             const status = row.original.is_active ? 'Active' : 'Inactive';
 
             return h('div', { class: 'text-center font-medium' }, h(Badge, {
-                variant: status === 'Active' ? 'success' : 'destructive',
-            }, status))
+                variant: status === 'Active' ? 'default' : 'destructive',
+            }, () => status))
         },
     },
     {

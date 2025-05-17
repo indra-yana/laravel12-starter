@@ -4,7 +4,10 @@ import { valueUpdater } from '@/components/ui/table/utils';
 import type { SortingState, ColumnFiltersState, VisibilityState, RowSelectionState, ExpandedState, PaginationState, Updater, GlobalFilterTableState, } from '@tanstack/table-core';
 
 export const useUserTableStore = defineStore('userTable', () => {
-	const sorting = ref<SortingState>([]);
+	const sorting = ref<SortingState>([{
+		desc: false,
+    	id: 'name',
+	}]);
 	const columnFilters = ref<ColumnFiltersState>([]);
 	const globalFilters = ref<GlobalFilterTableState>({
 		globalFilter: null,
