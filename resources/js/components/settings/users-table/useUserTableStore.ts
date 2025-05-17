@@ -9,7 +9,7 @@ export const useUserTableStore = defineStore('userTable', () => {
 		id: 'name',
 	}]);
 	const columnFilters = ref<ColumnFiltersState>([]);
-	const globalFilters = ref<GlobalFilterTableState>({
+	const globalFilter = ref<GlobalFilterTableState>({
 		globalFilter: null,
 	});
 	const columnVisibility = ref<VisibilityState>({});
@@ -23,14 +23,14 @@ export const useUserTableStore = defineStore('userTable', () => {
 	return {
 		sorting,
 		columnFilters,
-		globalFilters,
+		globalFilter,
 		columnVisibility,
 		rowSelection,
 		expanded,
 		pagination,
 		setSorting: (updater: Updater<SortingState>) => valueUpdater(updater, sorting),
 		setColumnFilters: (updater: Updater<ColumnFiltersState>) => valueUpdater(updater, columnFilters),
-		setGlobalFilters: (updater: Updater<GlobalFilterTableState>) => valueUpdater(updater, globalFilters),
+		setGlobalFilter: (updater: Updater<GlobalFilterTableState>) => valueUpdater(updater, globalFilter),
 		setColumnVisibility: (updater: Updater<VisibilityState>) => valueUpdater(updater, columnVisibility),
 		setRowSelection: (updater: Updater<RowSelectionState>) => valueUpdater(updater, rowSelection),
 		setExpanded: (updater: Updater<ExpandedState>) => valueUpdater(updater, expanded),

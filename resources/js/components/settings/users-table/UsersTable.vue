@@ -87,7 +87,7 @@ const table = useVueTable({
 	state: {
 		get sorting() { return userTableStore.sorting },
 		get columnFilters() { return userTableStore.columnFilters },
-		get globalFilter() { return userTableStore.globalFilters },
+		get globalFilter() { return userTableStore.globalFilter },
 		get columnVisibility() { return userTableStore.columnVisibility },
 		get rowSelection() { return userTableStore.rowSelection },
 		get expanded() { return userTableStore.expanded },
@@ -95,7 +95,7 @@ const table = useVueTable({
 	},
 	onSortingChange: userTableStore.setSorting,
 	onColumnFiltersChange: userTableStore.setColumnFilters,
-	onGlobalFilterChange: userTableStore.setGlobalFilters,
+	onGlobalFilterChange: userTableStore.setGlobalFilter,
 	onColumnVisibilityChange: userTableStore.setColumnVisibility,
 	onRowSelectionChange: userTableStore.setRowSelection,
 	onExpandedChange: userTableStore.setExpanded,
