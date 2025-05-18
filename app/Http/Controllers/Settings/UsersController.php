@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Settings;
 
-use App\Enums\UserSortEnum;
+use App\Enums\UserTableEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Settings\ProfileUpdateRequest;
 use App\Models\User;
@@ -50,23 +50,35 @@ class UsersController extends Controller
 
     function dataTable(Request $request)
     {
+        $allowedFilters = UserTableEnum::allowedFilters();
+        $columnFilters = $request->input('column_filters');
         $search = $request->input('search');
-        $sorting = in_array($request->input('sorting'), UserSortEnum::values())
+        $sorting = in_array($request->input('sorting'), UserTableEnum::values())
             ? $request->input('sorting')
-            : UserSortEnum::Name->value;
+            : UserTableEnum::Name->value;
         $direction = in_array($request->input('direction'), ['asc', 'desc'])
             ? $request->input('direction')
             : 'asc';
 
         $users = User::query()
             ->when(
-                $search,
-                fn($q) =>
-                $q->where('name', 'like', "%{$search}%")
-                    ->orWhere('email', 'like', "%{$search}%")
+                $search && !$columnFilters,
+                function ($query) use ($allowedFilters, $search) {
+                    foreach ($allowedFilters as $columnFilter) {
+                        $query->orWhere($columnFilter, 'ilike', "%{$search}%");
+                    }
+                }
             )
-            ->when($request->name, fn($q) => $q->where('name', 'like', "%{$request->name}%"))
-            ->when($request->email, fn($q) => $q->where('email', 'like', "%{$request->email}%"))
+            ->when($columnFilters && $search && is_array($columnFilters), function ($query) use ($columnFilters, $allowedFilters) {
+                foreach ($columnFilters as $filter) {
+                    $column = $filter['id'] ?? null;
+                    $value = $filter['value'] ?? null;
+
+                    if ($column && $value !== null && in_array($column, $allowedFilters)) {
+                        $query->orWhere($column, 'ilike', "%{$value}%");
+                    }
+                }
+            })
             ->orderBy($sorting, $direction)
             ->paginate($request->input('per_page', 10))
             ->withQueryString();

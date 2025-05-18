@@ -7,6 +7,27 @@ import Badge from '@/components/ui/badge/Badge.vue';
 import Button from '@/components/ui/button/Button.vue';
 import type { ColumnDef, } from '@tanstack/vue-table';
 
+export const availableFilters: Record<string, any> = {
+    name: {
+        key: 'name',
+        label: 'Name',
+    },
+    email: {
+        key: 'email',
+        label: 'Email',
+    },
+    is_active: {
+        key: 'is_active',
+        label: 'Status',
+        mapper: {
+            'active': true,
+            'inactive': false,
+            '1': true,
+            '0': false,
+        }
+    },
+} as const;
+
 export const columns: ColumnDef<User>[] = [
     {
         id: 'select',

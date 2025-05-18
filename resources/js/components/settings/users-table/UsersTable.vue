@@ -1,13 +1,14 @@
 <script setup lang="ts" generic="TData, TValue">
-import { columns } from './columns';
+import { availableFilters, columns } from './columns';
 import { computed, onMounted, reactive, ref, watch } from 'vue';
-import { DeleteIcon, EyeIcon, WrenchIcon } from 'lucide-vue-next';
-import { FlexRender, getCoreRowModel, getExpandedRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useVueTable, } from '@tanstack/vue-table';
+import { DeleteIcon, EyeIcon, Filter, WrenchIcon, XIcon } from 'lucide-vue-next';
+import { FlexRender, getCoreRowModel, getExpandedRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, Updater, useVueTable, } from '@tanstack/vue-table';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from '@/components/ui/table';
 import { useDebounceFn } from '@vueuse/core';
 import { User } from '@/types';
 import { useUserTableStore } from './useUserTableStore';
 import axios from 'axios';
+import Badge from '@/components/ui/badge/Badge.vue';
 import Button from '@/components/ui/button/Button.vue';
 import DropdownMenu from '@/components/ui/dropdown-menu/DropdownMenu.vue';
 import DropdownMenuCheckboxItem from '@/components/ui/dropdown-menu/DropdownMenuCheckboxItem.vue';
@@ -117,7 +118,7 @@ async function fetchData() {
 				search: table.getState().globalFilter,
 				sorting: table.getState().sorting[0]?.id,
 				direction: table.getState().sorting[0]?.desc ? 'desc' : 'asc',
-				...userTableStore.columnFilters,
+				column_filters: table.getState().columnFilters,
 			},
 		});
 
@@ -140,8 +141,12 @@ async function fetchData() {
 	}
 }
 
-async function debounceFilter() {
+async function debounceGlobalFilter() {
 	table.setPageIndex(0);
+	userTableStore.setColumnFilters(
+		userTableStore.activeFilters.map((key) => ({ id: key, value: handleFilterMapper(key, table.getState().globalFilter) }))
+	);
+
 	await fetchData();
 }
 
@@ -150,7 +155,8 @@ watch([
 	() => table.getState().pagination.pageSize,
 ], fetchData);
 
-watch(() => table.getState().globalFilter, useDebounceFn(debounceFilter, 800));
+watch(() => table.getState().globalFilter, useDebounceFn(debounceGlobalFilter, 800));
+watch(() => table.getState().columnFilters, useDebounceFn(fetchData, 500));
 watch(() => table.getState().sorting, useDebounceFn(fetchData, 500));
 
 const handlePageChanged = (newIndex: number) => {
@@ -162,15 +168,56 @@ function deleteSelected() {
 	alert(`Deleting IDs: ${idsToDelete.join(', ')}`);
 }
 
+function onActiveFilterUpdate(filterKey: string, checked: boolean) {
+	const filters: Updater<string[]> = userTableStore.activeFilters;
+	if (checked && !filters.includes(filterKey)) {
+		filters.push(filterKey);
+	} else {
+		const index = filters.indexOf(filterKey);
+		if (index !== -1) {
+			filters.splice(index, 1)
+		};
+	}
+
+	userTableStore.setActiveFilters(filters);
+	userTableStore.setColumnFilters(
+		filters.map((key) => ({ id: key, value: handleFilterMapper(key, table.getState().globalFilter) }))
+	);
+}
+
+function handleFilterMapper(filterKey: string, value: any) {
+	if (availableFilters[filterKey]?.mapper !== undefined) {
+		return availableFilters[filterKey]?.mapper[value?.toLowerCase()] ?? value;
+	}
+
+	return value;
+}
+
 </script>
 
 <template>
-	<div class="flex items-center space-x-2 py-4">
+	<div class="flex items-center space-x-2 mt-4">
 		<div class="flex-1">
 			<!-- <Input class="max-w-sm" placeholder="Filter emails..." :model-value="table.getColumn('email')?.getFilterValue() as string" @update:model-value="table.getColumn('email')?.setFilterValue($event)" /> -->
-			<Input type="search" class="max-w-sm" placeholder="Search..." :model-value="table.getState().globalFilter" @update:model-value="table.setGlobalFilter($event)"  />
+			<Input type="search" class="max-w-sm" placeholder="Search..." :model-value="table.getState().globalFilter" @update:model-value="table.setGlobalFilter($event)" />
+
 		</div>
 		<div class="flex items-center justify-between space-x-2 px-2">
+			<DropdownMenu>
+				<DropdownMenuTrigger as-child>
+					<Button variant="outline" class="ml-auto">
+						<Filter class="size-4 mr-2" />
+						Filter
+					</Button>
+				</DropdownMenuTrigger>
+				<DropdownMenuContent align="end" class="min-w-[200px]">
+					<DropdownMenuLabel>Filter Columns</DropdownMenuLabel>
+					<DropdownMenuSeparator />
+					<DropdownMenuCheckboxItem v-for="(filter, key) in availableFilters" :key="key" :modelValue="userTableStore.activeFilters.includes(filter.key)" @update:modelValue="(checked) => onActiveFilterUpdate(filter.key, checked)" @select="(event) => event.preventDefault()">
+						{{ filter.label }}
+					</DropdownMenuCheckboxItem>
+				</DropdownMenuContent>
+			</DropdownMenu>
 			<DropdownMenu>
 				<DropdownMenuTrigger as-child>
 					<Button variant="outline" class="ml-auto">
@@ -206,6 +253,14 @@ function deleteSelected() {
 			</DropdownMenu>
 		</div>
 	</div>
+	<div class="flex flex-wrap gap-2 ">
+		<Badge variant="secondary" class="flex items-center gap-2 px-2 py-1 shadow-sm" v-for="key in userTableStore.activeFilters" :key="key">
+			<span>{{ availableFilters[key]?.label }}</span>
+			<button class="hover:text-destructive" @click="onActiveFilterUpdate(key, false)">
+				<XIcon class="size-3" title="Remove" />
+			</button>
+		</Badge>
+	</div>
 	<div class="border rounded-md">
 		<Table>
 			<TableHeader>
@@ -216,7 +271,7 @@ function deleteSelected() {
 				</TableRow>
 			</TableHeader>
 			<TableBody>
-				<template v-if="table.getRowModel().rows?.length ">
+				<template v-if="table.getRowModel().rows?.length">
 					<template v-for="row in table.getRowModel().rows" :key="row.id">
 						<TableRow :data-state="row.getIsSelected() ? 'selected' : undefined">
 							<TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
