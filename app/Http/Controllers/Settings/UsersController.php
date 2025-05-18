@@ -44,8 +44,15 @@ class UsersController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        // TODO
-        return redirect('/');
+        $ids = $request->input('ids');
+        if (!$ids) {
+            return redirect()->back()->with('error', 'No user ID(s) provided.');
+        }
+
+        $ids = is_array($ids) ? $ids : [$ids];
+
+        User::whereIn('id', $ids)->delete();
+        return redirect()->back()->with('success', count($ids) . ' user(s) deleted successfully.');
     }
 
     function dataTable(Request $request)
