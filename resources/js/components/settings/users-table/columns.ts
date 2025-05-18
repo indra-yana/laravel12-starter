@@ -95,7 +95,7 @@ export const columns: ColumnDef<User>[] = [
             const status = row.original.is_active ? 'Active' : 'Inactive';
 
             return h('div', { class: 'text-center font-medium' }, h(Badge, {
-                variant: status === 'Active' ? 'default' : 'destructive',
+                variant: status === 'Active' ? 'success' : 'destructive',
             }, () => status))
         },
     },
