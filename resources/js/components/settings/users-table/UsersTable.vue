@@ -19,6 +19,8 @@ import DropdownMenuTrigger from '@/components/ui/dropdown-menu/DropdownMenuTrigg
 import Input from '@/components/ui/input/Input.vue';
 import Pagination from './Pagination.vue';
 import type { PageProps } from '@inertiajs/core';
+import VueJsonPretty from 'vue-json-pretty';
+import 'vue-json-pretty/lib/styles.css';
 
 export interface PaginationLink {
 	url: string | null;
@@ -280,7 +282,9 @@ function handleFilterMapper(filterKey: string, value: any) {
 						</TableRow>
 						<TableRow v-if="row.getIsExpanded()">
 							<TableCell :colspan="row.getAllCells().length">
-								{{ JSON.stringify(row.original) }}
+								<div class="whitespace-pre-wrap bg-secondary p-4 rounded-lg overflow-x-auto max-w-full">
+									<VueJsonPretty :data="row.original" :showIcon="true" :showLineNumber="true" :showLength="true" />
+								</div>
 							</TableCell>
 						</TableRow>
 					</template>
