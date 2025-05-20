@@ -3,7 +3,6 @@ import { ArrowLeftIcon, ArrowRightIcon, ChevronLeftIcon, ChevronRightIcon } from
 import { Button } from '@/components/ui/button';
 import { computed } from 'vue';
 import { Pagination, PaginationLink } from './UsersTable.vue';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from '@/components/ui/select';
 import { type Table } from '@tanstack/vue-table';
 import { User } from '@/types';
 
@@ -82,20 +81,6 @@ const isNumberLabel = (label: string) => /^\d+$/.test(label);
 <template>
     <div class="flex items-center justify-between px-2">
         <div class="flex items-start space-x-4 lg:space-x-6">
-            <div class="flex items-center space-x-0 md:space-x-2">
-                <p class="text-sm font-medium hidden md:flex">Display</p>
-                <Select :model-value="`${table.getState().pagination.pageSize}`" @update:model-value="(table.setPageSize as any)">
-                    <SelectTrigger class="h-8 w-[70px]">
-                        <SelectValue :placeholder="`${table.getState().pagination.pageSize}`" />
-                    </SelectTrigger>
-                    <SelectContent side="top">
-                        <SelectItem v-for="pageSize in [10, 20, 30, 40, 50]" :key="pageSize" :value="`${pageSize}`">
-                            {{ pageSize }}
-                        </SelectItem>
-                    </SelectContent>
-                </Select>
-                <p class="text-sm font-medium hidden md:flex">row(s)</p>
-            </div>
             <div class="flex flex-col gap-3 items-end">
                 <div class="flex items-center gap-2">
                     <Button variant="outline" class="hidden w-8 h-8 p-0 lg:flex" :disabled="!table.getCanPreviousPage()" @click="table.setPageIndex(0)">

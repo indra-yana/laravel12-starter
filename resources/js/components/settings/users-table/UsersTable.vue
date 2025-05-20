@@ -18,9 +18,10 @@ import DropdownMenuLabel from '@/components/ui/dropdown-menu/DropdownMenuLabel.v
 import DropdownMenuSeparator from '@/components/ui/dropdown-menu/DropdownMenuSeparator.vue';
 import DropdownMenuTrigger from '@/components/ui/dropdown-menu/DropdownMenuTrigger.vue';
 import Input from '@/components/ui/input/Input.vue';
+import PageLength from '@/components/settings/users-table/PageLength.vue';
 import Pagination from './Pagination.vue';
 import type { PageProps } from '@inertiajs/core';
-import VueJsonPretty from 'vue-json-pretty';
+import VueJsonPretty from 'vue-json-pretty'; 
 
 export interface PaginationLink {
 	url: string | null;
@@ -111,7 +112,7 @@ const table = useVueTable({
 })
 
 async function fetchData() {
-	isFetching.value = true
+	isFetching.value = true;
 	try {
 		const response = await axios.get<UsersResponse<User>>(route('users.datatable'), {
 			params: {
@@ -136,10 +137,10 @@ async function fetchData() {
 		pagination.lastPage = result.last_page;
 		pagination.links = result.links;
 
-		isFetching.value = false
+		isFetching.value = false;
 	} catch (err) {
 		console.error(err)
-		isFetching.value = false
+		isFetching.value = false;
 	}
 }
 
@@ -304,6 +305,7 @@ function handleFilterMapper(filterKey: string, value: any) {
 			{{ table.getFilteredSelectedRowModel().rows.length }} of
 			{{ table.getFilteredRowModel().rows.length }} row(s) selected.
 		</div>
+		<PageLength :table="table" />
 		<Pagination class="space-x-2" :table="table" :pagination="pagination" @pageChanged="handlePageChanged" />
 	</div>
 </template>
