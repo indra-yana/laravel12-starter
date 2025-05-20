@@ -81,9 +81,9 @@ const isNumberLabel = (label: string) => /^\d+$/.test(label);
 
 <template>
     <div class="flex items-center justify-between px-2">
-        <div class="flex items-start space-x-6 lg:space-x-8">
-            <div class="flex items-center space-x-2">
-                <p class="text-sm font-medium">Display</p>
+        <div class="flex items-start space-x-4 lg:space-x-6">
+            <div class="flex items-center space-x-0 md:space-x-2">
+                <p class="text-sm font-medium hidden md:flex">Display</p>
                 <Select :model-value="`${table.getState().pagination.pageSize}`" @update:model-value="(table.setPageSize as any)">
                     <SelectTrigger class="h-8 w-[70px]">
                         <SelectValue :placeholder="`${table.getState().pagination.pageSize}`" />
@@ -94,10 +94,10 @@ const isNumberLabel = (label: string) => /^\d+$/.test(label);
                         </SelectItem>
                     </SelectContent>
                 </Select>
-                <p class="text-sm font-medium">row(s)</p>
+                <p class="text-sm font-medium hidden md:flex">row(s)</p>
             </div>
-            <div class="flex flex-col gap-3">
-                <div class="flex items-center space-x-2">
+            <div class="flex flex-col gap-3 items-end">
+                <div class="flex items-center gap-2">
                     <Button variant="outline" class="hidden w-8 h-8 p-0 lg:flex" :disabled="!table.getCanPreviousPage()" @click="table.setPageIndex(0)">
                         <span class="sr-only">Go to first page</span>
                         <ArrowLeftIcon class="w-4 h-4" />
@@ -106,8 +106,8 @@ const isNumberLabel = (label: string) => /^\d+$/.test(label);
                         <span class="sr-only">Go to previous page</span>
                         <ChevronLeftIcon class="w-4 h-4" />
                     </Button>
-                    <Button v-for="link in numericLinks" :variant="link.active ? 'secondary' : 'outline'" :key="link.label" :disabled="!link.url" @click="goToPage(link)" :class="[
-                        'w-8 h-8 p-0 ',
+                    <Button v-for="link in numericLinks" :variant="link.active ? 'default' : 'outline'" :key="link.label" :disabled="!link.url" @click="goToPage(link)" :class="[
+                        'w-8 h-8 p-0 hidden md:flex',
                         !link.url ? 'cursor-not-allowed' : ''
                     ]">
                         <span>{{ link.label }}</span>

@@ -1,4 +1,5 @@
 <script setup lang="ts" generic="TData, TValue">
+import 'vue-json-pretty/lib/styles.css';
 import { availableFilters, columns } from './columns';
 import { computed, onMounted, reactive, ref, watch } from 'vue';
 import { DeleteIcon, EyeIcon, Filter, WrenchIcon, XIcon } from 'lucide-vue-next';
@@ -20,7 +21,6 @@ import Input from '@/components/ui/input/Input.vue';
 import Pagination from './Pagination.vue';
 import type { PageProps } from '@inertiajs/core';
 import VueJsonPretty from 'vue-json-pretty';
-import 'vue-json-pretty/lib/styles.css';
 
 export interface PaginationLink {
 	url: string | null;
@@ -198,13 +198,12 @@ function handleFilterMapper(filterKey: string, value: any) {
 </script>
 
 <template>
-	<div class="flex items-center space-x-2 mt-4">
-		<div class="flex-1">
+	<div class="flex flex-col md:flex-row items-start md:items-center md:justify-between mt-4">
+		<div class="w-full sm:w-auto md:flex-1">
 			<!-- <Input class="max-w-sm" placeholder="Filter emails..." :model-value="table.getColumn('email')?.getFilterValue() as string" @update:model-value="table.getColumn('email')?.setFilterValue($event)" /> -->
 			<Input type="search" class="max-w-sm" placeholder="Search..." :model-value="table.getState().globalFilter" @update:model-value="table.setGlobalFilter($event)" />
-
 		</div>
-		<div class="flex items-center justify-between space-x-2 px-2">
+		<div class="flex flex-row items-start justify-between space-x-2 mt-2 md:mt-0 ">
 			<DropdownMenu>
 				<DropdownMenuTrigger as-child>
 					<Button variant="outline" class="ml-auto">
