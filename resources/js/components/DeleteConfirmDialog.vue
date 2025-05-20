@@ -33,7 +33,7 @@ defineProps<{
             <AlertDialogHeader>
                 <AlertDialogTitle>{{ title ?? 'Are you sure?' }}</AlertDialogTitle>
                 <AlertDialogDescription>
-                    {{ description ?? 'This action cannot be undone.' }}
+                    <div v-html="description ?? 'This action cannot be undone.'"></div>
                 </AlertDialogDescription>
             </AlertDialogHeader>
 

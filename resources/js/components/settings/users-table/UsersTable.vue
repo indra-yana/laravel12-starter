@@ -3,14 +3,16 @@ import 'vue-json-pretty/lib/styles.css';
 import { availableFilters, columns } from './columns';
 import { computed, onMounted, reactive, ref, watch } from 'vue';
 import { DeleteIcon, EyeIcon, Filter, WrenchIcon, XIcon } from 'lucide-vue-next';
-import { FlexRender, getCoreRowModel, getExpandedRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, Updater, useVueTable, } from '@tanstack/vue-table';
+import { FlexRender, getCoreRowModel, getExpandedRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, TableMeta, Updater, useVueTable, } from '@tanstack/vue-table';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from '@/components/ui/table';
 import { useDebounceFn } from '@vueuse/core';
+import { useForm } from '@inertiajs/vue3';
 import { User } from '@/types';
 import { useUserTableStore } from './useUserTableStore';
 import axios from 'axios';
 import Badge from '@/components/ui/badge/Badge.vue';
 import Button from '@/components/ui/button/Button.vue';
+import DeleteConfirmDialog from '@/components/DeleteConfirmDialog.vue';
 import DropdownMenu from '@/components/ui/dropdown-menu/DropdownMenu.vue';
 import DropdownMenuCheckboxItem from '@/components/ui/dropdown-menu/DropdownMenuCheckboxItem.vue';
 import DropdownMenuContent from '@/components/ui/dropdown-menu/DropdownMenuContent.vue';
@@ -21,7 +23,7 @@ import Input from '@/components/ui/input/Input.vue';
 import PageLength from '@/components/settings/users-table/PageLength.vue';
 import Pagination from './Pagination.vue';
 import type { PageProps } from '@inertiajs/core';
-import VueJsonPretty from 'vue-json-pretty'; 
+import VueJsonPretty from 'vue-json-pretty';
 
 export interface PaginationLink {
 	url: string | null;
@@ -60,6 +62,16 @@ export interface PropsData extends PageProps {
 	users: Pagination<User>;
 }
 
+export interface ActionMeta {
+	onDelete: (user: User) => void,
+	onEdit: (user: User) => void,
+}
+
+interface ActionPayload {
+	ids: number[],
+	[key: string]: any
+}
+
 const pagination = reactive<Pagination<User>>({
 	data: [],
 	firstPageUrl: '',
@@ -76,15 +88,13 @@ const pagination = reactive<Pagination<User>>({
 const isFetching = ref(false);
 const selectedRows = computed(() => table.getSelectedRowModel().rows.map(row => row.original));
 const userTableStore = useUserTableStore();
-
-onMounted(async () => {
-	await fetchData();
-})
-
+const showConfirm = ref(false);
+const form = useForm<ActionPayload>({
+	ids: [],
+	names: [],
+});
+const selectedNames = computed(() => form.names.join('<br>'));
 const table = useVueTable({
-	manualPagination: true,
-	manualFiltering: true,
-	manualSorting: true,
 	get data() { return pagination.data },
 	get columns() { return columns },
 	get rowCount() { return pagination.totalPage },
@@ -97,6 +107,13 @@ const table = useVueTable({
 		get expanded() { return userTableStore.expanded },
 		get pagination() { return userTableStore.pagination },
 	},
+	meta: {
+		onDelete: handleDelete,
+		onEdit: handleEdit,
+	},
+	manualPagination: true,
+	manualFiltering: true,
+	manualSorting: true,
 	onSortingChange: userTableStore.setSorting,
 	onColumnFiltersChange: userTableStore.setColumnFilters,
 	onGlobalFilterChange: userTableStore.setGlobalFilter,
@@ -109,6 +126,10 @@ const table = useVueTable({
 	getFilteredRowModel: getFilteredRowModel(),
 	getExpandedRowModel: getExpandedRowModel(),
 	getPaginationRowModel: getPaginationRowModel(),
+})
+
+onMounted(async () => {
+	await fetchData();
 })
 
 async function fetchData() {
@@ -166,11 +187,6 @@ const handlePageChanged = (newIndex: number) => {
 	table.setPageIndex(newIndex);
 }
 
-function deleteSelected() {
-	const idsToDelete = selectedRows.value.map((r) => r.id);
-	alert(`Deleting IDs: ${idsToDelete.join(', ')}`);
-}
-
 function onActiveFilterUpdate(filterKey: string, checked: boolean) {
 	const filters: Updater<string[]> = userTableStore.activeFilters;
 	if (checked && !filters.includes(filterKey)) {
@@ -196,9 +212,48 @@ function handleFilterMapper(filterKey: string, value: any) {
 	return value;
 }
 
+function handleBulkDelete() {
+	form.ids = selectedRows.value.map((user) => user.id);
+	form.names = selectedRows.value.map((user) => user.name);
+
+	handleConfirm();
+}
+
+function handleDelete(user: User) {
+	form.ids = [user.id];
+	form.names = [user.name];
+	handleConfirm();
+}
+
+function handleEdit(user: User) {
+	console.log('handleEdit', user);
+}
+
+function postDelete() {
+	form.delete(route('users.destroy'), {
+		preserveScroll: true,
+		preserveState: false,
+		onSuccess: () => {
+			form.reset();
+			handleConfirm();
+			table.setRowSelection({});
+		},
+	})
+}
+
+function handleConfirm() {
+	showConfirm.value = true;
+}
+
+function handleCancel() {
+	showConfirm.value = false
+}
+
 </script>
 
 <template>
+	<DeleteConfirmDialog :open="showConfirm" :onConfirm="postDelete" :onCancel="handleCancel" :loading="form.processing" title="Delete users?" :description="`This action will permanently delete the selected users.<br><br><b>${selectedNames}</b>`"></DeleteConfirmDialog>
+
 	<div class="flex flex-col md:flex-row items-start md:items-center md:justify-between mt-4">
 		<div class="w-full sm:w-auto md:flex-1">
 			<!-- <Input class="max-w-sm" placeholder="Filter emails..." :model-value="table.getColumn('email')?.getFilterValue() as string" @update:model-value="table.getColumn('email')?.setFilterValue($event)" /> -->
@@ -230,7 +285,7 @@ function handleFilterMapper(filterKey: string, value: any) {
 				<DropdownMenuContent align="end">
 					<DropdownMenuLabel>Bulk Actions</DropdownMenuLabel>
 					<DropdownMenuSeparator />
-					<Button variant="ghost" class="ml-auto text-destructive" size="sm" @click="deleteSelected" :disabled="!selectedRows.length">
+					<Button variant="ghost" class="ml-auto text-destructive" size="sm" @click="handleBulkDelete" :disabled="!selectedRows.length">
 						<DeleteIcon class="size-4 me-2" />
 						Delete Selected
 					</Button>

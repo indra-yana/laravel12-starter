@@ -1,3 +1,4 @@
+import { ActionMeta } from './UsersTable.vue';
 import { ArrowDownZA, ArrowUpAZ, ArrowUpDown } from 'lucide-vue-next';
 import { Checkbox } from '@/components/ui/checkbox';
 import { h } from 'vue';
@@ -105,12 +106,19 @@ export const columns: ColumnDef<User>[] = [
         enableHiding: false,
         enableGlobalFilter: false,
         header: () => h('div', { class: 'text-center' }, 'Actions'),
-        cell: ({ row }) => {
+        cell: ({ row, table }) => {
             const user = row.original;
+            const meta = table.options.meta as ActionMeta;
 
             return h('div', { class: 'text-center relative' }, h(Actions, {
                 user,
                 onExpand: row.toggleExpanded,
+                onDelete: (user: User) => {
+                    meta?.onDelete(user)
+                },
+                onEdit: (user: User) => {
+                    meta?.onEdit(user)
+                },
             }))
         },
     },
