@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Settings;
 
+use App\Enums\UserTableEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Settings\ProfileUpdateRequest;
 use App\Models\User;
@@ -43,22 +44,49 @@ class UsersController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        // TODO
-        return redirect('/');
+        $ids = $request->input('ids');
+        if (!$ids) {
+            return redirect()->back()->with('error', 'No user ID(s) provided.');
+        }
+
+        $ids = is_array($ids) ? $ids : [$ids];
+
+        User::whereIn('id', $ids)->delete();
+        return redirect()->back()->with('success', count($ids) . ' user(s) deleted successfully.');
     }
 
     function dataTable(Request $request)
     {
+        $allowedFilters = UserTableEnum::allowedFilters();
+        $columnFilters = $request->input('column_filters');
+        $search = $request->input('search');
+        $sorting = in_array($request->input('sorting'), UserTableEnum::values())
+            ? $request->input('sorting')
+            : UserTableEnum::Name->value;
+        $direction = in_array($request->input('direction'), ['asc', 'desc'])
+            ? $request->input('direction')
+            : 'asc';
+
         $users = User::query()
             ->when(
-                $request->search,
-                fn($q) =>
-                $q->where('name', 'like', "%{$request->search}%")
-                    ->orWhere('email', 'like', "%{$request->search}%")
+                $search && !$columnFilters,
+                function ($query) use ($allowedFilters, $search) {
+                    foreach ($allowedFilters as $columnFilter) {
+                        $query->orWhere($columnFilter, 'ilike', "%{$search}%");
+                    }
+                }
             )
-            ->when($request->name, fn($q) => $q->where('name', 'like', "%{$request->name}%"))
-            ->when($request->email, fn($q) => $q->where('email', 'like', "%{$request->email}%"))
-            ->orderBy('id', 'desc')
+            ->when($columnFilters && $search && is_array($columnFilters), function ($query) use ($columnFilters, $allowedFilters) {
+                foreach ($columnFilters as $filter) {
+                    $column = $filter['id'] ?? null;
+                    $value = $filter['value'] ?? null;
+
+                    if ($column && $value !== null && in_array($column, $allowedFilters)) {
+                        $query->orWhere($column, 'ilike', "%{$value}%");
+                    }
+                }
+            })
+            ->orderBy($sorting, $direction)
             ->paginate($request->input('per_page', 10))
             ->withQueryString();
 

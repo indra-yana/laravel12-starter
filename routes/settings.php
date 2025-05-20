@@ -29,6 +29,7 @@ Route::prefix('settings')->middleware('auth')->group(function () {
 
     Route::prefix('users')->group(function () {
         Route::get('/', [UsersController::class, 'index'])->name('users.index');
+        Route::delete('destroy', [UsersController::class, 'destroy'])->name('users.destroy');
         Route::get('data-table', [UsersController::class, 'dataTable'])->name('users.datatable');
     });
 

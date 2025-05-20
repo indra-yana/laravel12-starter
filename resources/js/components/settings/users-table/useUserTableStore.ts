@@ -1,14 +1,16 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { valueUpdater } from '@/components/ui/table/utils';
-import type { SortingState, ColumnFiltersState, VisibilityState, RowSelectionState, ExpandedState, PaginationState, Updater, GlobalFilterTableState, } from '@tanstack/table-core';
+import type { SortingState, ColumnFiltersState, VisibilityState, RowSelectionState, ExpandedState, PaginationState, Updater, } from '@tanstack/table-core';
 
 export const useUserTableStore = defineStore('userTable', () => {
-	const sorting = ref<SortingState>([]);
+	const sorting = ref<SortingState>([{
+		desc: false,
+		id: 'name',
+	}]);
 	const columnFilters = ref<ColumnFiltersState>([]);
-	const globalFilters = ref<GlobalFilterTableState>({
-		globalFilter: null,
-	});
+	const activeFilters = ref<string[]>([]);
+	const globalFilter = ref<string | null>(null);
 	const columnVisibility = ref<VisibilityState>({});
 	const rowSelection = ref<RowSelectionState>({});
 	const expanded = ref<ExpandedState>({});
@@ -17,49 +19,23 @@ export const useUserTableStore = defineStore('userTable', () => {
 		pageSize: 10,
 	});
 
-	function setSorting(updater: Updater<SortingState>) {
-		return valueUpdater(updater, sorting);
-	}
-
-	function setColumnFilters(updater: Updater<ColumnFiltersState>) {
-		return valueUpdater(updater, columnFilters);
-	}
-
-	function setGlobalFilters(updater: Updater<GlobalFilterTableState>) {
-		return valueUpdater(updater, globalFilters);
-	}
-
-	function setColumnVisibility(updater: Updater<VisibilityState>) {
-		return valueUpdater(updater, columnVisibility);
-	}
-
-	function setRowSelection(updater: Updater<RowSelectionState>) {
-		return valueUpdater(updater, rowSelection);
-	}
-
-	function setExpanded(updater: Updater<ExpandedState>) {
-		return valueUpdater(updater, expanded);
-	}
-
-	function setPagination(updater: Updater<PaginationState>) {
-		return valueUpdater(updater, pagination);
-	}
-
 	return {
 		sorting,
 		columnFilters,
-		globalFilters,
+		activeFilters,
+		globalFilter,
 		columnVisibility,
 		rowSelection,
 		expanded,
 		pagination,
-		setSorting,
-		setColumnFilters,
-		setGlobalFilters,
-		setColumnVisibility,
-		setRowSelection,
-		setExpanded,
-		setPagination,
+		setSorting: (updater: Updater<SortingState>) => valueUpdater(updater, sorting),
+		setColumnFilters: (updater: Updater<ColumnFiltersState>) => valueUpdater(updater, columnFilters),
+		setActiveFilters: (updater: Updater<string[]>) => valueUpdater(updater, activeFilters),
+		setGlobalFilter: (updater: Updater<string | null>) => valueUpdater(updater, globalFilter),
+		setColumnVisibility: (updater: Updater<VisibilityState>) => valueUpdater(updater, columnVisibility),
+		setRowSelection: (updater: Updater<RowSelectionState>) => valueUpdater(updater, rowSelection),
+		setExpanded: (updater: Updater<ExpandedState>) => valueUpdater(updater, expanded),
+		setPagination: (updater: Updater<PaginationState>) => valueUpdater(updater, pagination),
 	};
 }, {
 	persist: true,
