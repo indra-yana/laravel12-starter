@@ -17,8 +17,8 @@ defineProps<{
 
 <template>
     <div class="video-container z-10">
-        <img src="/assets/images/bg-dark.png" alt="Dark mode background" class="w-full h-full hidden dark:block">
-        <img src="/assets/images/bg-light.png" alt="Light mode background" class="w-full h-full block dark:hidden">
+        <img src="/assets/images/bg-dark2.png" alt="Dark mode background" class="w-full h-full hidden dark:block object-cover">
+        <img src="/assets/images/bg-light2.png" alt="Light mode background" class="w-full h-full block dark:hidden object-cover">
     </div>
     <div class="relative grid h-dvh flex-col items-center justify-center px-4 sm:px-0 lg:max-w-none lg:grid-cols-2 lg:px-0">
         <div class="justify-center items-center">

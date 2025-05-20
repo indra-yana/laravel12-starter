@@ -173,7 +173,7 @@
 }
 
 .bg-backdrop-blur-sm {
-  @apply bg-background/15 dark:bg-background/35 backdrop-blur-sm;
+  @apply bg-background/60 dark:bg-background/35 backdrop-blur-xs;
 }
 
 #auth-wrapper .text-muted-foreground {
