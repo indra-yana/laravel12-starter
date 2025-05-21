@@ -31,7 +31,7 @@ function handleThemeUpdated(value: Appearance) {
                         Appearance settings
                     </h4>
                     <p class="text-sm text-muted-foreground">
-                        Update your appearance settings
+                        Update your account's appearance settings
                     </p>
                 </div>
                 <div class="grid gap-2">
