@@ -3,7 +3,7 @@ import 'vue-json-pretty/lib/styles.css';
 import { availableFilters, columns } from './columns';
 import { computed, onMounted, reactive, ref, watch } from 'vue';
 import { DeleteIcon, EyeIcon, Filter, WrenchIcon, XIcon } from 'lucide-vue-next';
-import { FlexRender, getCoreRowModel, getExpandedRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, TableMeta, Updater, useVueTable, } from '@tanstack/vue-table';
+import { FlexRender, getCoreRowModel, getExpandedRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, Updater, useVueTable, } from '@tanstack/vue-table';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from '@/components/ui/table';
 import { useDebounceFn } from '@vueuse/core';
 import { useForm } from '@inertiajs/vue3';
