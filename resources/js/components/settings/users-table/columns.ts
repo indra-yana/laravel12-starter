@@ -46,7 +46,7 @@ export const columns: ColumnDef<User>[] = [
         enableHiding: false,
     },
     {
-        accessorKey: 'name',
+        accessorKey: availableFilters.name.key,
         enableSorting: true,
         header: ({ column }) => h('div', { class: 'text-center' }, h(Button, {
             variant: column.getIsSorted() ? 'outline' : 'ghost',
@@ -65,7 +65,7 @@ export const columns: ColumnDef<User>[] = [
         },
     },
     {
-        accessorKey: 'email',
+        accessorKey: availableFilters.email.key,
         enableSorting: true,
         header: ({ column }) => h('div', { class: 'text-center' }, h(Button, {
             variant: column.getIsSorted() ? 'outline' : 'ghost',
@@ -80,7 +80,7 @@ export const columns: ColumnDef<User>[] = [
         cell: ({ row }) => h('div', { class: 'lowercase' }, row.getValue('email')),
     },
     {
-        accessorKey: 'is_active',
+        accessorKey: availableFilters.is_active.key,
         enableSorting: true,
         header: ({ column }) => h('div', { class: 'text-center' }, h(Button, {
             variant: column.getIsSorted() ? 'outline' : 'ghost',
