@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { Appearance, useAppearance } from '@/composables/useAppearance';
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/ui/button';
 import { Monitor, Moon, Sun } from 'lucide-vue-next';
-import { Popover, PopoverContent, PopoverTrigger, } from '@/components/ui/popover'
+import { Popover, PopoverContent, PopoverTrigger, } from '@/components/ui/popover';
 import { ref } from 'vue';
-import AppearanceTabs from './AppearanceTabs.vue'
+import AppearanceTabs from './AppearanceTabs.vue';
 
 const { appearance } = useAppearance();
 const currentAppearance = ref(appearance);

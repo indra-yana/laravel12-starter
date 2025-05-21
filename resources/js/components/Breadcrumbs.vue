@@ -8,7 +8,7 @@ interface BreadcrumbItem {
 }
 
 defineProps<{
-    breadcrumbs: BreadcrumbItem[];
+    breadcrumbs?: BreadcrumbItem[];
 }>();
 </script>
 
@@ -17,7 +17,7 @@ defineProps<{
         <BreadcrumbList>
             <template v-for="(item, index) in breadcrumbs" :key="index">
                 <BreadcrumbItem>
-                    <template v-if="index === breadcrumbs.length - 1">
+                    <template v-if="index === (breadcrumbs?.length || 0) - 1">
                         <BreadcrumbPage>{{ item.title }}</BreadcrumbPage>
                     </template>
                     <template v-else>
@@ -26,7 +26,7 @@ defineProps<{
                         </BreadcrumbLink>
                     </template>
                 </BreadcrumbItem>
-                <BreadcrumbSeparator v-if="index !== breadcrumbs.length - 1" />
+                <BreadcrumbSeparator v-if="index !== (breadcrumbs?.length || 0) - 1" />
             </template>
         </BreadcrumbList>
     </Breadcrumb>
