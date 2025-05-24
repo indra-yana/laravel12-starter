@@ -24,7 +24,7 @@ Route::prefix('settings')->middleware('auth')->group(function () {
     Route::prefix('appearance')->group(function () {
         Route::get('/', function () {
             return Inertia::render('settings/Appearance');
-        })->name('appearance');
+        })->name('appearance.index');
     });
 
     Route::prefix('users')->group(function () {
