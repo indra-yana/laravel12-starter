@@ -5,8 +5,8 @@ import AppLogoIcon from '@/components/AppLogoIcon.vue';
 import ThemeSwitcher from '@/components/ThemeSwitcher.vue';
 
 const page = usePage<SharedData>();
-const name = page.props.name;
-const version = page.props.version;
+const name = page.props.app.name;
+const version = page.props.app.version;
 const quote = page.props.quote;
 
 defineProps<{

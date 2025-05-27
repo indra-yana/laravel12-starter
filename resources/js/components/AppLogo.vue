@@ -5,8 +5,8 @@ import AppLogoIcon from '@/components/AppLogoIcon.vue';
 
 const page = usePage<SharedData>();
 
-const appName = page.props.name;
-const appVersion = page.props.version;
+const appName = page.props.app.name;
+const appVersion = page.props.app.version;
 
 </script>
 

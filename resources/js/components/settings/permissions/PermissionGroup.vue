@@ -12,34 +12,34 @@ interface Props {
         name: string, 
         group_name: string 
     }[]
-    selected: number[]
+    selected: string[]
 };
 
 const emit = defineEmits(['update:selected']);
 const props = defineProps<Props>();
 const isOpen = ref(true);
-const permissionIds = computed(() => props.permissions.map(p => p.id));
-const groupSelectedCount = computed(() => permissionIds.value.filter(id => props.selected.includes(id)).length);
-const isGroupSelected = computed(() => groupSelectedCount.value === permissionIds.value.length);
+const permissionNames = computed(() => props.permissions.map(p => p.name));
+const groupSelectedCount = computed(() => permissionNames.value.filter(name => props.selected.includes(name)).length);
+const isGroupSelected = computed(() => groupSelectedCount.value === permissionNames.value.length);
 const isIndeterminate = computed(() => groupSelectedCount.value > 0 && !isGroupSelected.value);
 
 function toggleGroup(checked: boolean) {
     const current = new Set(props.selected);
     if (checked) {
-        permissionIds.value.forEach(id => current.add(id));
+        permissionNames.value.forEach(name => current.add(name));
     } else {
-        permissionIds.value.forEach(id => current.delete(id));
+        permissionNames.value.forEach(name => current.delete(name));
     }
 
     emit('update:selected', Array.from(current));
 }
 
-function toggleItem(id: number, checked: boolean) {
+function toggleItem(name: string, checked: boolean) {
     const current = new Set(props.selected);
     if (checked) {
-        current.add(id);
+        current.add(name);
     } else {
-        current.delete(id);
+        current.delete(name);
     }
 
     emit('update:selected', Array.from(current));
@@ -59,7 +59,7 @@ function toggleItem(id: number, checked: boolean) {
 
             <AccordionContent class="px-3 py-3 border rounded-b-md">
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
-                    <PermissionItem v-for="item in permissions" :key="item.id" :permission="item" :checked="selected.includes(item.id)" @toggle="checked => toggleItem(item.id, checked)" />
+                    <PermissionItem v-for="item in permissions" :key="item.name" :permission="item" :checked="selected.includes(item.name)" @toggle="checked => toggleItem(item.name, checked)" />
                 </div>
             </AccordionContent>
         </AccordionItem>

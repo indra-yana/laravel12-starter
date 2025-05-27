@@ -9,12 +9,12 @@ interface Props {
 
 const props = defineProps<Props>();
 // TODO: Ambil value dari user
-const selected = ref<number[]>([]);
-const allPermissionIds = computed(() => Object.values(props.permissions).flat().map(p => p.id))
-const isAllSelected = computed(() => allPermissionIds.value.every(id => selected.value.includes(id)))
+const selected = ref<string[]>([]);
+const allPermissionNames = computed(() => Object.values(props.permissions).flat().map(p => p.name))
+const isAllSelected = computed(() => allPermissionNames.value.every(name => selected.value.includes(name)))
 
 function toggleSelectAll() {
-    selected.value = isAllSelected.value ? [] : [...allPermissionIds.value]
+    selected.value = isAllSelected.value ? [] : [...allPermissionNames.value]
 }
 
 // TODO: Async call to assign permissions

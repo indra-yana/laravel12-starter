@@ -33,9 +33,9 @@ function formatPermissionLabel(name: string): string {
 </script>
 
 <template>
-    <div class="flex items-center gap-2 px-3 py-2 border rounded-md bg-secondary">
-        <Label :for="`toggle-all-${permission.id}`" class="flex items-center">
-            <Checkbox :id="`toggle-all-${permission.id}`" :model-value="checked" @update:model-value="emit('toggle', $event)" />
+    <div class="flex items-center gap-2 px-2 py-1 border rounded-md bg-secondary">
+        <Label :for="`toggle-all-${permission.name}`" class="flex items-center">
+            <Checkbox :id="`toggle-all-${permission.name}`" :model-value="checked" @update:model-value="emit('toggle', $event)" />
             <span class="text-sm">{{ formatPermissionLabel(toTitleCase(permission.name)) }}</span>
         </Label>
     </div>

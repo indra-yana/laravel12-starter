@@ -2,11 +2,28 @@
 
 namespace App\Services\ACL;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Permission;
 
 class PermissionService
 {
+
+	/**
+	 * Assign user permissions
+	 * 
+	 * @return int
+	 */
+	public function assignUserPermissions(User $user, array $permissions): int
+	{
+		$validPermissions = Permission::whereIn('name', $permissions)->pluck('name')->toArray();
+		$user->syncPermissions($validPermissions);
+
+		return count($validPermissions);
+	}
+
 	/**
 	 * Get all permissions organized by groups
 	 * 
@@ -118,5 +135,48 @@ class PermissionService
 			->when($group_name, fn($q) => $q->where('group_name', $group_name))
 			->get()
 			->groupBy('group_name');
+	}
+
+	/**
+	 * Get user permission with mapped permissions 
+	 *
+	 * @param int $userId
+	 * @return array
+	 */
+	public function getUserPermissions(?int $userId = null): array
+	{
+		if (!$userId) {
+			$userId = Auth::user()->id;
+		}
+
+		$user = User::with([
+			'permissions' => function ($query) {
+				$query->get(['id', 'name']);
+			},
+		])->findOrFail($userId);
+
+		if ($user->permissions->count()) {
+			// if has direct permissions use it
+			$userPermissions = $this->mapPermissions($user->permissions);
+		} else {
+			// get the permissions via roles
+			$userPermissions = $this->mapPermissions($user->getAllPermissions());
+		}
+
+		return Arr::pluck($userPermissions, 'name');
+	}
+
+	/**
+	 * Map the results
+	 *
+	 * @param Collection $permissions
+	 * @return array
+	 */
+	private function mapPermissions(Collection $permissions): array
+	{
+		return $permissions->map(fn($permission) => [
+			'id' => $permission->id,
+			'name' => $permission->name,
+		])->toArray();
 	}
 }

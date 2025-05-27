@@ -18,13 +18,23 @@ export interface NavItem {
     isActive?: boolean;
 }
 
-export interface SharedData extends PageProps {
+export interface AppConfig {
     name: string;
     version: string;
+    env: string;
+    debug: boolean;
+    url: string;
+    timezone: string;
+    locale: string;
+    fallback_locale: string;
+}
+
+export interface SharedData extends PageProps {
     quote: { message: string; author: string };
     auth: Auth;
     ziggy: Config & { location: string };
     sidebarOpen: boolean;
+    app: AppConfig;
 }
 
 export interface User {

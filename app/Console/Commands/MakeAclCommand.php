@@ -31,8 +31,6 @@ class MakeAclCommand extends Command
         $results = $permissionService->createPermissions();
         $resultCount = count($results);
 
-        dd($permissionService->getPermissionByGroupName());
-
         $this->info("$resultCount Permissions created successfully!");
     }
 }
