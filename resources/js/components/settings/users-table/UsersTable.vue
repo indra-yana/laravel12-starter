@@ -4,15 +4,15 @@ import { availableFilters, columns } from './columns';
 import { computed, onMounted, reactive, ref, watch } from 'vue';
 import { DeleteIcon, EyeIcon, Filter, WrenchIcon, XIcon } from 'lucide-vue-next';
 import { FlexRender, getCoreRowModel, getExpandedRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, Updater, useVueTable, } from '@tanstack/vue-table';
+import { router, useForm } from '@inertiajs/vue3';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from '@/components/ui/table';
 import { useDebounceFn } from '@vueuse/core';
-import { router, useForm } from '@inertiajs/vue3';
 import { User } from '@/types';
 import { useUserTableStore } from './useUserTableStore';
 import axios from 'axios';
 import Badge from '@/components/ui/badge/Badge.vue';
 import Button from '@/components/ui/button/Button.vue';
-import DeleteConfirmDialog from '@/components/DeleteConfirmDialog.vue';
+import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import DropdownMenu from '@/components/ui/dropdown-menu/DropdownMenu.vue';
 import DropdownMenuCheckboxItem from '@/components/ui/dropdown-menu/DropdownMenuCheckboxItem.vue';
 import DropdownMenuContent from '@/components/ui/dropdown-menu/DropdownMenuContent.vue';
@@ -258,7 +258,7 @@ function handleCancel() {
 </script>
 
 <template>
-	<DeleteConfirmDialog :open="showConfirm" :onConfirm="postDelete" :onCancel="handleCancel" :loading="form.processing" title="Delete users?" description="This action will permanently delete the selected users." :detail="selectedNames"></DeleteConfirmDialog>
+	<ConfirmDialog type="delete" :open="showConfirm" :onConfirm="postDelete" :onCancel="handleCancel" :loading="form.processing" title="Delete users?" description="This action will permanently delete the selected users." :detail="selectedNames"></ConfirmDialog>
 
 	<div class="flex flex-col md:flex-row items-start md:items-center md:justify-between mt-4">
 		<div class="w-full sm:w-auto md:flex-1">
