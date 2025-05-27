@@ -4,7 +4,13 @@ import { ref, computed, watch } from 'vue';
 import { useDebounceFn } from '@vueuse/core';
 import { useForm } from '@inertiajs/vue3';
 import { User } from '@/types';
-import PermissionGroup, { Permission } from './PermissionGroup.vue';
+import PermissionGroup from '@/components/settings/permissions/PermissionGroup.vue';
+
+export interface Permission {
+    id: number,
+    name: string,
+    group_name: string
+}
 
 interface Props {
     user?: User | null
@@ -19,7 +25,7 @@ const isAllSelected = computed(() => allPermissionNames.value.every(name => sele
 const form = useForm({
     user_id: props?.user?.id,
     permissions: selected.value,
-})
+});
 
 function toggleSelectAll() {
     selected.value = isAllSelected.value ? [] : [...allPermissionNames.value]

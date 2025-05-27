@@ -3,13 +3,8 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, } from '@
 import { Checkbox } from '@/components/ui/checkbox';
 import { computed, ref } from 'vue';
 import { Label } from '@/components/ui/label';
-import PermissionItem from './PermissionItem.vue';
-
-export interface Permission {
-    id: number,
-    name: string,
-    group_name: string
-}
+import { Permission } from '@/components/settings/permissions/PermissionManager.vue';
+import PermissionItem from '@/components/settings/permissions/PermissionItem.vue';
 
 interface Props {
     group: string
