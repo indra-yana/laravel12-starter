@@ -2,7 +2,7 @@
 import 'vue-json-pretty/lib/styles.css';
 import { availableFilters, columns } from './columns';
 import { computed, onMounted, reactive, ref, watch } from 'vue';
-import { DeleteIcon, EyeIcon, Filter, WrenchIcon, XIcon } from 'lucide-vue-next';
+import { DeleteIcon, EyeIcon, Filter, WrenchIcon, XCircleIcon, XIcon } from 'lucide-vue-next';
 import { FlexRender, getCoreRowModel, getExpandedRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, Updater, useVueTable, } from '@tanstack/vue-table';
 import { router, useForm } from '@inertiajs/vue3';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from '@/components/ui/table';
@@ -343,7 +343,10 @@ function handleCancel() {
 						</TableRow>
 						<TableRow v-if="row.getIsExpanded()">
 							<TableCell :colspan="row.getAllCells().length">
-								<div class="whitespace-pre-wrap bg-secondary p-4 rounded-lg overflow-x-auto max-w-full">
+								<div class="relative whitespace-pre-wrap bg-secondary p-4 rounded-lg overflow-x-auto max-w-full">
+									<Button variant="link" size="icon" class="absolute top-2 right-2 z-10 rounded-full" @click="() => row.toggleExpanded(!row.getIsExpanded())">
+										<XCircleIcon class="size-6" />
+									</Button>
 									<VueJsonPretty :data="row.original" :showIcon="true" :showLineNumber="true" :showLength="true" />
 								</div>
 							</TableCell>
