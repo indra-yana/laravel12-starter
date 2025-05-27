@@ -9,7 +9,7 @@ import {
     AlertDialogDescription,
     AlertDialogCancel,
     AlertDialogAction,
-} from '@/components/ui/alert-dialog'
+} from '@/components/ui/alert-dialog';
 
 interface Props {
     onConfirm: (params: any) => void;
@@ -34,14 +34,13 @@ defineProps<Props>();
         <AlertDialogContent>
             <AlertDialogHeader>
                 <AlertDialogTitle>{{ title ?? 'Are you sure?' }}</AlertDialogTitle>
-                <AlertDialogDescription>
-                    <div v-html="description ?? 'This action cannot be undone.'" class="mb-4"></div>
-                    <b>
-                        <div v-html="detail"></div>
-                    </b>
-                </AlertDialogDescription>
             </AlertDialogHeader>
 
+            <AlertDialogDescription>
+                <div v-html="description ?? 'This action cannot be undone.'" class="mb-4"></div>
+                <b> <div v-html="detail"></div></b>
+            </AlertDialogDescription>
+            
             <AlertDialogFooter>
                 <AlertDialogCancel :disabled="loading" @click="onCancel">
                     Cancel
