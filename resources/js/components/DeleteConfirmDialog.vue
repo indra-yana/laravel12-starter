@@ -11,21 +11,23 @@ import {
     AlertDialogAction,
 } from '@/components/ui/alert-dialog'
 
+interface Props {
+    onConfirm: (params: any) => void;
+    onCancel: () => void;
+    open: boolean;
+    loading?: boolean;
+    title?: string;
+    description?: string;
+    detail?: string;
+}
 
-defineProps<{
-    open: boolean
-    onConfirm: (params: any) => void
-    onCancel: () => void
-    loading?: boolean
-    title?: string
-    description?: string
-}>()
+defineProps<Props>();
+
 </script>
 
 <template>
     <AlertDialog :open="open" @update:open="onCancel">
         <AlertDialogTrigger as-child>
-            <!-- Optional trigger slot -->
             <slot name="trigger" />
         </AlertDialogTrigger>
 
@@ -33,7 +35,10 @@ defineProps<{
             <AlertDialogHeader>
                 <AlertDialogTitle>{{ title ?? 'Are you sure?' }}</AlertDialogTitle>
                 <AlertDialogDescription>
-                    <div v-html="description ?? 'This action cannot be undone.'"></div>
+                    <div v-html="description ?? 'This action cannot be undone.'" class="mb-4"></div>
+                    <b>
+                        <div v-html="detail"></div>
+                    </b>
                 </AlertDialogDescription>
             </AlertDialogHeader>
 

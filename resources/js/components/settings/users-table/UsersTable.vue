@@ -258,7 +258,7 @@ function handleCancel() {
 </script>
 
 <template>
-	<DeleteConfirmDialog :open="showConfirm" :onConfirm="postDelete" :onCancel="handleCancel" :loading="form.processing" title="Delete users?" :description="`This action will permanently delete the selected users.<br><br><b>${selectedNames}</b>`"></DeleteConfirmDialog>
+	<DeleteConfirmDialog :open="showConfirm" :onConfirm="postDelete" :onCancel="handleCancel" :loading="form.processing" title="Delete users?" description="This action will permanently delete the selected users." :detail="selectedNames"></DeleteConfirmDialog>
 
 	<div class="flex flex-col md:flex-row items-start md:items-center md:justify-between mt-4">
 		<div class="w-full sm:w-auto md:flex-1">
