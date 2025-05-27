@@ -50,8 +50,8 @@ function toggleItem(name: string, checked: boolean) {
     <Accordion type="multiple" collapsible :default-value="[group]">
         <AccordionItem :value="group" class="rounded-md">
             <div class="flex items-center justify-between px-3 py-2 bg-secondary border rounded-t-md" :class="isOpen ? '' : 'rounded-b-md'">
-                <Label for="toggle-all" class="flex items-center">
-                    <Checkbox id="toggle-all" :model-value="isGroupSelected" :indeterminate="isIndeterminate" @update:model-value="(toggleGroup as any)" />
+                <Label :for="`toggle-all-${group}`" class="flex items-center">
+                    <Checkbox :id="`toggle-all-${group}`" :model-value="isGroupSelected" :indeterminate="isIndeterminate" @update:model-value="(toggleGroup as any)" />
                     <span class="font-semibold text-sm uppercase">{{ group }}</span>
                 </Label>
                 <AccordionTrigger class="p-1 hover:bg-primary rounded-full shadow" @click="isOpen = !isOpen" />
