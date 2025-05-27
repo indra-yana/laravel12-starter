@@ -35,5 +35,6 @@ Route::prefix('settings')->middleware('auth')->group(function () {
 
     Route::prefix('permissions')->group(function () {
         Route::get('/', [PermissionsController::class, 'index'])->name('permissions.index');
+        Route::post('assign', [PermissionsController::class, 'assign'])->name('permissions.assign');
     });
 });

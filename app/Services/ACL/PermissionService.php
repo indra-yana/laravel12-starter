@@ -5,7 +5,6 @@ namespace App\Services\ACL;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Permission;
 
 class PermissionService
@@ -16,8 +15,11 @@ class PermissionService
 	 * 
 	 * @return int
 	 */
-	public function assignUserPermissions(User $user, array $permissions): int
+	public function assignUserPermissions(int $userId, array $permissions): int
 	{
+		app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+
+		$user = User::find($userId);
 		$validPermissions = Permission::whereIn('name', $permissions)->pluck('name')->toArray();
 		$user->syncPermissions($validPermissions);
 
@@ -143,17 +145,19 @@ class PermissionService
 	 * @param int $userId
 	 * @return array
 	 */
-	public function getUserPermissions(?int $userId = null): array
+	public function getUserPermissions(User|int|null $user = null): array
 	{
-		if (!$userId) {
-			$userId = Auth::user()->id;
+		if (!$user) {
+			return [];
 		}
 
-		$user = User::with([
-			'permissions' => function ($query) {
-				$query->get(['id', 'name']);
-			},
-		])->findOrFail($userId);
+		if (! $user instanceof User) {
+			$user = User::with([
+				'permissions' => function ($query) {
+					$query->get(['id', 'name']);
+				},
+			])->findOrFail($user);
+		}
 
 		if ($user->permissions->count()) {
 			// if has direct permissions use it

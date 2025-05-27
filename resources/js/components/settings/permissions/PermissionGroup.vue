@@ -5,13 +5,15 @@ import { computed, ref } from 'vue';
 import { Label } from '@/components/ui/label';
 import PermissionItem from './PermissionItem.vue';
 
+export interface Permission {
+    id: number,
+    name: string,
+    group_name: string
+}
+
 interface Props {
     group: string
-    permissions: { 
-        id: number, 
-        name: string, 
-        group_name: string 
-    }[]
+    permissions: Permission[]
     selected: string[]
 };
 

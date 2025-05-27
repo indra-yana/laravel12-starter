@@ -113,12 +113,9 @@ export const columns: ColumnDef<User>[] = [
             return h('div', { class: 'text-center relative' }, h(Actions, {
                 user,
                 onExpand: row.toggleExpanded,
-                onDelete: (user: User) => {
-                    meta?.onDelete(user)
-                },
-                onEdit: (user: User) => {
-                    meta?.onEdit(user)
-                },
+                onDelete: (user: User) => meta?.onDelete(user),
+                onEdit: (user: User) => meta?.onEdit(user),
+                onAssignPermission: (userId: number) => meta?.onAssignPermission(userId),
             }))
         },
     },

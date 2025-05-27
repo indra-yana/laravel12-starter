@@ -6,7 +6,7 @@ import { DeleteIcon, EyeIcon, Filter, WrenchIcon, XIcon } from 'lucide-vue-next'
 import { FlexRender, getCoreRowModel, getExpandedRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, Updater, useVueTable, } from '@tanstack/vue-table';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from '@/components/ui/table';
 import { useDebounceFn } from '@vueuse/core';
-import { useForm } from '@inertiajs/vue3';
+import { router, useForm } from '@inertiajs/vue3';
 import { User } from '@/types';
 import { useUserTableStore } from './useUserTableStore';
 import axios from 'axios';
@@ -65,6 +65,7 @@ export interface PropsData extends PageProps {
 export interface ActionMeta {
 	onDelete: (user: User) => void,
 	onEdit: (user: User) => void,
+	onAssignPermission: (user_id: number) => void,
 }
 
 interface ActionPayload {
@@ -110,6 +111,7 @@ const table = useVueTable({
 	meta: {
 		onDelete: handleDelete,
 		onEdit: handleEdit,
+		onAssignPermission: handleOnAssignPermission,
 	},
 	manualPagination: true,
 	manualFiltering: true,
@@ -227,6 +229,10 @@ function handleDelete(user: User) {
 
 function handleEdit(user: User) {
 	console.log('handleEdit', user);
+}
+
+function handleOnAssignPermission(userId: number) {
+	router.visit(route('permissions.index', { user_id: userId }));
 }
 
 function postDelete() {

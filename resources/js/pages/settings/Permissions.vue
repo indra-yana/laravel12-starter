@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Head, usePage } from '@inertiajs/vue3';
-import { type BreadcrumbItem } from '@/types';
+import { User, type BreadcrumbItem } from '@/types';
 import AppLayout from '@/layouts/AppLayout.vue';
 import HeadingSmall from '@/components/HeadingSmall.vue';
 import PermissionManager from '@/components/settings/permissions/PermissionManager.vue';
@@ -10,6 +10,8 @@ import UsersTabs from '@/components/settings/UsersTabs.vue';
 
 interface PagePropsData extends PageProps {
     permissions: Record<string, any[]>;
+    selected_permissions: string[];
+    user: User;
 }
 
 const breadcrumbItems: BreadcrumbItem[] = [
@@ -20,6 +22,8 @@ const breadcrumbItems: BreadcrumbItem[] = [
 ];
 
 const page = usePage<PagePropsData>().props;
+const user = page.user;
+const selectedPermissions = page.selected_permissions;
 const permissions = page.permissions;
 
 </script>
@@ -33,7 +37,7 @@ const permissions = page.permissions;
             <div class="space-y-6">
                 <HeadingSmall title="Permissions settings" description="Permissions are used to grant users to access system resources." />
                 <UsersTabs />
-                <PermissionManager :permissions="permissions" />
+                <PermissionManager :user :selected-permissions :permissions />
             </div>
         </SettingsLayout>
     </AppLayout>

@@ -12,6 +12,7 @@ interface Emits {
     (e: 'expand'): void,
     (e: 'edit', user: User): void,
     (e: 'delete', user: User): void,
+    (e: 'assignPermission', userId: number): void,
 }
 
 defineProps<Props>();
@@ -26,8 +27,8 @@ function destroy(user: User) {
     emits('delete', user);
 }
 
-function setPermission(id: number) {
-    console.log(id);
+function assignPermission(userId: number) {
+    emits('assignPermission', userId);
 }
 </script>
 
@@ -50,7 +51,7 @@ function setPermission(id: number) {
                 <DropdownMenuLabel>Other Actions</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem @click="$emit('expand')">Expand Row</DropdownMenuItem>
-                <DropdownMenuItem @click="setPermission(user.id)">Assign Permissions</DropdownMenuItem>
+                <DropdownMenuItem @click="assignPermission(user.id)">Assign Permissions</DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
     </div>
