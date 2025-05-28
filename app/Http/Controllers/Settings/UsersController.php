@@ -27,7 +27,7 @@ class UsersController extends Controller
     public function store(Request $request): RedirectResponse
     {
         // TODO
-        return redirect('/');
+        return redirect()->back();
     }
 
     /**
