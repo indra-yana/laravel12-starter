@@ -4,9 +4,13 @@ import Separator from './ui/separator/Separator.vue';
 interface Props {
     title: string;
     description?: string;
+    separator?: boolean;
 }
 
-defineProps<Props>();
+withDefaults(defineProps<Props>(), {
+    separator: true,
+})
+
 </script>
 
 <template>
@@ -15,6 +19,6 @@ defineProps<Props>();
         <p v-if="description" class="text-sm text-muted-foreground">
             {{ description }}
         </p>
-        <Separator class="mt-4 hidden lg:block" />
+        <Separator v-if="separator" class="mt-4 hidden lg:block" />
     </header>
 </template>

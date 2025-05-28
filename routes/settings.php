@@ -29,6 +29,8 @@ Route::prefix('settings')->middleware('auth')->group(function () {
 
     Route::prefix('users')->group(function () {
         Route::get('/', [UsersController::class, 'index'])->name('users.index');
+        Route::post('store', [UsersController::class, 'store'])->name('users.store');
+        Route::put('update', [UsersController::class, 'update'])->name('users.update');
         Route::delete('destroy', [UsersController::class, 'destroy'])->name('users.destroy');
         Route::get('data-table', [UsersController::class, 'dataTable'])->name('users.datatable');
     });

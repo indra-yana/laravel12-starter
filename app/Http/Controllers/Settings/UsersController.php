@@ -24,7 +24,7 @@ class UsersController extends Controller
     /**
      * Create the user's information.
      */
-    public function store(ProfileUpdateRequest $request): RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
         // TODO
         return redirect('/');
@@ -33,7 +33,7 @@ class UsersController extends Controller
     /**
      * Update the user's information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(Request $request): RedirectResponse
     {
         // TODO
         return redirect('/');
