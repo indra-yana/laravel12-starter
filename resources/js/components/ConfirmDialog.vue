@@ -1,8 +1,17 @@
 <script setup lang="ts">
-import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogFooter, AlertDialogTitle, AlertDialogDescription, AlertDialogCancel, } from '@/components/ui/alert-dialog';
-import { Button } from './ui/button';
-import { computed } from 'vue';
-import { Trash2, Pencil, CheckCircle, HelpCircle } from 'lucide-vue-next';
+import {
+    Dialog,
+    DialogTrigger,
+    DialogContent,
+    DialogHeader,
+    DialogFooter,
+    DialogTitle,
+    DialogDescription,
+    DialogClose,
+} from '@/components/ui/dialog'
+import { Button } from './ui/button'
+import { computed } from 'vue'
+import { Trash2, Pencil, CheckCircle, HelpCircle } from 'lucide-vue-next'
 
 interface Props {
     onConfirm: (params?: any) => void;
@@ -49,34 +58,36 @@ const confirmText = computed(() => {
 </script>
 
 <template>
-    <AlertDialog :open="open" @update:open="onCancel">
-        <AlertDialogTrigger as-child>
+    <Dialog :open="open" @update:open="onCancel">
+        <DialogTrigger as-child>
             <slot name="trigger" />
-        </AlertDialogTrigger>
+        </DialogTrigger>
 
-        <AlertDialogContent>
-            <AlertDialogHeader>
+        <DialogContent>
+            <DialogHeader>
                 <div class="flex items-center gap-2">
                     <component :is="iconComponent" class="size-5" :class="type === 'delete' ? 'text-destructive' : 'text-primary'" />
-                    <AlertDialogTitle>
+                    <DialogTitle>
                         {{ title ?? 'Are you sure?' }}
-                    </AlertDialogTitle>
+                    </DialogTitle>
                 </div>
-            </AlertDialogHeader>
+            </DialogHeader>
 
-            <AlertDialogDescription>
-                <div v-html="description ?? 'This action cannot be undone.'" class="mb-3"></div>
-                <div v-if="detail" class="text-sm font-semibold" v-html="detail"></div>
-            </AlertDialogDescription>
+            <DialogDescription>
+                <div v-html="description ?? 'This action cannot be undone.'" class="mb-3" />
+                <div v-if="detail" class="text-sm font-semibold" v-html="detail" />
+            </DialogDescription>
 
-            <AlertDialogFooter>
-                <AlertDialogCancel :disabled="loading" @click="onCancel">
-                    Cancel
-                </AlertDialogCancel>
+            <DialogFooter class="flex justify-end gap-2">
+                <DialogClose as-child>
+                    <Button variant="outline" :disabled="loading" @click="onCancel">
+                        Cancel
+                    </Button>
+                </DialogClose>
                 <Button :variant="type === 'delete' ? 'destructive' : 'default'" :disabled="loading" @click="onConfirm">
                     {{ confirmText }}
                 </Button>
-            </AlertDialogFooter>
-        </AlertDialogContent>
-    </AlertDialog>
+            </DialogFooter>
+        </DialogContent>
+    </Dialog>
 </template>
