@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers\Settings;
 
-use App\Enums\UserTableEnum;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Settings\ProfileUpdateRequest;
-use App\Models\User;
+use App\Services\User\UserService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -13,6 +11,11 @@ use Inertia\Response;
 
 class UsersController extends Controller
 {
+
+    public function __construct(
+        public UserService $userService
+    ) {}
+
     /**
      * Show the user's index page.
      */
@@ -26,8 +29,9 @@ class UsersController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        // TODO
-        return redirect()->back();
+        $this->userService->store($request->all());
+
+        return back()->with('success', 'User created!');
     }
 
     /**
@@ -35,8 +39,9 @@ class UsersController extends Controller
      */
     public function update(Request $request): RedirectResponse
     {
-        // TODO
-        return redirect('/');
+        $this->userService->update($request->id, $request->all());
+
+        return back()->with('success', 'User updated!');
     }
 
     /**
@@ -49,47 +54,16 @@ class UsersController extends Controller
             return redirect()->back()->with('error', 'No user ID(s) provided.');
         }
 
-        $ids = is_array($ids) ? $ids : [$ids];
-
-        User::whereIn('id', $ids)->delete();
-        return redirect()->back()->with('success', count($ids) . ' user(s) deleted successfully.');
+        $this->userService->destroy($request->all());
+        return back()->with('success', count($ids) . ' user(s) deleted successfully.');
     }
 
-    function dataTable(Request $request)
+    /**
+     * Get user's list.
+     */
+    public function dataTable(Request $request)
     {
-        $allowedFilters = UserTableEnum::allowedFilters();
-        $columnFilters = $request->input('column_filters');
-        $search = $request->input('search');
-        $sorting = in_array($request->input('sorting'), UserTableEnum::values())
-            ? $request->input('sorting')
-            : UserTableEnum::Name->value;
-        $direction = in_array($request->input('direction'), ['asc', 'desc'])
-            ? $request->input('direction')
-            : 'asc';
-
-        $users = User::query()
-            ->when(
-                $search && !$columnFilters,
-                function ($query) use ($allowedFilters, $search) {
-                    foreach ($allowedFilters as $columnFilter) {
-                        $query->orWhere($columnFilter, 'ilike', "%{$search}%");
-                    }
-                }
-            )
-            ->when($columnFilters && $search && is_array($columnFilters), function ($query) use ($columnFilters, $allowedFilters) {
-                foreach ($columnFilters as $filter) {
-                    $column = $filter['id'] ?? null;
-                    $value = $filter['value'] ?? null;
-
-                    if ($column && $value !== null && in_array($column, $allowedFilters)) {
-                        $query->orWhere($column, 'ilike', "%{$value}%");
-                    }
-                }
-            })
-            ->orderBy($sorting, $direction)
-            ->paginate($request->input('per_page', 10))
-            ->withQueryString();
-
+        $users = $this->userService->getAll($request->all());
         return response()->json($users);
     }
 }
