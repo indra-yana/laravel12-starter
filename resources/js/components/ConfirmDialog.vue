@@ -8,6 +8,7 @@ import {
     DialogTitle,
     DialogDescription,
     DialogClose,
+    DialogOverlay,
 } from '@/components/ui/dialog'
 import { Button } from './ui/button'
 import { computed } from 'vue'
@@ -58,7 +59,9 @@ const confirmText = computed(() => {
 </script>
 
 <template>
-    <Dialog :open="open" @update:open="onCancel">
+    <Dialog :open="open" @update:open="onCancel" :modal="true">
+        <DialogOverlay class="bg-backdrop-blur-sm z-[10]" />
+
         <DialogTrigger as-child>
             <slot name="trigger" />
         </DialogTrigger>
