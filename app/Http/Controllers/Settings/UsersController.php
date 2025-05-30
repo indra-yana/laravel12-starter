@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Services\User\UserService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -29,9 +30,19 @@ class UsersController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $this->userService->store($request->all());
+        try {
+            $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'email', 'max:255', 'unique:users,email'],
+                'is_active' => ['required', 'boolean'],
+            ]);
 
-        return back()->with('success', 'User created!');
+            $results = $this->userService->store($request->all());
+
+            return sendSuccess($results);
+        } catch (\Throwable $th) {
+            return sendError($th);
+        }
     }
 
     /**
@@ -39,9 +50,25 @@ class UsersController extends Controller
      */
     public function update(Request $request): RedirectResponse
     {
-        $this->userService->update($request->id, $request->all());
+        try {
+            $request->validate([
+                'id' => ['required', 'exists:users,id'],
+                'name' => ['required', 'string', 'max:255'],
+                'email' => [
+                    'required',
+                    'email',
+                    'max:255',
+                    Rule::unique('users', 'email')->ignore($request->id),
+                ],
+                'is_active' => ['required', 'boolean'],
+            ]);
 
-        return back()->with('success', 'User updated!');
+            $results = $this->userService->update($request->id, $request->all());
+
+            return sendSuccess($results);
+        } catch (\Throwable $th) {
+            return sendError($th);
+        }
     }
 
     /**
@@ -49,13 +76,23 @@ class UsersController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        $ids = $request->input('ids');
-        if (!$ids) {
-            return redirect()->back()->with('error', 'No user ID(s) provided.');
-        }
+        try {
+            $request->validate([
+                'ids' => ['required', 'array'],
+                'ids.*' => ['integer', 'exists:users,id'],
+            ]);
 
-        $this->userService->destroy($request->all());
-        return back()->with('success', count($ids) . ' user(s) deleted successfully.');
+            $ids = $request->input('ids');
+            if (!$ids) {
+                return sendWarning($ids,  'No user ID(s) provided.');
+            }
+
+            $results = $this->userService->destroy($request->all());
+
+            return sendSuccess($results,  count($ids) . ' user(s) deleted successfully.');
+        } catch (\Throwable $th) {
+            return sendError($th);
+        }
     }
 
     /**
