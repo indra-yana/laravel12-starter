@@ -1,9 +1,9 @@
 <?php
 
 use App\Http\Controllers\Settings\PasswordController;
-use App\Http\Controllers\Settings\PermissionsController;
+use App\Http\Controllers\Settings\PermissionController;
 use App\Http\Controllers\Settings\ProfileController;
-use App\Http\Controllers\Settings\UsersController;
+use App\Http\Controllers\Settings\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -28,15 +28,15 @@ Route::prefix('settings')->middleware('auth')->group(function () {
     });
 
     Route::prefix('users')->group(function () {
-        Route::get('/', [UsersController::class, 'index'])->name('users.index');
-        Route::post('store', [UsersController::class, 'store'])->name('users.store');
-        Route::put('update', [UsersController::class, 'update'])->name('users.update');
-        Route::delete('destroy', [UsersController::class, 'destroy'])->name('users.destroy');
-        Route::get('data-table', [UsersController::class, 'dataTable'])->name('users.datatable');
+        Route::get('/', [UserController::class, 'index'])->name('users.index');
+        Route::post('store', [UserController::class, 'store'])->name('users.store');
+        Route::put('update', [UserController::class, 'update'])->name('users.update');
+        Route::delete('destroy', [UserController::class, 'destroy'])->name('users.destroy');
+        Route::get('data-table', [UserController::class, 'dataTable'])->name('users.datatable');
     });
 
     Route::prefix('permissions')->group(function () {
-        Route::get('/', [PermissionsController::class, 'index'])->name('permissions.index');
-        Route::post('assign', [PermissionsController::class, 'assign'])->name('permissions.assign');
+        Route::get('/', [PermissionController::class, 'index'])->name('permissions.index');
+        Route::post('assign', [PermissionController::class, 'assign'])->name('permissions.assign');
     });
 });

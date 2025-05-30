@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class PermissionsController extends Controller
+class PermissionController extends Controller
 {
 
     public function __construct(
