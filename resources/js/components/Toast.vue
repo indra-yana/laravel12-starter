@@ -14,7 +14,7 @@ onMounted(() => {
 });
 
 function showToast() {
-	const { type, message, response } = flash.value;
+	const { type, message, } = flash.value;
 	if (!message || !type) return;
 
 	switch (type) {
