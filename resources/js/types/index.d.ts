@@ -35,6 +35,11 @@ export interface SharedData extends PageProps {
     ziggy: Config & { location: string };
     sidebarOpen: boolean;
     app: AppConfig;
+    flash: {
+        type?: 'success' | 'info' | 'warning' | 'error';
+        message?: string;
+        response?: any;
+    };
 }
 
 export interface User {

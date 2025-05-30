@@ -87,7 +87,7 @@ class UserController extends Controller
                 return sendWarning($ids,  'No user ID(s) provided.');
             }
 
-            $results = $this->userService->destroy($request->all());
+            $results = $this->userService->destroy($request->ids);
 
             return sendSuccess($results,  count($ids) . ' user(s) deleted successfully.');
         } catch (\Throwable $th) {

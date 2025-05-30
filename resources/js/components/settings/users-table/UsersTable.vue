@@ -218,13 +218,13 @@ function handleBulkDelete() {
 	form.ids = selectedRows.value.map((user) => user.id);
 	form.names = selectedRows.value.map((user) => user.name);
 
-	handleConfirm();
+	handleConfirm(true);
 }
 
 function handleDelete(user: User) {
 	form.ids = [user.id];
 	form.names = [user.name];
-	handleConfirm();
+	handleConfirm(true);
 }
 
 function handleEdit(user: User) {
@@ -238,27 +238,24 @@ function handleOnAssignPermission(userId: number) {
 function postDelete() {
 	form.delete(route('users.destroy'), {
 		preserveScroll: true,
-		preserveState: false,
+		preserveState: (page) => Object.keys(page.props.errors).length !== 0,
+		onError: () => handleConfirm(false),
 		onSuccess: () => {
 			form.reset();
-			handleConfirm();
 			table.setRowSelection({});
+			handleConfirm(false);
 		},
 	})
 }
 
-function handleConfirm() {
-	showConfirm.value = true;
-}
-
-function handleCancel() {
-	showConfirm.value = false
+function handleConfirm(show: boolean) {
+	showConfirm.value = show;
 }
 
 </script>
 
 <template>
-	<ConfirmDialog type="delete" :open="showConfirm" :onConfirm="postDelete" :onCancel="handleCancel" :loading="form.processing" title="Delete users?" description="This action will permanently delete the selected users." :detail="selectedNames"></ConfirmDialog>
+	<ConfirmDialog type="delete" :open="showConfirm" :onConfirm="postDelete" :onCancel="() => handleConfirm(false)" :loading="form.processing" title="Delete users?" description="This action will permanently delete the selected users." :detail="selectedNames"></ConfirmDialog>
 
 	<div class="flex flex-col md:flex-row items-start md:items-center md:justify-between mt-4">
 		<div class="w-full sm:w-auto md:flex-1">
