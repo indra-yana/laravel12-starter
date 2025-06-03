@@ -35,7 +35,7 @@ function postSelected() {
     form.permissions = selected.value;
     form.post(route('permissions.assign'), {
         preserveScroll: true,
-        preserveState: false,
+        preserveState: ({ props }) => !!Object.keys(props.errors).length,
         onSuccess: () => {
 
         },

@@ -4,14 +4,13 @@ import { computed, onMounted, watch } from 'vue'
 import { SharedData } from '@/types';
 import { toast } from 'vue-sonner';
 import { Toaster } from './ui/sonner';
+import { useDebounceFn } from '@vueuse/core';
 import { usePage } from '@inertiajs/vue3';
 
 const page = usePage<SharedData>();
 const flash = computed(() => page.props.flash);
 
-onMounted(() => {
-	showToast()
-});
+onMounted(() => useDebounceFn(showToast, 500));
 
 function showToast() {
 	const { type, message, } = flash.value;
@@ -33,11 +32,7 @@ function showToast() {
 	}
 }
 
-watch(
-	() => flash.value,
-	() => showToast(),
-	{ immediate: true }
-)
+watch(() => flash.value, useDebounceFn(showToast, 500))
 
 </script>
 

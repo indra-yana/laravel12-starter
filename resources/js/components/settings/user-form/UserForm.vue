@@ -9,20 +9,20 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { useForm } from '@inertiajs/vue3';
+import { User } from '@/types';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import InputError from '@/components/InputError.vue';
 
+export type CurrentRow = Omit<User, 'id'> & {
+    id?: number;
+}
+
 interface Props {
-    open: boolean
-    onOpenChange: (open: boolean) => void
-    title: string
-    description?: string
-    currentRow?: {
-        id?: number
-        name: string
-        email: string
-        is_active: boolean
-    }
+    open: boolean;
+    title: string;
+    description?: string;
+    currentRow?: CurrentRow;
+    onOpenChange: (open: boolean) => void;
 }
 
 const userForm = ref();
@@ -35,8 +35,8 @@ const form = useForm({
     is_active: props.currentRow?.is_active ?? true,
 });
 
-watch(() => props.open, (v) => {
-    if (!v) form.reset()
+watch(() => props.open, (open) => {
+    if (!open) resetForm();
 });
 
 function handleSubmit() {
@@ -51,9 +51,12 @@ function submitConfirmed() {
 
     form.submit(method, url, {
         method,
+        preserveScroll: true,
+        preserveState: ({ props }) => !!Object.keys(props.errors).length,
+        onError: () => handleCancel(),
         onSuccess: () => {
             props.onOpenChange(false);
-            form.reset();
+            resetForm();
             handleCancel();
         },
     });
@@ -65,6 +68,11 @@ function toggleStatus(checked: boolean) {
 
 function handleCancel() {
     showConfirm.value = false
+}
+
+function resetForm() {
+    form.reset();
+    form.clearErrors();
 }
 
 </script>
@@ -81,11 +89,11 @@ function handleCancel() {
             <ScrollArea class="flex-1 overflow-y-auto">
                 <form @submit.prevent="showConfirm = true" class="flex-1 space-y-4 px-4" ref="userForm">
                     <Label for="name">Name</Label>
-                    <Input id="name" type="text" required autofocus :tabindex="1" autocomplete="name" v-model="form.name" placeholder="Enter name" />
+                    <Input type="text" id="name" v-model="form.name" :aria-invalid="!!form.errors.name" @input="form.clearErrors('name')" required autofocus :tabindex="1" autocomplete="name" placeholder="Enter name" />
                     <InputError :message="form.errors.name" />
 
                     <Label for="email">Email address</Label>
-                    <Input id="email" type="email" required autocomplete="email" v-model="form.email" placeholder="email@example.com" />
+                    <Input type="email" id="email" v-model="form.email" :aria-invalid="!!form.errors.email" @input="form.clearErrors('email')" required autocomplete="email" placeholder="email@example.com" />
                     <InputError :message="form.errors.email" />
 
                     <Label for="status">

@@ -238,7 +238,7 @@ function handleOnAssignPermission(userId: number) {
 function postDelete() {
 	form.delete(route('users.destroy'), {
 		preserveScroll: true,
-		preserveState: (page) => Object.keys(page.props.errors).length !== 0,
+		preserveState: ({ props }) => !!Object.keys(props.errors).length,
 		onError: () => handleConfirm(false),
 		onSuccess: () => {
 			form.reset();
