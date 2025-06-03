@@ -10,7 +10,7 @@ import { usePage } from '@inertiajs/vue3';
 const page = usePage<SharedData>();
 const flash = computed(() => page.props.flash);
 
-onMounted(() => useDebounceFn(showToast, 500));
+onMounted(useDebounceFn(showToast, 500));
 
 function showToast() {
 	const { type, message, } = flash.value;
