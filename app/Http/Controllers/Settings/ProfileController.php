@@ -38,7 +38,7 @@ class ProfileController extends Controller
 
             $request->user()->save();
 
-            return sendSuccess();
+            return sendSuccess(redirect: route('profile.edit'));
         } catch (\Throwable $th) {
             return sendError($th);
         }
