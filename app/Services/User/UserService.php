@@ -73,7 +73,7 @@ class UserService
 	{
 		$allowedFilters = UserTableEnum::allowedFilters();
 		$columnFilters = $params['column_filters'] ?? null;
-		$search = $params['search'];
+		$search = $params['search'] ?? null;
 		$sorting = in_array($params['sorting'], UserTableEnum::values())
 			? $params['sorting']
 			: UserTableEnum::Name->value;
