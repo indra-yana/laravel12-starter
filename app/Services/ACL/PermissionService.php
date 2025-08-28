@@ -151,7 +151,7 @@ class PermissionService
 			return [];
 		}
 
-		if (! $user instanceof User) {
+		if (!$user instanceof User) {
 			$user = User::with([
 				'permissions' => function ($query) {
 					$query->get(['id', 'name']);
