@@ -21,7 +21,7 @@ class RoleController extends Controller
     }
 
     /**
-     * Show the permission's index page.
+     * Show the roles's index page.
      */
     public function index(Request $request): Response
     {
@@ -39,13 +39,13 @@ class RoleController extends Controller
     }
 
     /**
-     * Assign the permission's to the user.
+     * Assign the roles's to the user.
      */
     public function assign(Request $request): RedirectResponse
     {
         try {
             $results = $this->roleService->assignUserRoleAndPermissions($request->user_id, $request->role, $request->permissions);
-            return sendSuccess($results, $results . ' Roles(s) assigned.');
+            return sendSuccess($results, "$results Roles(s) assigned.");
         } catch (\Throwable $th) {
             return sendError($th);
         }

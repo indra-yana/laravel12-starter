@@ -40,7 +40,7 @@ class PermissionController extends Controller
     {
         try {
             $results = $this->permissionService->assignUserPermissions($request->user_id, $request->permissions);
-            return sendSuccess($results, $results . ' permission(s) assigned.');
+            return sendSuccess($results, "$results permission(s) assigned.");
         } catch (\Throwable $th) {
             return sendError($th);
         }
