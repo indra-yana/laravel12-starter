@@ -56,7 +56,7 @@ watch(selected, useDebounceFn(postSelected, 500));
         </div>
 
         <template v-if="!user">
-            <h1>No user selected!</h1>
+            <h1>No user was chosen!</h1>
         </template>
         <template v-else>
             <h1>Assign permissions to: <b>{{ user?.name }}</b></h1>
