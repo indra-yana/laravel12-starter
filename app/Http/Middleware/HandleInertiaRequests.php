@@ -55,28 +55,31 @@ class HandleInertiaRequests extends Middleware
                 'location' => $request->url(),
                 'query' => $request->query(),
             ],
-            'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+            'sidebarOpen' => !$request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'flash' => fn() => [
                 'type' => $request->session()->get('type'),
                 'message' => $request->session()->get('message'),
                 'response' => $request->session()->get('response'),
             ],
-            'app' => fn() => [
-                'name' => config('app.name'),
-                'env' => config('app.env'),
-                'version' => config('app.version'),
-                'debug' => config('app.debug'),
-                'url' => config('app.url'),
-                'timezone' => config('app.timezone'),
-                'locale' => function () {
-                    if (session()->has('locale')) {
-                        app()->setLocale(session('locale'));
-                    }
-
-                    return app()->getLocale();
-                },
-                'fallback_locale' => config('app.fallback_locale'),
-            ],
+            'app' => fn() => array_merge(
+                configPick('app', [
+                    'name',
+                    'env',
+                    'version',
+                    'debug',
+                    'url',
+                    'timezone',
+                    'fallback_locale',
+                ]),
+                [
+                    'locale' => function () {
+                        if (session()->has('locale')) {
+                            app()->setLocale(session('locale'));
+                        }
+                        return app()->getLocale();
+                    },
+                ]
+            ),
         ];
     }
 }
