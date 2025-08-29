@@ -3,8 +3,9 @@
 namespace App\Services\ACL;
 
 use App\Models\User;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class RoleService
@@ -15,13 +16,17 @@ class RoleService
 	 * 
 	 * @return int
 	 */
-	public function assignUserPermissions(int $userId, array $roles): int
+	public function assignUserRoleAndPermissions(int $userId, string $role, array $permissions): int
 	{
 		app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
 
 		$user = User::find($userId);
-		$validRoles = Role::whereIn('name', $roles)->pluck('name')->toArray();
+		$validRoles = Role::whereIn('name', [$role])->pluck('name')->toArray();
 		$user->syncRoles($validRoles);
+
+		// Add permission directly
+		$validPermissions = Permission::whereIn('name', $permissions)->pluck('name')->toArray();
+		$user->syncPermissions($validPermissions);
 
 		return count($validRoles);
 	}
@@ -31,64 +36,9 @@ class RoleService
 	 * 
 	 * @return array
 	 */
-	public function getAllRoles(): array
+	public function getAllRoles(bool $flat = false): array
 	{
-		$roles = [
-			[
-				'role' => 'Super Admin',
-				'permissions' => [
-					'dashboard.index',
-					'profile.edit',
-					'profile.update',
-					'profile.destroy',
-					'profile.edit',
-					'profile.update',
-					'appearance.index',
-					'user.index',
-					'user.create',
-					'user.update',
-					'user.destroy',
-					'permission.index',
-					'permission.create',
-					'permission.update',
-					'permission.destroy',
-				],
-			],
-			[
-				'role' => 'Admin',
-				'permissions' => [
-					'dashboard.index',
-					'profile.edit',
-					'profile.update',
-					'profile.destroy',
-					'profile.edit',
-					'profile.update',
-					'appearance.index',
-					'user.index',
-					'user.create',
-					'user.update',
-					'user.destroy',
-				],
-			],
-			[
-				'role' => 'User',
-				'permissions' => [
-					'dashboard.index',
-					'profile.edit',
-					'profile.update',
-					'profile.destroy',
-					'profile.edit',
-					'profile.update',
-					'appearance.index',
-					'user.index',
-					'user.create',
-					'user.update',
-					'user.destroy',
-				],
-			],
-		];
-
-		return $roles;
+		return $flat ? Arr::pluck(ACLRole::all(), 'role') : ACLRole::all();
 	}
 
 	/**
@@ -128,17 +78,19 @@ class RoleService
 			]
 		);
 
-		$role->syncPermissions($permissions);
+		// TODO: Enable this if needed
+		// $role->syncPermissions($permissions);
+
 		return $role;
 	}
 
 	/**
-	 * Get user permission with mapped permissions 
+	 * Get user role
 	 *
 	 * @param int $userId
 	 * @return array
 	 */
-	public function getUserPermissions(User|int|null $user = null): array
+	public function getUserRole(User|int|null $user = null): array
 	{
 		if (!$user) {
 			return [];
@@ -146,21 +98,13 @@ class RoleService
 
 		if (!$user instanceof User) {
 			$user = User::with([
-				'permissions' => function ($query) {
+				'roles' => function ($query) {
 					$query->get(['id', 'name']);
 				},
 			])->findOrFail($user);
 		}
 
-		if ($user->permissions->count()) {
-			// if has direct permissions use it
-			$userPermissions = $this->mapPermissions($user->permissions);
-		} else {
-			// get the permissions via roles
-			$userPermissions = $this->mapPermissions($user->getAllPermissions());
-		}
-
-		return Arr::pluck($userPermissions, 'name');
+		return $this->mapRole($user->roles);
 	}
 
 	/**
@@ -169,11 +113,11 @@ class RoleService
 	 * @param Collection $permissions
 	 * @return array
 	 */
-	private function mapPermissions(Collection $permissions): array
+	private function mapRole(Collection $roles): array
 	{
-		return $permissions->map(fn($permission) => [
-			'id' => $permission->id,
-			'name' => $permission->name,
+		return $roles->map(fn($role) => [
+			'id' => $role->id,
+			'name' => $role->name,
 		])->toArray();
 	}
 }

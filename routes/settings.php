@@ -3,6 +3,7 @@
 use App\Http\Controllers\Settings\PasswordController;
 use App\Http\Controllers\Settings\PermissionController;
 use App\Http\Controllers\Settings\ProfileController;
+use App\Http\Controllers\Settings\RoleController;
 use App\Http\Controllers\Settings\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -33,6 +34,11 @@ Route::prefix('settings')->middleware('auth')->group(function () {
         Route::put('update', [UserController::class, 'update'])->name('users.update');
         Route::delete('destroy', [UserController::class, 'destroy'])->name('users.destroy');
         Route::get('data-table', [UserController::class, 'dataTable'])->name('users.datatable');
+    });
+
+    Route::prefix('roles')->group(function () {
+        Route::get('/', [RoleController::class, 'index'])->name('roles.index');
+        Route::post('assign', [RoleController::class, 'assign'])->name('roles.assign');
     });
 
     Route::prefix('permissions')->group(function () {

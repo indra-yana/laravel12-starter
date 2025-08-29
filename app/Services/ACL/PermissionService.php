@@ -33,55 +33,7 @@ class PermissionService
 	 */
 	public function getAllPermissions(): array
 	{
-		$permissions = [
-			[
-				'group_name' => 'dashboard',
-				'permissions' => [
-					'dashboard.index',
-				],
-			],
-			[
-				'group_name' => 'profile',
-				'permissions' => [
-					'profile.edit',
-					'profile.update',
-					'profile.destroy',
-				],
-			],
-			[
-				'group_name' => 'password',
-				'permissions' => [
-					'profile.edit',
-					'profile.update',
-				],
-			],
-			[
-				'group_name' => 'appearance',
-				'permissions' => [
-					'appearance.index',
-				],
-			],
-			[
-				'group_name' => 'user',
-				'permissions' => [
-					'user.index',
-					'user.create',
-					'user.update',
-					'user.destroy',
-				],
-			],
-			[
-				'group_name' => 'permission',
-				'permissions' => [
-					'permission.index',
-					'permission.create',
-					'permission.update',
-					'permission.destroy',
-				],
-			],
-		];
-
-		return $permissions;
+		return ACLPermission::all();
 	}
 
 	/**
@@ -159,14 +111,8 @@ class PermissionService
 			])->findOrFail($user);
 		}
 
-		if ($user->permissions->count()) {
-			// if has direct permissions use it
-			$userPermissions = $this->mapPermissions($user->permissions);
-		} else {
-			// get the permissions via roles
-			$userPermissions = $this->mapPermissions($user->getAllPermissions());
-		}
-
+		// Get all the permissions both directly and via roles.
+		$userPermissions = $this->mapPermissions($user->getAllPermissions());
 		return Arr::pluck($userPermissions, 'name');
 	}
 
