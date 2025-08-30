@@ -115,6 +115,7 @@ export const columns: ColumnDef<User>[] = [
                 onExpand: row.toggleExpanded,
                 onDelete: (user: User) => meta?.onDelete(user),
                 onEdit: (user: User) => meta?.onEdit(user),
+                onAssignRole: (userId: number) => meta?.onAssignRole(userId),
                 onAssignPermission: (userId: number) => meta?.onAssignPermission(userId),
             }))
         },

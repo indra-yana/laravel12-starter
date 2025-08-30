@@ -12,6 +12,7 @@ interface Emits {
     (e: 'expand'): void,
     (e: 'edit', user: User): void,
     (e: 'delete', user: User): void,
+    (e: 'assignRole', userId: number): void,
     (e: 'assignPermission', userId: number): void,
 }
 
@@ -25,6 +26,10 @@ function edit(user: User) {
 
 function destroy(user: User) {
     emits('delete', user);
+}
+
+function assignRole(userId: number) {
+    emits('assignRole', userId);
 }
 
 function assignPermission(userId: number) {
@@ -51,6 +56,7 @@ function assignPermission(userId: number) {
                 <DropdownMenuLabel>Other Actions</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem @click="$emit('expand')">Expand Row</DropdownMenuItem>
+                <DropdownMenuItem @click="assignRole(user.id)">Assign Role</DropdownMenuItem>
                 <DropdownMenuItem @click="assignPermission(user.id)">Assign Permissions</DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>

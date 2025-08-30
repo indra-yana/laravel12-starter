@@ -65,6 +65,7 @@ export interface PropsData extends PageProps {
 export interface ActionMeta {
 	onDelete: (user: User) => void,
 	onEdit: (user: User) => void,
+	onAssignRole: (user_id: number) => void,
 	onAssignPermission: (user_id: number) => void,
 }
 
@@ -111,6 +112,7 @@ const table = useVueTable({
 	meta: {
 		onDelete: handleDelete,
 		onEdit: handleEdit,
+		onAssignRole: handleOnAssignRole,
 		onAssignPermission: handleOnAssignPermission,
 	},
 	manualPagination: true,
@@ -229,6 +231,10 @@ function handleDelete(user: User) {
 
 function handleEdit(user: User) {
 	console.log('handleEdit', user);
+}
+
+function handleOnAssignRole(userId: number) {
+	router.visit(route('roles.index', { user_id: userId }));
 }
 
 function handleOnAssignPermission(userId: number) {
