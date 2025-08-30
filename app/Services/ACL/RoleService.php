@@ -5,6 +5,7 @@ namespace App\Services\ACL;
 use App\Models\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use InvalidArgumentException;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -16,7 +17,7 @@ class RoleService
 	 * 
 	 * @return int
 	 */
-	public function assignUserRoleAndPermissions(int $userId, string $role, array $permissions): int
+	public function assignUserRoleAndPermissions(int $userId, string $role): int
 	{
 		app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
 
@@ -24,11 +25,12 @@ class RoleService
 		$validRoles = Role::whereIn('name', [$role])->pluck('name')->toArray();
 		$user->syncRoles($validRoles);
 
-		// Add permission directly
+		// Add permission directly based on selected role
+		$permissions = $this->getPermissionsByRole($role);
 		$validPermissions = Permission::whereIn('name', $permissions)->pluck('name')->toArray();
 		$user->syncPermissions($validPermissions);
 
-		return count($validRoles);
+		return count($validPermissions);
 	}
 
 	/**
@@ -42,6 +44,22 @@ class RoleService
 	}
 
 	/**
+	 * Define all role
+	 * 
+	 * @return array
+	 */
+	public function getPermissionsByRole(string $roleName): array
+	{
+		$role = ACLRole::tryFrom($roleName);
+
+		if (!$role) {
+			throw new InvalidArgumentException("Role {$roleName} tidak ditemukan.");
+		}
+
+		return $role->permissions();
+	}
+
+	/**
 	 * Create all roles from the definitions
 	 * 
 	 * @return array Created roles
@@ -52,10 +70,10 @@ class RoleService
 		$roles = $this->getAllRoles();
 
 		foreach ($roles as $permissionGroup) {
-			$roleName = $permissionGroup['role'];
-			$permissions = $permissionGroup['permissions'];
-
-			$createdRoles[] = $this->findOrCreateRole($roleName, $permissions);
+			$createdRoles[] = $this->findOrCreateRole(
+				$permissionGroup['role'],
+				$permissionGroup['permissions']
+			);
 		}
 
 		return $createdRoles;
@@ -68,7 +86,7 @@ class RoleService
 	 * @param array $permissions
 	 * @return Role
 	 */
-	public function findOrCreateRole(string $name, string $permissions): Role
+	public function findOrCreateRole(string $name, array $permissions): Role
 	{
 		$role = Role::firstOrCreate(
 			['name' => $name],

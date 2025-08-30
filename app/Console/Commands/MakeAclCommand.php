@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Services\ACL\PermissionService;
+use App\Services\ACL\RoleService;
 use Illuminate\Console\Command;
 
 class MakeAclCommand extends Command
@@ -24,13 +25,15 @@ class MakeAclCommand extends Command
     /**
      * Execute the console command.
      */
-    public function handle(PermissionService $permissionService)
+    public function handle(RoleService $roleService, PermissionService $permissionService)
     {
-        $this->info("Creating permissions...");
+        $this->info("Generating role & permissions system...");
+        $roles = $roleService->createRoles();
+        $rolesCount = count($roles);
 
-        $results = $permissionService->createPermissions();
-        $resultCount = count($results);
+        $permissions = $permissionService->createPermissions();
+        $permissionsCount = count($permissions);
 
-        $this->info("$resultCount Permissions created successfully!");
+        $this->info("$rolesCount Roles and  $permissionsCount Permissions generated successfully!");
     }
 }

@@ -49,17 +49,22 @@ watch(selected, useDebounceFn(postSelected, 500));
 <template>
     <div class="space-y-4">
         <div class="flex justify-between items-center border-b pb-2">
-            <h1 class="text-xl font-semibold">Manage Permissions</h1>
+            <div>
+                <template v-if="!user">
+                    <h1>No user was chosen!</h1>
+                </template>
+                <template v-else>
+                    <div>
+                        <span class=" text-muted-foreground">Assign permissions to:</span>  <b>{{ user?.name }}</b>
+                    </div>
+                </template>
+            </div>
             <Button variant="outline" @click="toggleSelectAll" v-if="user">
                 {{ isAllSelected ? 'Unselect All' : 'Select All' }}
             </Button>
         </div>
 
-        <template v-if="!user">
-            <h1>No user was chosen!</h1>
-        </template>
-        <template v-else>
-            <h1>Assign permissions to: <b>{{ user?.name }}</b></h1>
+        <template v-if="user">
             <div v-for="(items, group) in permissions" :key="group">
                 <PermissionGroup :group="group" :permissions="items" v-model:selected="selected" />
             </div>

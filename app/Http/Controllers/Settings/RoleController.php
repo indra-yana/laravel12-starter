@@ -27,13 +27,12 @@ class RoleController extends Controller
     {
         $user = User::find($request->user_id);
         $roles = $this->roleService->getAllRoles();
+        // dd($roles);
         $selectedRoles = $this->roleService->getUserRole($user);
-        $selectedPermissions = $this->permissionService->getUserPermissions($user);
 
         return Inertia::render('settings/Roles', [
             'roles' => $roles,
             'selected_role' => $selectedRoles,
-            'selected_permissions' => $selectedPermissions,
             'user' => $user,
         ]);
     }
@@ -44,8 +43,8 @@ class RoleController extends Controller
     public function assign(Request $request): RedirectResponse
     {
         try {
-            $results = $this->roleService->assignUserRoleAndPermissions($request->user_id, $request->role, $request->permissions);
-            return sendSuccess($results, "$results Roles(s) assigned.");
+            $results = $this->roleService->assignUserRoleAndPermissions($request->user_id, $request->role);
+            return sendSuccess($results, "$results Permission(s) assigned on selected Role.");
         } catch (\Throwable $th) {
             return sendError($th);
         }

@@ -23,7 +23,7 @@ const sidebarNavItems: NavItem[] = [
     {
         title: 'Users',
         href: '/settings/users',
-        isActive: ['permissions.index'].includes(route().current() || ''),
+        isActive: ['roles.index', 'permissions.index'].includes(route().current() || ''),
     },
 ];
 

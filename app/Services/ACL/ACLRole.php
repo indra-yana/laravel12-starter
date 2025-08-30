@@ -11,27 +11,32 @@ enum ACLRole: string
     public function permissions(): array
     {
         return match ($this) {
-            self::SUPER_ADMIN => array_merge(
-                ACLPermission::DASHBOARD->permissions(),
-                ACLPermission::PROFILE->permissions(),
-                ACLPermission::PASSWORD->permissions(),
-                ACLPermission::APPEARANCE->permissions(),
-                ACLPermission::USER->permissions(),
-                ACLPermission::PERMISSION->permissions(),
+            self::SUPER_ADMIN => array_unique(
+                array_merge(
+                    ACLPermission::DASHBOARD->permissions(),
+                    ACLPermission::PROFILE->permissions(),
+                    ACLPermission::PASSWORD->permissions(),
+                    ACLPermission::APPEARANCE->permissions(),
+                    ACLPermission::USER->permissions(),
+                    ACLPermission::PERMISSION->permissions(),
+                )
             ),
-            self::ADMIN => array_merge(
-                ACLPermission::DASHBOARD->permissions(),
-                ACLPermission::PROFILE->permissions(),
-                ACLPermission::PASSWORD->permissions(),
-                ACLPermission::APPEARANCE->permissions(),
-                ACLPermission::USER->permissions(),
+            self::ADMIN => array_unique(
+                array_merge(
+                    ACLPermission::DASHBOARD->permissions(),
+                    ACLPermission::PROFILE->permissions(),
+                    ACLPermission::PASSWORD->permissions(),
+                    ACLPermission::APPEARANCE->permissions(),
+                    ACLPermission::USER->permissions(),
+                ),
             ),
-            self::USER => array_merge(
-                ACLPermission::DASHBOARD->permissions(),
-                ACLPermission::PROFILE->permissions(),
-                ACLPermission::PASSWORD->permissions(),
-                ACLPermission::APPEARANCE->permissions(),
-                ACLPermission::USER->permissions(),
+            self::USER => array_unique(
+                array_merge(
+                    ACLPermission::DASHBOARD->permissions(),
+                    ACLPermission::PROFILE->permissions(),
+                    ACLPermission::PASSWORD->permissions(),
+                    ACLPermission::APPEARANCE->permissions(),
+                ),
             ),
         };
     }

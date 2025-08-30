@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { LockKeyholeOpen, Users } from 'lucide-vue-next';
+import { LockKeyholeOpen, ShieldCheck, Users } from 'lucide-vue-next';
 import { router } from '@inertiajs/vue3';
 
 interface Props {
@@ -8,14 +8,21 @@ interface Props {
 
 const { class: containerClass = '' } = defineProps<Props>();
 const currentRoute = route().current();
+const query = route().queryParams;
 
 const tabs = [
     { route: 'users.index', Icon: Users, label: 'Users' },
+    { route: 'roles.index', Icon: ShieldCheck, label: 'Roles' },
     { route: 'permissions.index', Icon: LockKeyholeOpen, label: 'Permissions' },
 ] as const;
 
 function gotoRoute(goto: string) {
-    router.visit(route(goto));
+    const params: Record<string, any> = {};
+    if (currentRoute && goto != 'users.index' && ['roles.index', 'permissions.index'].includes(currentRoute)) {
+        params.user_id = query.user_id;
+    }
+
+    router.visit(route(goto, params));
 }
 
 </script>
