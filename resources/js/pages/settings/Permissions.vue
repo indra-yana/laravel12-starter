@@ -35,7 +35,7 @@ const permissions = page.permissions;
 
         <SettingsLayout>
             <div class="space-y-6">
-                <HeadingSmall title="Permissions settings" description="Permissions are used to grant users to access system resources." />
+                <HeadingSmall title="Permissions settings" description="Permissions are used to grant users access the system, grouped by module name." />
                 <UsersTabs />
                 <PermissionManager :user :selected-permissions :permissions />
             </div>
