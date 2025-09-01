@@ -9,6 +9,7 @@ enum ACLPermission: string
     case PASSWORD = 'password';
     case APPEARANCE = 'appearance';
     case USER = 'user';
+    case ROLE = 'role';
     case PERMISSION = 'permission';
 
     public function permissions(): array
@@ -23,23 +24,25 @@ enum ACLPermission: string
                 'profile.destroy',
             ],
             self::PASSWORD => [
-                'profile.edit',
-                'profile.update',
+                'password.edit',
+                'password.update',
             ],
             self::APPEARANCE => [
                 'appearance.index',
             ],
             self::USER => [
-                'user.index',
-                'user.create',
-                'user.update',
-                'user.destroy',
+                'users.index',
+                'users.create',
+                'users.update',
+                'users.destroy',
+            ],
+            self::ROLE => [
+                'roles.index',
+                'roles.assign',
             ],
             self::PERMISSION => [
-                'permission.index',
-                'permission.create',
-                'permission.update',
-                'permission.destroy',
+                'permissions.index',
+                'permissions.assign',
             ],
         };
     }

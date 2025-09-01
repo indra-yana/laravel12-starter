@@ -18,6 +18,7 @@ enum ACLRole: string
                     ACLPermission::PASSWORD->permissions(),
                     ACLPermission::APPEARANCE->permissions(),
                     ACLPermission::USER->permissions(),
+                    ACLPermission::ROLE->permissions(),
                     ACLPermission::PERMISSION->permissions(),
                 )
             ),
