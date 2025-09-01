@@ -24,17 +24,17 @@ function handleThemeUpdated(value: Appearance) {
                 <component v-else-if="currentAppearance == 'system'" :is="Monitor" />
             </Button>
         </PopoverTrigger>
-        <PopoverContent class="w-80">
+        <PopoverContent class="w-auto">
             <div class="grid gap-4">
                 <div class="space-y-2">
                     <h4 class="font-medium leading-none">
                         Appearance settings
                     </h4>
                     <p class="text-sm text-muted-foreground">
-                        Update your account's appearance settings
+                        Update appearance settings
                     </p>
                 </div>
-                <div class="grid gap-2">
+                <div class="grid gap-2 w-fit">
                     <AppearanceTabs @theme-updated="handleThemeUpdated" />
                 </div>
             </div>

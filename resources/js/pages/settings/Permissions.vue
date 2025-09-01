@@ -2,6 +2,7 @@
 import { Head, usePage } from '@inertiajs/vue3';
 import { User, type BreadcrumbItem } from '@/types';
 import AppLayout from '@/layouts/AppLayout.vue';
+import ContentSection from '@/layouts/ContentSection.vue';
 import HeadingSmall from '@/components/HeadingSmall.vue';
 import PermissionManager, { Permission } from '@/components/settings/permissions/PermissionManager.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
@@ -34,10 +35,12 @@ const permissions = page.permissions;
         <Head title="Permissions settings" />
 
         <SettingsLayout>
-            <div class="space-y-6">
+            <div class="space-y-6 w-full">
                 <HeadingSmall title="Permissions settings" description="Permissions are used to grant users access the system, grouped by module name." />
                 <UsersTabs />
-                <PermissionManager :user :selected-permissions :permissions />
+                <ContentSection>
+                    <PermissionManager :user :selected-permissions :permissions />
+                </ContentSection>
             </div>
         </SettingsLayout>
     </AppLayout>

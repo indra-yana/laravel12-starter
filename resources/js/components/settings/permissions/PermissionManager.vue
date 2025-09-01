@@ -47,7 +47,7 @@ watch(selected, useDebounceFn(postSelected, 500));
 </script>
 
 <template>
-    <div class="space-y-4">
+    <div class="space-y-4 space-x-4">
         <div class="flex justify-between items-center border-b pb-2">
             <div>
                 <template v-if="!user">
@@ -55,7 +55,7 @@ watch(selected, useDebounceFn(postSelected, 500));
                 </template>
                 <template v-else>
                     <div>
-                        <span class=" text-muted-foreground">Assign permissions to:</span>  <b>{{ user?.name }}</b>
+                        <span class=" text-muted-foreground">Assign permissions to:</span> <b>{{ user?.name }}</b>
                     </div>
                 </template>
             </div>

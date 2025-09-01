@@ -61,11 +61,14 @@ const currentPath = page.props.ziggy?.location ? new URL(page.props.ziggy?.locat
 
             <Separator class="my-2 lg:hidden" />
 
-            <div class="flex-1 mt-2">
+            <div class="flex space-y-12 w-full overflow-y-hidden sticky h-screen">
+                <slot />
+            </div>
+            <!-- <div class="flex-1 mt-2">
                 <section class="space-y-12">
                     <slot />
                 </section>
-            </div>
+            </div> -->
         </div>
     </div>
 </template>

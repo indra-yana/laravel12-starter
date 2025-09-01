@@ -7,6 +7,7 @@ import RoleManager, { Role, RoleDef } from '@/components/settings/roles/RoleMana
 import SettingsLayout from '@/layouts/settings/Layout.vue';
 import type { PageProps } from '@inertiajs/core';
 import UsersTabs from '@/components/settings/UsersTabs.vue';
+import ContentSection from '@/layouts/ContentSection.vue';
 
 interface PagePropsData extends PageProps {
     roles: Role[];
@@ -34,10 +35,12 @@ const roles = page.roles;
         <Head title="Roles settings" />
 
         <SettingsLayout>
-            <div class="space-y-6">
+            <div class="space-y-6 w-full">
                 <HeadingSmall title="Roles settings" description="Roles are collection set of permissions that assigned to users within their level." />
                 <UsersTabs />
-                <RoleManager :user :roles :selected-roles />
+                <ContentSection>
+                    <RoleManager :user :roles :selected-roles />
+                </ContentSection>
             </div>
         </SettingsLayout>
     </AppLayout>

@@ -6,6 +6,7 @@ import { Separator } from '@/components/ui/separator';
 import { type BreadcrumbItem } from '@/types';
 import { UserPlus2 } from 'lucide-vue-next';
 import AppLayout from '@/layouts/AppLayout.vue';
+import ContentSection from '@/layouts/ContentSection.vue';
 import HeadingSmall from '@/components/HeadingSmall.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
 import UserForm from '@/components/settings/user-form/UserForm.vue';
@@ -45,9 +46,13 @@ function handleOpenChange(close: boolean) {
                     </Button>
                     <UserForm :open="showUserForm" :onOpenChange="handleOpenChange" title="Add New User" description="Create new user here. Click save when you're done." />
                 </div>
+
                 <Separator class="mt-4 hidden lg:block" />
+
                 <UsersTabs />
-                <UsersTable />
+                <ContentSection>
+                    <UsersTable />
+                </ContentSection>
             </div>
         </SettingsLayout>
     </AppLayout>
