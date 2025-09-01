@@ -13,7 +13,11 @@ import { type BreadcrumbItem } from '@/types';
 
 const breadcrumbItems: BreadcrumbItem[] = [
     {
-        title: 'Password settings',
+        title: 'Settings',
+        href: '/settings/profile',
+    },
+    {
+        title: 'Password',
         href: '/settings/password',
     },
 ];
@@ -52,11 +56,11 @@ const updatePassword = () => {
 
 <template>
     <AppLayout :breadcrumbs="breadcrumbItems">
-        <Head title="Password settings" />
+        <Head title="Password Settings" />
 
         <SettingsLayout>
             <div class="space-y-6 max-w-xl">
-                <HeadingSmall title="Update password" description="Ensure your account is using a long, random password to stay secure" />
+                <HeadingSmall title="Update Password" description="Ensure your account is using a long, random password to stay secure" />
 
                 <form @submit.prevent="updatePassword" class="space-y-6">
                     <div class="grid gap-2">

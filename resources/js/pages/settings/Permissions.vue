@@ -17,8 +17,16 @@ interface PagePropsData extends PageProps {
 
 const breadcrumbItems: BreadcrumbItem[] = [
     {
-        title: 'Permissions settings',
-        href: '/settings/appearance',
+        title: 'Settings',
+        href: '/settings/profile',
+    },
+    {
+        title: 'Users',
+        href: '/settings/users',
+    },
+    {
+        title: 'Permissions',
+        href: '/settings/permissions',
     },
 ];
 
@@ -32,11 +40,11 @@ const permissions = page.permissions;
 <template>
     <AppLayout :breadcrumbs="breadcrumbItems">
 
-        <Head title="Permissions settings" />
+        <Head title="Permissions Settings" />
 
         <SettingsLayout>
             <div class="space-y-6 w-full">
-                <HeadingSmall title="Permissions settings" description="Permissions are used to grant users access the system, grouped by module name." />
+                <HeadingSmall title="Permissions" description="Permissions are used to grant users access the system, grouped by module name." />
                 <UsersTabs />
                 <ContentSection>
                     <PermissionManager :user :selected-permissions :permissions />

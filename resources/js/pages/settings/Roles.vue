@@ -17,8 +17,16 @@ interface PagePropsData extends PageProps {
 
 const breadcrumbItems: BreadcrumbItem[] = [
     {
-        title: 'Roles settings',
-        href: '/settings/appearance',
+        title: 'Settings',
+        href: '/settings/profile',
+    },
+    {
+        title: 'Users',
+        href: '/settings/users',
+    },
+    {
+        title: 'Roles',
+        href: '/settings/roles',
     },
 ];
 
@@ -32,11 +40,11 @@ const roles = page.roles;
 <template>
     <AppLayout :breadcrumbs="breadcrumbItems">
 
-        <Head title="Roles settings" />
+        <Head title="Roles Settings" />
 
         <SettingsLayout>
             <div class="space-y-6 w-full">
-                <HeadingSmall title="Roles settings" description="Roles are collection set of permissions that assigned to users within their level." />
+                <HeadingSmall title="Roles" description="Roles are collection set of permissions that assigned to users within their level." />
                 <UsersTabs />
                 <ContentSection>
                     <RoleManager :user :roles :selected-roles />
