@@ -17,6 +17,8 @@ export interface NavItem {
     route?: string | string[];
     icon?: LucideIcon;
     isActive?: boolean;
+    items?: NavItem[],
+    badge?: number,
 }
 
 export interface AppConfig {
