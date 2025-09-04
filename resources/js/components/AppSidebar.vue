@@ -64,12 +64,12 @@ const mainNavItems: NavItem[] = [
 const footerNavItems: NavItem[] = [
     {
         title: 'Github Repo',
-        href: 'https://github.com/laravel/vue-starter-kit',
+        href: 'https://github.com/indra-yana/laravel12-starter.git',
         icon: Folder,
     },
     {
         title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits',
+        href: 'https://github.com/indra-yana/laravel12-starter?tab=readme-ov-file#introduction',
         icon: BookOpen,
     },
 ];
