@@ -13,14 +13,14 @@ interface Props {
 }
 
 defineProps<Props>();
-const { state, setOpenMobile } = useSidebar();
+const { state } = useSidebar();
 
 </script>
 
 <template>
     <SidebarMenuItem>
         <SidebarMenuButton as-child :is-active="checkIsActive(href, item)" :tooltip="item.title" :class="{'my-2': state === 'collapsed'}">
-            <Link :href="href" @click="setOpenMobile(false)">
+            <Link :href="href">
                 <component :is="item.icon" v-if="item.icon" />
                 <span>{{ item.title }}</span>
                 <NavBadge v-if="item.badge">{{ item.badge }}</NavBadge>

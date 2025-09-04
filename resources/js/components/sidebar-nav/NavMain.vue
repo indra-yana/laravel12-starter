@@ -21,24 +21,9 @@ const { state, isMobile } = useSidebar();
             <SidebarGroupLabel :class="{ 'hidden': state === 'collapsed' }">{{ item.title }}</SidebarGroupLabel>
             <SidebarMenu>
                 <template v-for="subitem in item.items">
-
                     <SidebarMenuLink v-if="!subitem.items" :item="subitem" :href="subitem.href" />
-
-                    <SidebarMenuCollapsedDropdown v-else-if="state === 'collapsed' && !isMobile" :item="subitem" :href="subitem.href" />
-
+                    <SidebarMenuCollapsedDropdown v-else-if="state === 'collapsed' && !isMobile" :item="subitem" :href="item.href" />
                     <SidebarMenuCollapsible v-else :item="subitem" :href="subitem.href" />
-
-                    <!-- <SidebarMenuItem v-for="item in items" :key="item.title">
-                    <SidebarMenuButton 
-                        as-child :is-active="item.href === page.url"
-                        :tooltip="item.title"
-                    >
-                        <Link :href="item.href">
-                            <component :is="item.icon" />
-                            <span>{{ item.title }}</span>
-                        </Link>
-                    </SidebarMenuButton>
-                </SidebarMenuItem> -->
                 </template>
             </SidebarMenu>
         </template>

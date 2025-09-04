@@ -21,7 +21,7 @@ defineProps<Props>();
     <SidebarMenuItem>
         <DropdownMenu>
             <DropdownMenuTrigger as-child>
-                <SidebarMenuButton :tooltip="item.title" :is-active="checkIsActive(href, item)">
+                <SidebarMenuButton :tooltip="item.title" :is-active="checkIsActive(href, item)" >
                     <component :is="item.icon" v-if="item.icon" />
                     <span>{{ item.title }}</span>
                     <NavBadge v-if="item.badge">{{ item.badge }}</NavBadge>

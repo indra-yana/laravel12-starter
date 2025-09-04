@@ -14,7 +14,6 @@ interface Props {
 }
 
 defineProps<Props>();
-const { setOpenMobile } = useSidebar();
 
 </script>
 
@@ -37,7 +36,7 @@ const { setOpenMobile } = useSidebar();
                     <template v-for="subItem in item.items" :key="subItem.title">
                         <SidebarMenuSubItem>
                             <SidebarMenuSubButton as-child :is-active="checkIsActive(href, subItem)">
-                                <Link :href="subItem.href" @click="setOpenMobile(false)">
+                                <Link :href="subItem.href">
                                 <div :class="{ 'dark:text-accent': checkIsActive(href, subItem) }">
                                     <component :is="subItem.icon" v-if="subItem.icon" class="size-4" />
                                 </div>

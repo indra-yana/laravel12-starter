@@ -27,7 +27,7 @@ const mainNavItems: NavItem[] = [
         items: [
             {
                 title: 'Settings',
-                href: '#',
+                href: '/settings',
                 icon: Settings,
                 items: [
                     {

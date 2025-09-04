@@ -7,17 +7,22 @@ export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
 
-export function checkIsActive2(href: string, item: NavItem, mainNav = false) {
-    return (
-        href === item.href || // /endpint?search=param
-        href.split('?')[0] === item.href || // endpoint
-        !!item?.items?.filter((i) => i.href === href).length || // if child nav is active
-        (mainNav &&
-            href.split('/')[1] !== '' &&
-            href.split('/')[1] === item?.href?.split('/')[1])
-    )
-}
+export function checkIsActive(href: string, item: NavItem, mainNav = false): boolean {
+  const currentUrl = usePage().url;
 
-export function checkIsActive(href: string, item: NavItem, mainNav = false) {
-    return item.href === usePage().url || (mainNav && href.split('/')[1] !== '' && href.split('/')[1] === item?.href?.split('/')[1])
+  return (
+    // exact match
+    item.href === currentUrl ||
+
+    // untuk main nav: cocokkan segmen pertama
+    (mainNav &&
+      href.split("/")[1] !== "" &&
+      href.split("/")[1] === item?.href?.split("/")[1]) ||
+
+    // kalau current url dimulai dengan href parent (misalnya /settings*)
+    (item.href && currentUrl.startsWith(item.href)) ||
+
+    // recursive cek ke child items
+    !!item?.items?.some((i) => checkIsActive(href, i, mainNav))
+  );
 }
