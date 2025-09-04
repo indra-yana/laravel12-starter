@@ -218,6 +218,16 @@
   @apply dark:placeholder:text-white/70;
 }
 
+/* aktif state */
+[data-state="on"] {
+  @apply bg-primary text-primary-foreground;
+}
+
+/* hover state */
+[data-highlighted] {
+  @apply bg-accent text-accent-foreground;
+}
+
 .video-container {
   height: 100%;
   width: 100%;

@@ -39,7 +39,7 @@ const { setOpenMobile } = useSidebar();
                             <SidebarMenuSubButton as-child :is-active="checkIsActive(href, subItem)">
                                 <Link :href="subItem.href" @click="setOpenMobile(false)">
                                 <div :class="{ 'dark:text-accent': checkIsActive(href, subItem) }">
-                                    <component :is="subItem.icon" v-if="subItem.icon" class="w-5 h-5" />
+                                    <component :is="subItem.icon" v-if="subItem.icon" class="size-4" />
                                 </div>
                                 <span>{{ subItem.title }}</span>
                                 <NavBadge v-if="subItem.badge">{{ subItem.badge }}</NavBadge>

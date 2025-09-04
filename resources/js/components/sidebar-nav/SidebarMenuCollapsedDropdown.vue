@@ -34,11 +34,10 @@ defineProps<Props>();
                     {{ item.title }} <span v-if="item.badge">({{ item.badge }})</span>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-
-                <DropdownMenuItem v-for="sub in item.items" :key="`${sub.title}-${sub.href}`" class="my-1.5" :class="checkIsActive(href, sub) ? 'bg-primary' : ''">
-                    <Link :href="sub.href" class="flex items-center gap-2">
-                    <component :is="sub.icon" v-if="sub.icon" />
-                    <span class="max-w-52 text-wrap">{{ sub.title }}</span>
+                <DropdownMenuItem v-for="sub in item.items" :key="`${sub.title}-${sub.href}`" :data-state="checkIsActive(href, sub) ? 'on' : 'off'" class="my-1.5 cursor-pointer">
+                    <Link :href="sub.href" class="flex items-center gap-2 w-full">
+                    <component :is="sub.icon" v-if="sub.icon" class="w-4 h-4 " />
+                    <span class="w-52 text-wrap">{{ sub.title }}</span>
                     <span v-if="sub.badge" class="ms-auto text-xs">{{ sub.badge }}</span>
                     </Link>
                 </DropdownMenuItem>
