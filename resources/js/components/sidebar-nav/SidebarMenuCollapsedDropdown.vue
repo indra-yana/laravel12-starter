@@ -7,6 +7,7 @@ import { Link } from "@inertiajs/vue3";
 import { NavItem } from "@/types";
 import { SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 import NavBadge from "./NavBadge.vue";
+import useCan from "@/composables/useCan";
 
 interface Props {
     item: NavItem;
@@ -14,6 +15,7 @@ interface Props {
 }
 
 defineProps<Props>();
+const { canAny } = useCan();
 
 </script>
 
@@ -21,7 +23,7 @@ defineProps<Props>();
     <SidebarMenuItem>
         <DropdownMenu>
             <DropdownMenuTrigger as-child>
-                <SidebarMenuButton :tooltip="item.title" :is-active="checkIsActive(href, item)" >
+                <SidebarMenuButton :tooltip="item.title" :is-active="checkIsActive(href, item)">
                     <component :is="item.icon" v-if="item.icon" />
                     <span>{{ item.title }}</span>
                     <NavBadge v-if="item.badge">{{ item.badge }}</NavBadge>
@@ -34,8 +36,8 @@ defineProps<Props>();
                     {{ item.title }} <span v-if="item.badge">({{ item.badge }})</span>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem v-for="sub in item.items" :key="`${sub.title}-${sub.href}`" :data-state="checkIsActive(href, sub) ? 'on' : 'off'" class="my-1.5 cursor-pointer">
-                    <Link :href="sub.href" class="flex items-center gap-2 w-full">
+                <DropdownMenuItem v-for="sub in item.items" :key="`${sub.title}-${sub.href}`" :data-state="checkIsActive(href, sub) || sub.isActive ? 'on' : 'off'" class="my-1.5 cursor-pointer">
+                    <Link v-if="canAny(sub.route!!)" :href="sub.href" class="flex items-center gap-2 w-full">
                     <component :is="sub.icon" v-if="sub.icon" class="w-4 h-4 " />
                     <span class="w-52 text-wrap">{{ sub.title }}</span>
                     <span v-if="sub.badge" class="ms-auto text-xs">{{ sub.badge }}</span>

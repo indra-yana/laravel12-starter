@@ -51,7 +51,7 @@ const mainNavItems: NavItem[] = [
                     {
                         title: 'Users',
                         href: '/settings/users',
-                        route: 'users.*',
+                        route: 'users.index',
                         isActive: ['roles.index', 'permissions.index'].includes(route().current() || ''),
                         icon: Users,
                     },

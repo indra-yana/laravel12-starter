@@ -1,6 +1,6 @@
 import { usePage } from '@inertiajs/vue3';
 
-type Auth = {
+export type Auth = {
     check: boolean;
     permissions: string[];
 };

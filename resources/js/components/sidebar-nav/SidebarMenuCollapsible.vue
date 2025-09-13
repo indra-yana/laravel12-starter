@@ -5,8 +5,10 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 import { defineProps } from "vue";
 import { Link } from "@inertiajs/vue3";
 import { NavItem } from "@/types";
-import { SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, useSidebar } from "@/components/ui/sidebar";
+import { SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem } from "@/components/ui/sidebar";
 import NavBadge from "./NavBadge.vue";
+import useCan from "@/composables/useCan";
+import useMenuPermissions from "@/composables/useMenuPermissions";
 
 interface Props {
     item: NavItem;
@@ -14,12 +16,14 @@ interface Props {
 }
 
 defineProps<Props>();
+const { canAny } = useCan();
+const { hasPermissionForGroup } = useMenuPermissions();
 
 </script>
 
 <template>
-    <Collapsible as-child :default-open="checkIsActive(href, item, true)" class="group/collapsible">
-        <SidebarMenuItem>
+    <Collapsible as-child :default-open="checkIsActive(href, item)" class="group/collapsible">
+        <SidebarMenuItem v-if="hasPermissionForGroup(item)">
             <!-- Trigger -->
             <CollapsibleTrigger as-child>
                 <SidebarMenuButton :tooltip="item.title">
@@ -34,8 +38,8 @@ defineProps<Props>();
             <CollapsibleContent>
                 <SidebarMenuSub>
                     <template v-for="subItem in item.items" :key="subItem.title">
-                        <SidebarMenuSubItem>
-                            <SidebarMenuSubButton as-child :is-active="checkIsActive(href, subItem)">
+                        <SidebarMenuSubItem v-if="canAny(subItem.route!!)">
+                            <SidebarMenuSubButton as-child :is-active="checkIsActive(href, subItem) || subItem.isActive">
                                 <Link :href="subItem.href">
                                 <div :class="{ 'dark:text-accent': checkIsActive(href, subItem) }">
                                     <component :is="subItem.icon" v-if="subItem.icon" class="size-4" />

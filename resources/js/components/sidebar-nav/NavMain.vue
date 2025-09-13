@@ -2,9 +2,10 @@
 import { SidebarGroup, SidebarGroupLabel, SidebarMenu, useSidebar } from '@/components/ui/sidebar';
 import { type NavItem, type SharedData } from '@/types';
 import { usePage } from '@inertiajs/vue3';
-import SidebarMenuLink from './SidebarMenuLink.vue';
-import SidebarMenuCollapsible from './SidebarMenuCollapsible.vue';
 import SidebarMenuCollapsedDropdown from './SidebarMenuCollapsedDropdown.vue';
+import SidebarMenuCollapsible from './SidebarMenuCollapsible.vue';
+import SidebarMenuLink from './SidebarMenuLink.vue';
+import useMenuPermissions from '@/composables/useMenuPermissions';
 
 defineProps<{
     items: NavItem[];
@@ -12,13 +13,14 @@ defineProps<{
 
 usePage<SharedData>();
 const { state, isMobile } = useSidebar();
+const { hasPermissionForGroup } = useMenuPermissions();
 
 </script>
 
 <template>
     <SidebarGroup class="px-2 py-0">
         <template v-for="item in items" :key="item.title">
-            <SidebarGroupLabel :class="{ 'hidden': state === 'collapsed' }">{{ item.title }}</SidebarGroupLabel>
+            <SidebarGroupLabel v-if="hasPermissionForGroup(item)" :class="{ 'hidden': state === 'collapsed' }">{{ item.title }}</SidebarGroupLabel>
             <SidebarMenu>
                 <template v-for="subitem in item.items">
                     <SidebarMenuLink v-if="!subitem.items" :item="subitem" :href="subitem.href" />
