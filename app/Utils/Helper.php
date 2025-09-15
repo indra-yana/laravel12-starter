@@ -1,8 +1,10 @@
 <?php
 
+use App\Services\ACL\PermissionService;
 use App\Utils\SendResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Route;
 
 function sendSuccess($result = [], $message = "Success!", $redirect = null, $code = 200): RedirectResponse|JsonResponse
 {
@@ -19,8 +21,7 @@ function sendError(?Throwable $th = null, $redirect = null, $params = []): Redir
     return SendResponse::error($th, $redirect, $params);
 }
 
-if (!function_exists('config_pick'))
-{
+if (!function_exists('config_pick')) {
     function configPick(string $config, array $keys): array
     {
         $result = [];
@@ -29,4 +30,17 @@ if (!function_exists('config_pick'))
         }
         return $result;
     }
+}
+
+function hasRoutePermission(array|string $permission = null): bool
+{
+    $permisionService = new PermissionService();
+    $permissions = $permisionService->getAllPermissions(true);
+    $permission = $permission ?: Route::currentRouteName();
+
+    if (in_array($permission, $permissions)) {
+        return auth()->user()?->hasAnyPermission($permission);
+    }
+
+    return true;
 }

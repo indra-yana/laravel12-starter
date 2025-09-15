@@ -31,9 +31,17 @@ class PermissionService
 	 * 
 	 * @return array
 	 */
-	public function getAllPermissions(): array
+	public function getAllPermissions(bool $flat = false): array
 	{
-		return ACLPermission::all();
+		$permissions = ACLPermission::all();
+		return $flat ? collect($permissions)
+			->pluck('permissions')
+			->flatten()
+			->filter()
+			->values()
+			->unique()
+			->all()
+			: $permissions;
 	}
 
 	/**

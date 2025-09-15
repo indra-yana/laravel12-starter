@@ -8,7 +8,7 @@ use App\Http\Controllers\Settings\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::prefix('settings')->middleware('auth')->group(function () {
+Route::prefix('settings')->middleware(['auth', 'acl'])->group(function () {
     Route::redirect('/', '/settings/profile');
 
     Route::prefix('profile')->group(function () {
