@@ -16,7 +16,7 @@ enum ACLPermission: string
     {
         return match ($this) {
             self::DASHBOARD => [
-                'dashboard.index',
+                'dashboard',
             ],
             self::PROFILE => [
                 'profile.edit',

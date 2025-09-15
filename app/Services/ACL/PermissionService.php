@@ -56,11 +56,14 @@ class PermissionService
 
 		foreach ($permissions as $permissionGroup) {
 			$groupName = $permissionGroup['group_name'];
-
 			foreach ($permissionGroup['permissions'] as $permissionName) {
 				$permission = $this->findOrCreatePermission($permissionName, $groupName);
-				$createdPermissions[] = $permission;
+				$createdPermissions[] = $permission->name;
 			}
+		}
+
+		if ($createdPermissions) {
+			Permission::whereNotIn('name', $createdPermissions)->delete();
 		}
 
 		return $createdPermissions;
