@@ -5,6 +5,7 @@ namespace App\Services\ACL;
 use App\Models\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Hash;
 use InvalidArgumentException;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -137,5 +138,61 @@ class RoleService
 			'id' => $role->id,
 			'name' => $role->name,
 		])->toArray();
+	}
+
+	/**
+	 * Map the results
+	 */
+	public function createAdmin(): array
+	{
+		$hash = Hash::make('supersecret');
+		$admin = User::firstOrCreate(
+			['email' => 'admin@laravel.com'],
+			[
+				'name' => 'Admin',
+				'email_verified_at' => now(),
+				'password' => $hash,
+				'is_active' => true,
+			]
+		);
+
+		if ($admin) {
+			$admin->password = $hash;
+			$admin->is_active = true;
+			$admin->save();
+
+			$this->assignUserRoleAndPermissions($admin->id, ACLRole::ADMIN->value);
+		}
+
+		$superAdmin = User::firstOrCreate(
+			['email' => 'superadmin@laravel.com'],
+			[
+				'name' => 'Super Admin',
+				'email_verified_at' => now(),
+				'password' => $hash,
+				'is_active' => true,
+			]
+		);
+
+		if ($superAdmin) {
+			$superAdmin->password = $hash;
+			$superAdmin->is_active = true;
+			$superAdmin->save();
+
+			$this->assignUserRoleAndPermissions($superAdmin->id, ACLRole::SUPER_ADMIN->value);
+		}
+
+		return [
+			'admin' => [
+				'role' => ACLRole::ADMIN->value,
+				'email' => $admin->email,
+				'password' => 'supersecret',
+			],
+			'superadmin' => [
+				'role' => ACLRole::SUPER_ADMIN->value,
+				'email' => $superAdmin->email,
+				'password' => 'supersecret',
+			],
+		];
 	}
 }

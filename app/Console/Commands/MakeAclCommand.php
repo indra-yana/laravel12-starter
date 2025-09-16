@@ -27,7 +27,7 @@ class MakeAclCommand extends Command
      */
     public function handle(RoleService $roleService, PermissionService $permissionService)
     {
-        $this->info("Generating role & permissions system...");
+        $this->info("Generating role & permissions for the system...");
         $roles = $roleService->createRoles();
         $rolesCount = count($roles);
 
