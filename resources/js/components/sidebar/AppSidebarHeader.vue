@@ -2,7 +2,7 @@
 import { onMounted, reactive } from 'vue';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
-import ThemeSwitcher from './ThemeSwitcher.vue';
+import ThemeSwitcher from '@/components/ThemeSwitcher.vue';
 import type { BreadcrumbItemType } from '@/types';
 
 defineProps<{

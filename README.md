@@ -13,9 +13,9 @@ This Vue starter kit utilizes Vue 3 and the Composition API, TypeScript, Tailwin
 - ✅ Authentication
 - ✅ User Management
 - 🚧 Landing Page
-- 🚧 Role Management
-- 🚧 Permission Management
-- 🚧 Audit Log
+- ✅ Role Management
+- ✅ Permission Management
+- 🚧 Audit Trail
 - 🚧 Multi Lang Support
 - 🚧 Modular System
 

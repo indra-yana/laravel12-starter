@@ -2,40 +2,24 @@
 import { Button } from '@/components/ui/button';
 import { Link, usePage } from '@inertiajs/vue3';
 import { Separator } from '@/components/ui/separator';
-import { type NavItem } from '@/types';
+import { settingNavItems } from '@/datasource/sidebardata';
 import Heading from '@/components/Heading.vue';
 import ScrollArea from '@/components/ui/scroll-area/ScrollArea.vue';
 import ScrollBar from '@/components/ui/scroll-area/ScrollBar.vue';
 import useCan from '@/composables/useCan';
 
+interface ZiggyProps {
+  ziggy?: {
+    location?: string;
+    [key: string]: any;
+  };
+  [key: string]: unknown;
+}
+
 const { canAny } = useCan();
-
-const sidebarNavItems: NavItem[] = [
-    {
-        title: 'Profile',
-        href: '/settings/profile',
-        route: 'profile.edit',
-    },
-    {
-        title: 'Password',
-        href: '/settings/password',
-        route: 'password.edit',
-    },
-    {
-        title: 'Appearance',
-        href: '/settings/appearance',
-        route: 'appearance.index',
-    },
-    {
-        title: 'Users',
-        href: '/settings/users',
-        route: 'users.*',
-        isActive: ['roles.index', 'permissions.index'].includes(route().current() || ''),
-    },
-];
-
-const page = usePage();
-const currentPath = page.props.ziggy?.location ? new URL(page.props.ziggy?.location).pathname : '';
+const page = usePage<ZiggyProps>();
+const location = page.props.ziggy?.location ?? null;
+const currentPath = location ? new URL(location).pathname : '';
 
 </script>
 
@@ -47,7 +31,7 @@ const currentPath = page.props.ziggy?.location ? new URL(page.props.ziggy?.locat
             <aside class="w-full max-w-xl lg:w-48">
                 <ScrollArea type='auto' orientation="horizontal" className='bg-background w-full min-w-40 px-1 py-2 md:block'>
                     <nav class="flex lg:flex-col space-x-0 space-y-1">
-                        <template v-for="item in sidebarNavItems" :key="item.href">
+                        <template v-for="item in settingNavItems" :key="item.href">
                             <Button v-if="canAny(item.route!!)" variant="ghost" :class="['justify-start', { 'bg-muted': currentPath === item.href || item.isActive }]" as-child>
                                 <Link :href="item.href">
                                 {{ item.title }}
