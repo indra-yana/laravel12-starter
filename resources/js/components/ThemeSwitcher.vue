@@ -18,7 +18,7 @@ function handleThemeUpdated(value: Appearance) {
 <template>
     <Popover>
         <PopoverTrigger as-child>
-            <Button variant="outline" class="rounded-full shadow size-9 bg-backdrop-blur-sm">
+            <Button variant="outline" class="rounded-full shadow-md size-9 bg-backdrop-blur-sm">
                 <component v-if="currentAppearance == 'light'" :is="Sun" />
                 <component v-else-if="currentAppearance == 'dark'" :is="Moon" />
                 <component v-else-if="currentAppearance == 'system'" :is="Monitor" />

@@ -2,6 +2,7 @@
 import { onMounted, reactive } from 'vue';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
+import NavUser from './NavUser.vue';
 import ThemeSwitcher from '@/components/ThemeSwitcher.vue';
 import type { BreadcrumbItemType } from '@/types';
 
@@ -34,8 +35,9 @@ onMounted(() => {
                     <Breadcrumbs :breadcrumbs="breadcrumbs" />
                 </template>
             </div>
-            <div>
+            <div class="flex gap-2.5">
                 <ThemeSwitcher class="flex-auto" />
+                <NavUser class="flex-auto" :asThumb="true" />
             </div>
         </div>
     </header>
