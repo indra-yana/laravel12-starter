@@ -2,12 +2,12 @@
 import { Head, usePage } from '@inertiajs/vue3';
 import { User, type BreadcrumbItem } from '@/types';
 import AppLayout from '@/layouts/AppLayout.vue';
+import ContentSection from '@/layouts/ContentSection.vue';
 import HeadingSmall from '@/components/HeadingSmall.vue';
 import RoleManager, { Role, RoleDef } from '@/components/settings/roles/RoleManager.vue';
-import SettingsLayout from '@/layouts/settings/Layout.vue';
+import SettingsLayout from '@/layouts/SettingLayout.vue';
 import type { PageProps } from '@inertiajs/core';
 import UsersTabs from '@/components/settings/UsersTabs.vue';
-import ContentSection from '@/layouts/ContentSection.vue';
 
 interface PagePropsData extends PageProps {
     roles: Role[];

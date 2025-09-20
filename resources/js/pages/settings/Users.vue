@@ -8,7 +8,7 @@ import { UserPlus2 } from 'lucide-vue-next';
 import AppLayout from '@/layouts/AppLayout.vue';
 import ContentSection from '@/layouts/ContentSection.vue';
 import HeadingSmall from '@/components/HeadingSmall.vue';
-import SettingsLayout from '@/layouts/settings/Layout.vue';
+import SettingsLayout from '@/layouts/SettingLayout.vue';
 import UserForm from '@/components/settings/user-form/UserForm.vue';
 import UsersTable from '@/components/settings/users-table/UsersTable.vue';
 import UsersTabs from '@/components/settings/UsersTabs.vue';

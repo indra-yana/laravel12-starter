@@ -8,7 +8,7 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import DeleteUser from '@/components/DeleteUser.vue';
 import HeadingSmall from '@/components/HeadingSmall.vue';
 import InputError from '@/components/InputError.vue';
-import SettingsLayout from '@/layouts/settings/Layout.vue';
+import SettingsLayout from '@/layouts/SettingLayout.vue';
 
 interface Props {
     mustVerifyEmail: boolean;

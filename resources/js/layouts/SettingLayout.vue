@@ -45,14 +45,9 @@ const currentPath = location ? new URL(location).pathname : '';
 
             <Separator class="my-2 lg:hidden" />
 
-            <div class="flex space-y-12 w-full overflow-y-hidden sticky h-screen">
+            <div class="flex space-y-12 w-full overflow-y-hidden sticky h-screen px-1">
                 <slot />
             </div>
-            <!-- <div class="flex-1 mt-2">
-                <section class="space-y-12">
-                    <slot />
-                </section>
-            </div> -->
         </div>
     </div>
 </template>

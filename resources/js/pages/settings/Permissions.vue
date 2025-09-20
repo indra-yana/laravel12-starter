@@ -5,7 +5,7 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import ContentSection from '@/layouts/ContentSection.vue';
 import HeadingSmall from '@/components/HeadingSmall.vue';
 import PermissionManager, { Permission } from '@/components/settings/permissions/PermissionManager.vue';
-import SettingsLayout from '@/layouts/settings/Layout.vue';
+import SettingsLayout from '@/layouts/SettingLayout.vue';
 import type { PageProps } from '@inertiajs/core';
 import UsersTabs from '@/components/settings/UsersTabs.vue';
 

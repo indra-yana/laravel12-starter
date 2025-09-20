@@ -1,15 +1,14 @@
 <script setup lang="ts">
-import InputError from '@/components/InputError.vue';
-import AppLayout from '@/layouts/AppLayout.vue';
-import SettingsLayout from '@/layouts/settings/Layout.vue';
-import { Head, useForm } from '@inertiajs/vue3';
-import { ref } from 'vue';
-
-import HeadingSmall from '@/components/HeadingSmall.vue';
 import { Button } from '@/components/ui/button';
+import { Head, useForm } from '@inertiajs/vue3';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { ref } from 'vue';
 import { type BreadcrumbItem } from '@/types';
+import AppLayout from '@/layouts/AppLayout.vue';
+import HeadingSmall from '@/components/HeadingSmall.vue';
+import InputError from '@/components/InputError.vue';
+import SettingsLayout from '@/layouts/SettingLayout.vue';
 
 const breadcrumbItems: BreadcrumbItem[] = [
     {
