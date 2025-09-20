@@ -5,6 +5,7 @@ import AppearanceTabs from '@/components/AppearanceTabs.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import HeadingSmall from '@/components/HeadingSmall.vue';
 import SettingsLayout from '@/layouts/SettingLayout.vue';
+import LangSwitcher from '@/components/LangSwitcher.vue';
 
 const breadcrumbItems: BreadcrumbItem[] = [
     {
@@ -24,9 +25,22 @@ const breadcrumbItems: BreadcrumbItem[] = [
         <Head title="Appearance Settings" />
 
         <SettingsLayout>
-            <div class="space-y-6 max-w-xl">
+            <div class="space-y-6 w-full xl:w-3xl">
                 <HeadingSmall title="Appearance" description="Update your account's appearance settings" />
-                <AppearanceTabs />
+
+                <div class="flex flex-col sm:flex-row justify-between gap-2">
+                    <HeadingSmall :separator="false" title="Theme" description="Select the theme for the dashboard." />
+                    <div>
+                        <AppearanceTabs />
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row justify-between gap-2">
+                    <HeadingSmall :separator="false" title="Language" description="Select the language for the app." />
+                    <div>
+                        <LangSwitcher />
+                    </div>
+                </div>
             </div>
         </SettingsLayout>
     </AppLayout>
