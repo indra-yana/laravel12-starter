@@ -43,6 +43,7 @@ export interface SharedData extends PageProps {
     auth: Auth;
     ziggy: Config & { location: string };
     sidebarOpen: boolean;
+    translations: Record<string, any>;
     app: AppConfig;
     flash: {
         type?: 'success' | 'info' | 'warning' | 'error';

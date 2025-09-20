@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Services\ACL\PermissionService;
+use App\Utils\Translations;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -61,6 +62,7 @@ class HandleInertiaRequests extends Middleware
                 'message' => $request->session()->get('message'),
                 'response' => $request->session()->get('response'),
             ],
+            'translations' => fn() => (new Translations())->render(),
             'app' => fn() => array_merge(
                 configPick('app', [
                     'name',

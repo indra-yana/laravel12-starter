@@ -26,6 +26,11 @@ Route::prefix('settings')->middleware(['auth', 'acl'])->group(function () {
         Route::get('/', function () {
             return Inertia::render('settings/Appearance');
         })->name('appearance.index');
+
+        Route::get('set-locale/{locale}', function ($locale) {
+            session()->put('locale', $locale);
+            return back();
+        })->name('appearance.locale');
     });
 
     Route::prefix('users')->group(function () {
