@@ -9,11 +9,11 @@ import ScrollBar from '@/components/ui/scroll-area/ScrollBar.vue';
 import useCan from '@/composables/useCan';
 
 interface ZiggyProps {
-  ziggy?: {
-    location?: string;
-    [key: string]: any;
-  };
-  [key: string]: unknown;
+    ziggy?: {
+        location?: string;
+        [key: string]: any;
+    };
+    [key: string]: unknown;
 }
 
 const { canAny } = useCan();
@@ -25,7 +25,7 @@ const currentPath = location ? new URL(location).pathname : '';
 
 <template>
     <div class="px-4 py-6">
-        <Heading title="Settings" description="Manage your profile and account settings" />
+        <Heading :title="trans('label.setting')" :description="trans('label.manage_your_profile_and_account_settings')" />
 
         <div class="flex flex-col md:space-y-0 lg:flex-row lg:space-x-12">
             <aside class="w-full max-w-xl lg:w-48">

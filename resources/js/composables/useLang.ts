@@ -1,7 +1,7 @@
 import { SharedData } from '@/types';
 import { usePage } from '@inertiajs/vue3';
 
-type Replacements = Record<string, string | number>;
+export type Replacements = Record<string, string | number>;
 
 export default function useLang() {
     const page = usePage<SharedData>();

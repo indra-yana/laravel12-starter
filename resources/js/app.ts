@@ -7,6 +7,7 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from 'ziggy-js';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 import type { DefineComponent } from 'vue';
+import lang from './plugins/lang';
 
 // Extend ImportMeta interface for Vite...
 declare module 'vite/client' {
@@ -34,6 +35,7 @@ createInertiaApp({
             .use(plugin)
             .use(ZiggyVue)
             .use(pinia)
+            .use(lang)
             .mount(el);
     },
     progress: {

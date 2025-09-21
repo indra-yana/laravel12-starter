@@ -130,6 +130,7 @@ return [
         'access' => 'Akses',
         'back_to_top' => 'Kembali ke atas',
         'activity' => 'Aktivitas',
+        'manage_your_profile_and_account_settings' => 'Kelola profil dan pengaturan akun',
     ],
     'placeholder' => [
         'email' => 'email@email.com',

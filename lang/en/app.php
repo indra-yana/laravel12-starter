@@ -133,6 +133,7 @@ return [
         'access' => 'Access',
         'back_to_top' => 'Back to top',
         'activity' => 'Activity',
+        'manage_your_profile_and_account_settings' => 'Manage your profile and account settings',
     ],
     'placeholder' => [
         'email' => 'email@email.com',
