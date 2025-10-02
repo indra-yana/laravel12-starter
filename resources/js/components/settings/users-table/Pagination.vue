@@ -107,7 +107,7 @@ const isNumberLabel = (label: string) => /^\d+$/.test(label);
                     </Button>
                 </div>
                 <div class="flex  items-end justify-end text-sm font-medium">
-                    Page {{ table.getState().pagination.pageIndex + 1 }} of {{ table.getPageCount() }}
+                    {{ trans('label.page_of', {current: table.getState().pagination.pageIndex + 1, total: table.getPageCount()}) }}
                 </div>
             </div>
         </div>

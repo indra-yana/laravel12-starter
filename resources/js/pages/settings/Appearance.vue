@@ -9,11 +9,11 @@ import LangSwitcher from '@/components/LangSwitcher.vue';
 
 const breadcrumbItems: BreadcrumbItem[] = [
     {
-        title: 'Settings',
+        title: trans('label.setting'),
         href: '/settings/profile',
     },
     {
-        title: 'Appearance',
+        title: trans('label.appearance'),
         href: '/settings/appearance',
     },
 ];
@@ -26,17 +26,17 @@ const breadcrumbItems: BreadcrumbItem[] = [
 
         <SettingsLayout>
             <div class="space-y-6 w-full xl:w-3xl">
-                <HeadingSmall title="Appearance" description="Update your account's appearance settings" />
+                <HeadingSmall :title="trans('label.appearance')" :description="trans('label.update_your_accounts_appearance_settings')" />
 
                 <div class="flex flex-col sm:flex-row justify-between gap-2">
-                    <HeadingSmall :separator="false" title="Theme" description="Select the theme for the dashboard." />
+                    <HeadingSmall :separator="false" :title="trans('label.theme')" :description="trans('label.select_the_theme_for_the_app')" />
                     <div>
                         <AppearanceTabs />
                     </div>
                 </div>
 
                 <div class="flex flex-col sm:flex-row justify-between gap-2">
-                    <HeadingSmall :separator="false" title="Language" description="Select the language for the app." />
+                    <HeadingSmall :separator="false" :title="trans('label.language')" :description="trans('label.select_the_language_support')" />
                     <div>
                         <LangSwitcher />
                     </div>

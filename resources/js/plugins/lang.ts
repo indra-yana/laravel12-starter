@@ -9,5 +9,6 @@ export default {
         }
 
         app.config.globalProperties.trans = __;
+        window.trans = __;
     },
 };

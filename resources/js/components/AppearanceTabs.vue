@@ -16,9 +16,9 @@ function updateTheme(value: Appearance) {
 }
 
 const tabs = [
-    { value: 'light', Icon: Sun, label: 'Light' },
-    { value: 'dark', Icon: Moon, label: 'Dark' },
-    { value: 'system', Icon: Monitor, label: 'System' },
+    { value: 'light', Icon: Sun, label: trans('label.light') },
+    { value: 'dark', Icon: Moon, label: trans('label.dark') },
+    { value: 'system', Icon: Monitor, label: trans('label.system') },
 ] as const;
 </script>
 

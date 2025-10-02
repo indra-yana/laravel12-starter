@@ -266,18 +266,18 @@ function handleConfirm(show: boolean) {
 	<div class="flex flex-col md:flex-row items-start md:items-center md:justify-between mt-4">
 		<div class="w-full sm:w-auto md:flex-1">
 			<!-- <Input class="max-w-sm" placeholder="Filter emails..." :model-value="table.getColumn('email')?.getFilterValue() as string" @update:model-value="table.getColumn('email')?.setFilterValue($event)" /> -->
-			<Input type="search" class="max-w-sm" placeholder="Search..." :model-value="table.getState().globalFilter" @update:model-value="table.setGlobalFilter($event)" />
+			<Input type="search" class="max-w-sm" :placeholder="trans('label.search...')" :model-value="table.getState().globalFilter" @update:model-value="table.setGlobalFilter($event)" />
 		</div>
 		<div class="flex flex-row items-start justify-between space-x-2 mt-2 md:mt-0 ">
 			<DropdownMenu>
 				<DropdownMenuTrigger as-child>
 					<Button variant="outline" class="ml-auto">
 						<Filter class="size-4 mr-2" />
-						Filter
+						{{ trans('label.filter') }}
 					</Button>
 				</DropdownMenuTrigger>
 				<DropdownMenuContent align="end" class="min-w-[200px]">
-					<DropdownMenuLabel>Filter Columns</DropdownMenuLabel>
+					<DropdownMenuLabel>{{ trans('label.filter_columns') }}</DropdownMenuLabel>
 					<DropdownMenuSeparator />
 					<DropdownMenuCheckboxItem v-for="(filter, key) in availableFilters" :key="key" :modelValue="userTableStore.activeFilters.includes(filter.key)" @update:modelValue="(checked) => onActiveFilterUpdate(filter.key, checked)" @select="(event) => event.preventDefault()">
 						{{ filter.label }}
@@ -288,15 +288,15 @@ function handleConfirm(show: boolean) {
 				<DropdownMenuTrigger as-child>
 					<Button variant="outline" class="ml-auto">
 						<WrenchIcon class="size-4" />
-						Actions
+						{{ trans('label.actions') }}
 					</Button>
 				</DropdownMenuTrigger>
 				<DropdownMenuContent align="end">
-					<DropdownMenuLabel>Bulk Actions</DropdownMenuLabel>
+					<DropdownMenuLabel>{{ trans('label.bulk_actions') }}</DropdownMenuLabel>
 					<DropdownMenuSeparator />
 					<Button variant="ghost" class="ml-auto text-destructive" size="sm" @click="handleBulkDelete" :disabled="!selectedRows.length">
 						<DeleteIcon class="size-4 me-2" />
-						Delete Selected
+						{{ trans('label.delete_selected') }}
 					</Button>
 				</DropdownMenuContent>
 			</DropdownMenu>
@@ -304,11 +304,11 @@ function handleConfirm(show: boolean) {
 				<DropdownMenuTrigger as-child>
 					<Button variant="outline" class="ml-auto">
 						<EyeIcon class="size-4" />
-						Columns
+						{{ trans('label.columns') }}
 					</Button>
 				</DropdownMenuTrigger>
 				<DropdownMenuContent align="end">
-					<DropdownMenuLabel>Toggle Columns</DropdownMenuLabel>
+					<DropdownMenuLabel>{{ trans('label.toggle_columns') }}</DropdownMenuLabel>
 					<DropdownMenuSeparator />
 					<DropdownMenuCheckboxItem v-for="column in table.getAllColumns().filter((column) => column.getCanHide())" :key="column.id" class="capitalize" :modelValue="column.getIsVisible()" @update:modelValue="(value) => {
 						column.toggleVisibility(!!value)
@@ -369,8 +369,7 @@ function handleConfirm(show: boolean) {
 	</div>
 	<div class="flex items-start justify-end space-x-2">
 		<div class="flex-1 text-sm text-muted-foreground py-2">
-			{{ table.getFilteredSelectedRowModel().rows.length }} of
-			{{ table.getFilteredRowModel().rows.length }} row(s) selected.
+			{{ trans('label.selected_rows', { selected: table.getFilteredSelectedRowModel().rows.length, total: table.getFilteredRowModel().rows.length}) }}
 		</div>
 		<PageLength :table="table" />
 		<Pagination class="space-x-2" :table="table" :pagination="pagination" @pageChanged="handlePageChanged" />

@@ -48,11 +48,11 @@ watch(() => selectedRole.value, useDebounceFn(postSelected, 500));
         <div class="flex justify-between items-center border-b pb-2">
             <div class="flex-col">
                 <template v-if="!user">
-                    <h1>No user was chosen!</h1>
+                    <h1>{{ trans('label.no_user_was_chosen') }}</h1>
                 </template>
                 <template v-else>
                     <div>
-                        <span class=" text-muted-foreground">Assign <b>{{ selectedRole || '' }}</b> role to:</span> <b>{{ user?.name }}</b>
+                        <span class=" text-muted-foreground" v-html="trans('label.assign_role_to_user', { role: selectedRole || '', user: user?.name })"></span>
                     </div>
                 </template>
             </div>

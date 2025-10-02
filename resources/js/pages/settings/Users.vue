@@ -15,11 +15,11 @@ import UsersTabs from '@/components/settings/UsersTabs.vue';
 
 const breadcrumbItems: BreadcrumbItem[] = [
     {
-        title: 'Settings',
+        title: trans('label.setting'),
         href: '/settings/profile',
     },
     {
-        title: 'Users',
+        title: trans('label.user'),
         href: '/settings/users',
     },
 ];
@@ -44,11 +44,11 @@ function handleOpenChange(close: boolean) {
         <SettingsLayout>
             <div class="space-y-6 w-full">
                 <div className='mb-2 flex flex-wrap items-center justify-between space-y-2'>
-                    <HeadingSmall title="Users" description="Create & manage user accounts within the system." :separator="false" />
+                    <HeadingSmall :title="trans('label.user')" :description="trans('label.create_manage_user_accounts_within_the_system')" :separator="false" />
                     <Button variant='outline-default' @click="handleAddUser">
-                        <UserPlus2 /> Add User
+                        <UserPlus2 /> {{ trans('button.add_user') }}
                     </Button>
-                    <UserForm :open="showUserForm" :onOpenChange="handleOpenChange" title="Add New User" description="Create new user here. Click save when you're done." />
+                    <UserForm :open="showUserForm" :onOpenChange="handleOpenChange" :title="trans('label.add_new_user')" :description="trans('label.create_new_user_here_click_save_when_youre_done')" />
                 </div>
 
                 <Separator class="mt-4 hidden lg:block" />

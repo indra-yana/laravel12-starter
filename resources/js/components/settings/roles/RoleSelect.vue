@@ -31,7 +31,7 @@ function onToggle(role: string) {
             <div class="flex flex-col">
                 <span class="font-medium">{{ role }}</span>
                 <span class="text-sm text-muted-foreground">
-                    {{ Object.values(permissions).length }} permissions
+                    {{ Object.values(permissions).length }} {{ trans('label.permissions') }}
                 </span>
             </div>
             <Switch :model-value="selectedRole === role" @update:model-value="onToggle(role)" />

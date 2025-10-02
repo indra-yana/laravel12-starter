@@ -12,9 +12,9 @@ const { class: containerClass = '' } = defineProps<Props>();
 const currentRoute = route().current();
 const query = route().queryParams;
 const tabs = [
-    { route: 'users.index', Icon: Users, label: 'Users' },
-    { route: 'roles.index', Icon: ShieldCheck, label: 'Roles' },
-    { route: 'permissions.index', Icon: LockKeyholeOpen, label: 'Permissions' },
+    { route: 'users.index', Icon: Users, label: trans('label.users') },
+    { route: 'roles.index', Icon: ShieldCheck, label: trans('label.roles') },
+    { route: 'permissions.index', Icon: LockKeyholeOpen, label: trans('label.permissions') },
 ] as const;
 
 function gotoRoute(goto: string) {

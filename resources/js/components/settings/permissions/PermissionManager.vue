@@ -51,16 +51,16 @@ watch(selected, useDebounceFn(postSelected, 500));
         <div class="flex justify-between items-center border-b pb-2">
             <div>
                 <template v-if="!user">
-                    <h1>No user was chosen!</h1>
+                    <h1>{{ trans('label.no_user_was_chosen') }}</h1>
                 </template>
                 <template v-else>
                     <div>
-                        <span class=" text-muted-foreground">Assign permissions to:</span> <b>{{ user?.name }}</b>
+                        <span class=" text-muted-foreground" v-html="trans('label.assign_permission_to_user', { user: user?.name })"></span>
                     </div>
                 </template>
             </div>
             <Button variant="outline" @click="toggleSelectAll" v-if="user">
-                {{ isAllSelected ? 'Unselect All' : 'Select All' }}
+                {{ isAllSelected ? trans('label.deselect_all') : trans('label.select_all') }}
             </Button>
         </div>
 

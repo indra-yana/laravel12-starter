@@ -40,10 +40,10 @@ function assignPermission(userId: number) {
 <template>
     <div class="space-x-2">
         <Button variant="default" size="sm" @click="edit(user)">
-            <EditIcon class="size-4" /> Edit
+            <EditIcon class="size-4" /> {{ trans('label.edit') }}
         </Button>
         <Button variant="destructive" size="sm" @click="destroy(user)">
-            <DeleteIcon class="size-4" /> Delete
+            <DeleteIcon class="size-4" /> {{ trans('label.delete') }}
         </Button>
         <DropdownMenu>
             <DropdownMenuTrigger as-child>
@@ -53,11 +53,11 @@ function assignPermission(userId: number) {
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-                <DropdownMenuLabel>Other Actions</DropdownMenuLabel>
+                <DropdownMenuLabel>{{ trans('label.other_actions') }}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem @click="$emit('expand')">Expand Row</DropdownMenuItem>
-                <DropdownMenuItem @click="assignRole(user.id)">Assign Role</DropdownMenuItem>
-                <DropdownMenuItem @click="assignPermission(user.id)">Assign Permissions</DropdownMenuItem>
+                <DropdownMenuItem @click="$emit('expand')">{{ trans('label.expand_row') }}</DropdownMenuItem>
+                <DropdownMenuItem @click="assignRole(user.id)">{{ trans('label.assign_role') }}</DropdownMenuItem>
+                <DropdownMenuItem @click="assignPermission(user.id)">{{ trans('label.assign_permissions') }}</DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
     </div>

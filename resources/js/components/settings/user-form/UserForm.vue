@@ -88,17 +88,17 @@ function resetForm() {
 
             <ScrollArea class="flex-1 overflow-y-auto">
                 <form @submit.prevent="showConfirm = true" class="flex-1 space-y-4 px-4" ref="userForm">
-                    <Label for="name">Name</Label>
-                    <Input type="text" id="name" v-model="form.name" :aria-invalid="!!form.errors.name" @input="form.clearErrors('name')" required autofocus :tabindex="1" autocomplete="name" placeholder="Enter name" />
+                    <Label for="name">{{ trans('label.name') }}</Label>
+                    <Input type="text" id="name" v-model="form.name" :aria-invalid="!!form.errors.name" @input="form.clearErrors('name')" required autofocus :tabindex="1" autocomplete="name" :placeholder="trans('placeholder.enter_name')" />
                     <InputError :message="form.errors.name" />
 
-                    <Label for="email">Email address</Label>
+                    <Label for="email">{{ trans('label.email_address') }}</Label>
                     <Input type="email" id="email" v-model="form.email" :aria-invalid="!!form.errors.email" @input="form.clearErrors('email')" required autocomplete="email" placeholder="email@example.com" />
                     <InputError :message="form.errors.email" />
 
                     <Label for="status">
                         <Checkbox id="status" :model-value="form.is_active" @update:model-value="(toggleStatus as any)" />
-                        <span class="font-semibold">Active</span>
+                        <span class="font-semibold">{{ trans('label.active') }}</span>
                     </Label>
                     <InputError :message="form.errors.is_active" />
                 </form>
@@ -110,17 +110,17 @@ function resetForm() {
                     <SheetClose asChild>
                         <Button variant="outline" :disabled="form.processing">
                             <XCircleIcon />
-                            Close
+                            {{ trans('button.close') }}
                         </Button>
                     </SheetClose>
                     <Button variant="default" form="tasks-form" type="button" @click="handleSubmit" :disabled="form.processing">
                         <SaveIcon />
-                        Save Changes
+                        {{ trans('button.save_changes') }}
                     </Button>
                 </div>
             </SheetFooter>
         </SheetContent>
     </Sheet>
 
-    <ConfirmDialog type="submit" :open="showConfirm" :onConfirm="submitConfirmed" :onCancel="handleCancel" :loading="form.processing" title="Confirm Save" description="Are you sure you want to save this data?"></ConfirmDialog>
+    <ConfirmDialog type="submit" :open="showConfirm" :onConfirm="submitConfirmed" :onCancel="handleCancel" :loading="form.processing" :title="trans('label.confirm_save')" :description="trans('label.are_you_sure_to_save_this_data')"></ConfirmDialog>
 </template>

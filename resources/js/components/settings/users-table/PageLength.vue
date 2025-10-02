@@ -12,7 +12,7 @@ defineProps<Props>()
 
 <template>
     <div class="flex items-center space-x-0 md:space-x-2">
-        <p class="text-sm font-medium hidden md:flex">Show</p>
+        <p class="text-sm font-medium hidden md:flex">{{ trans('label.show') }}</p>
         <Select :model-value="`${table.getState().pagination.pageSize}`" @update:model-value="(table.setPageSize as any)">
             <SelectTrigger class="h-8 w-[70px]">
                 <SelectValue :placeholder="`${table.getState().pagination.pageSize}`" />
@@ -23,6 +23,6 @@ defineProps<Props>()
                 </SelectItem>
             </SelectContent>
         </Select>
-        <p class="text-sm font-medium hidden md:flex">row(s)</p>
+        <p class="text-sm font-medium hidden md:flex">{{ trans('label.rows') }}</p>
     </div>
 </template>
