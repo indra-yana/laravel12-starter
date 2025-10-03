@@ -28,7 +28,7 @@ const { hasPermissionForGroup } = useMenuPermissions();
             <CollapsibleTrigger as-child>
                 <SidebarMenuButton :tooltip="item.title">
                     <component :is="item.icon" v-if="item.icon" />
-                    <span>{{ item.title }}</span>
+                    <span>{{ trans(item.title) }}</span>
                     <NavBadge v-if="item.badge">{{ item.badge }}</NavBadge>
                     <ChevronRight class="ms-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                 </SidebarMenuButton>
@@ -44,7 +44,7 @@ const { hasPermissionForGroup } = useMenuPermissions();
                                 <div :class="{ 'dark:text-accent': checkIsActive(href, subItem) }">
                                     <component :is="subItem.icon" v-if="subItem.icon" class="size-4" />
                                 </div>
-                                <span>{{ subItem.title }}</span>
+                                <span>{{ trans(subItem.title) }}</span>
                                 <NavBadge v-if="subItem.badge">{{ subItem.badge }}</NavBadge>
                                 </Link>
                             </SidebarMenuSubButton>

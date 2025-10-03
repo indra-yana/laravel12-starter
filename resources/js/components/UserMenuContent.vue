@@ -23,7 +23,7 @@ defineProps<Props>();
         <DropdownMenuItem :as-child="true">
             <Link class="block w-full" :href="route('profile.edit')" as="button">
                 <Settings class="mr-2 h-4 w-4" />
-                Settings
+                {{ trans('label.settings') }}
             </Link>
         </DropdownMenuItem>
     </DropdownMenuGroup>
@@ -31,7 +31,7 @@ defineProps<Props>();
     <DropdownMenuItem :as-child="true">
         <Link class="block w-full text-destructive" method="post" :href="route('logout')" as="button">
             <LogOut class="mr-2 h-4 w-4 text-destructive" />
-            Log out
+            {{ trans('label.logout') }}
         </Link>
     </DropdownMenuItem>
 </template>

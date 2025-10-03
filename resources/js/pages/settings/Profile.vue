@@ -19,7 +19,7 @@ defineProps<Props>();
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: trans('label.setting'),
+        title: trans('label.settings'),
         href: '/settings/profile',
     },
     {

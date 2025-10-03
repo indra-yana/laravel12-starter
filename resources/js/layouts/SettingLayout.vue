@@ -25,7 +25,7 @@ const currentPath = location ? new URL(location).pathname : '';
 
 <template>
     <div class="px-4 py-6">
-        <Heading :title="trans('label.setting')" :description="trans('label.manage_your_profile_and_account_settings')" />
+        <Heading :title="trans('label.settings')" :description="trans('label.manage_your_profile_and_account_settings')" />
 
         <div class="flex flex-col md:space-y-0 lg:flex-row lg:space-x-12">
             <aside class="w-full max-w-xl lg:w-48">
@@ -34,7 +34,7 @@ const currentPath = location ? new URL(location).pathname : '';
                         <template v-for="item in settingNavItems" :key="item.href">
                             <Button v-if="canAny(item.route!!)" variant="ghost" :class="['justify-start', { 'bg-muted': currentPath === item.href || item.isActive }]" as-child>
                                 <Link :href="item.href">
-                                {{ item.title }}
+                                {{ trans(item.title) }}
                                 </Link>
                             </Button>
                         </template>

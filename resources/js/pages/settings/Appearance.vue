@@ -9,7 +9,7 @@ import LangSwitcher from '@/components/LangSwitcher.vue';
 
 const breadcrumbItems: BreadcrumbItem[] = [
     {
-        title: trans('label.setting'),
+        title: trans('label.settings'),
         href: '/settings/profile',
     },
     {

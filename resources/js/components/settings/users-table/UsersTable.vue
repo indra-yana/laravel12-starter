@@ -261,7 +261,7 @@ function handleConfirm(show: boolean) {
 </script>
 
 <template>
-	<ConfirmDialog type="delete" :open="showConfirm" :onConfirm="postDelete" :onCancel="() => handleConfirm(false)" :loading="form.processing" title="Delete users?" description="This action will permanently delete the selected users." :detail="selectedNames"></ConfirmDialog>
+	<ConfirmDialog type="delete" :open="showConfirm" :onConfirm="postDelete" :onCancel="() => handleConfirm(false)" :loading="form.processing" :title="trans('label.delete_user')" :description="trans('label.delete_data_description')" :detail="selectedNames"></ConfirmDialog>
 
 	<div class="flex flex-col md:flex-row items-start md:items-center md:justify-between mt-4">
 		<div class="w-full sm:w-auto md:flex-1">

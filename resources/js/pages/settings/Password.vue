@@ -12,7 +12,7 @@ import SettingsLayout from '@/layouts/SettingLayout.vue';
 
 const breadcrumbItems: BreadcrumbItem[] = [
     {
-        title: trans('label.setting'),
+        title: trans('label.settings'),
         href: '/settings/profile',
     },
     {
