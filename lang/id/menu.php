@@ -9,4 +9,6 @@ return [
     "Password" => "Kata Sandi",
     "Appearance" => "Tampilan",
     "Users" => "Pengguna",
+    "Github Repo" => "Github Repository",
+    "Documentation" => "Panduan Pengguna",
 ];

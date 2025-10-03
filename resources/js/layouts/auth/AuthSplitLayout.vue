@@ -35,7 +35,7 @@ defineProps<{
                             </Link>
                             <ThemeSwitcher class="flex-auto" />
                         </div>
-                        <div class="text-center text-xl text-muted-foreground">
+                        <div class="text-left text-xl text-muted-foreground">
                             <p class="text-sm" v-if="description">{{ description }}</p>
                         </div>
                     </div>

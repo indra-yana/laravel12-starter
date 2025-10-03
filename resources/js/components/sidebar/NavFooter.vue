@@ -18,7 +18,7 @@ defineProps<Props>();
                     <SidebarMenuButton class="" as-child>
                         <a :href="item.href" target="_blank" rel="noopener noreferrer" class="text-link">
                             <component :is="item.icon" />
-                            <span>{{ item.title }}</span>
+                            <span>{{ trans(item.title) }}</span>
                         </a>
                     </SidebarMenuButton>
                 </SidebarMenuItem>
