@@ -178,6 +178,7 @@ return [
         'non_active' => 'Tidak Aktiv',
         'confirm_save' => 'Konfirmasi Simpan',
         'are_you_sure_to_save_this_data' => 'Apakah anda yakin ingin menyimpan data?',
+        'are_you_sure' => 'Apakah Anda yakin?',
     ],
     'placeholder' => [
         'email' => 'email@email.com',

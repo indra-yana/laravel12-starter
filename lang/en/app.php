@@ -179,6 +179,7 @@ return [
         'non_active' => 'Non Active',
         'confirm_save' => 'Confirm Save',
         'are_you_sure_to_save_this_data' => 'Are you sure to save this data?',
+        'are_you_sure' => 'Are you sure?',
     ],
     'placeholder' => [
         'email' => 'email@email.com',

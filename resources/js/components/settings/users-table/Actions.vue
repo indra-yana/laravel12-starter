@@ -1,6 +1,6 @@
 <script setup lang="ts" generic="TData, TValue">
 import { Button } from '@/components/ui/button';
-import { DeleteIcon, EditIcon, MoreHorizontal } from 'lucide-vue-next';
+import { Edit, MoreHorizontal, Trash2 } from 'lucide-vue-next';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { User } from '@/types';
 
@@ -40,10 +40,10 @@ function assignPermission(userId: number) {
 <template>
     <div class="space-x-2">
         <Button variant="default" size="sm" @click="edit(user)">
-            <EditIcon class="size-4" /> {{ trans('label.edit') }}
+            <Edit class="size-4" /> {{ trans('label.edit') }}
         </Button>
         <Button variant="destructive" size="sm" @click="destroy(user)">
-            <DeleteIcon class="size-4" /> {{ trans('label.delete') }}
+            <Trash2 class="size-4" /> {{ trans('label.delete') }}
         </Button>
         <DropdownMenu>
             <DropdownMenuTrigger as-child>

@@ -1,18 +1,8 @@
 <script setup lang="ts">
-import {
-    Dialog,
-    DialogTrigger,
-    DialogContent,
-    DialogHeader,
-    DialogFooter,
-    DialogTitle,
-    DialogDescription,
-    DialogClose,
-    DialogOverlay,
-} from '@/components/ui/dialog'
-import { Button } from './ui/button'
-import { computed } from 'vue'
-import { Trash2, Pencil, CheckCircle, HelpCircle } from 'lucide-vue-next'
+import { Button } from './ui/button';
+import { computed } from 'vue';
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription, DialogClose, DialogOverlay, } from '@/components/ui/dialog';
+import { Trash2, Pencil, CheckCircle, HelpCircle } from 'lucide-vue-next';
 
 interface Props {
     onConfirm: (params?: any) => void;
@@ -26,7 +16,6 @@ interface Props {
 }
 
 const props = defineProps<Props>()
-
 const iconComponent = computed(() => {
     switch (props.type) {
         case 'delete':
@@ -71,7 +60,7 @@ const confirmText = computed(() => {
                 <div class="flex items-center gap-2">
                     <component :is="iconComponent" class="size-5" :class="type === 'delete' ? 'text-destructive' : 'text-primary'" />
                     <DialogTitle>
-                        {{ title ?? 'Are you sure?' }}
+                        {{ title ?? trans('label.are_you_sure') }}
                     </DialogTitle>
                 </div>
             </DialogHeader>
@@ -84,7 +73,7 @@ const confirmText = computed(() => {
             <DialogFooter class="flex justify-end gap-2">
                 <DialogClose as-child>
                     <Button variant="outline" :disabled="loading" @click="onCancel">
-                        Cancel
+                        {{ trans('label.cancel') }}
                     </Button>
                 </DialogClose>
                 <Button :variant="type === 'delete' ? 'destructive' : 'default'" :disabled="loading" @click="onConfirm">
