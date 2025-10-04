@@ -1,11 +1,17 @@
 <script setup lang="ts">
 import { footerNavItems, mainNavItems } from '@/datasource/sidebardata';
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import AppLogo from '@/components/AppLogo.vue';
 import NavFooter from '@/components/sidebar/NavFooter.vue';
 import NavMain from '@/components/sidebar/NavMain.vue';
 import NavUser from '@/components/sidebar/NavUser.vue';
+import { computed } from 'vue';
+import { SharedData } from '@/types';
+
+const page = usePage<SharedData>()
+const dynamicMenus = page.props.menus || [];
+const navItems = computed(() => [...mainNavItems, ...dynamicMenus])
 
 </script>
 
@@ -24,7 +30,7 @@ import NavUser from '@/components/sidebar/NavUser.vue';
         </SidebarHeader>
 
         <SidebarContent>
-            <NavMain :items="mainNavItems" />
+            <NavMain :items="navItems" />
         </SidebarContent>
 
         <SidebarFooter>

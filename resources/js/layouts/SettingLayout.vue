@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { activeInclude } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Link, usePage } from '@inertiajs/vue3';
 import { Separator } from '@/components/ui/separator';
@@ -32,7 +33,7 @@ const currentPath = location ? new URL(location).pathname : '';
                 <ScrollArea type='auto' orientation="horizontal" className='bg-background w-full min-w-40 px-1 py-2 md:block'>
                     <nav class="flex lg:flex-col space-x-0 space-y-1">
                         <template v-for="item in settingNavItems" :key="item.href">
-                            <Button v-if="canAny(item.route!!)" variant="ghost" :class="['justify-start', { 'bg-muted': currentPath === item.href || item.isActive }]" as-child>
+                            <Button v-if="canAny(item.route!!)" variant="ghost" :class="['justify-start', { 'bg-muted': currentPath === item.href || activeInclude(item) }]" as-child>
                                 <Link :href="item.href">
                                 {{ trans(item.title) }}
                                 </Link>

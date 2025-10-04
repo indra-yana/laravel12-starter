@@ -4,7 +4,7 @@ import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
-    return twMerge(clsx(inputs));
+  return twMerge(clsx(inputs));
 }
 
 export function checkIsActive(href: string, item: NavItem, mainNav = false): boolean {
@@ -25,4 +25,13 @@ export function checkIsActive(href: string, item: NavItem, mainNav = false): boo
     // recursive cek ke child items
     !!item?.items?.some((i) => checkIsActive(href, i, mainNav))
   );
+}
+
+export function activeInclude(item: NavItem) {
+  const current = route().current() || '';
+  if (Array.isArray(item.isActive)) {
+    return item.isActive.includes(current);
+  }
+
+  return current === item.route;
 }

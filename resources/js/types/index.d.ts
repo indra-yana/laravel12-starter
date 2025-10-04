@@ -21,7 +21,7 @@ export interface NavItem {
     title: string;
     href: string;
     route?: string | string[];
-    icon?: LucideIcon;
+    icon?: LucideIcon | string;
     isActive?: boolean;
     items?: NavItem[],
     badge?: number,
@@ -44,6 +44,7 @@ export interface SharedData extends PageProps {
     ziggy: Config & { location: string };
     sidebarOpen: boolean;
     translations: Record<string, any>;
+    menus: Array;
     app: AppConfig;
     flash: {
         type?: 'success' | 'info' | 'warning' | 'error';

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Utils\ModuleMenuHelper;
 use Modules\Setting\Services\ACL\PermissionService;
 use App\Utils\Translations;
 use Illuminate\Foundation\Inspiring;
@@ -45,6 +46,7 @@ class HandleInertiaRequests extends Middleware
 
         return [
             ...parent::share($request),
+            'menus' => ModuleMenuHelper::getMergedMenus(),
             'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
                 'user' => $user,
