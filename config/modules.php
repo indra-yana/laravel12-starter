@@ -44,6 +44,7 @@ return [
             'views/app' => 'resources/views/app.blade.php',
             'assets/js/bootstrap' => 'resources/assets/js/bootstrap.js',
             'assets/css/app' => 'resources/assets/css/app.css',
+            'scaffold/menu' => 'config/menu.php',
             // 'assets/js/composables/useAuth' => 'resources/assets/js/composables/useAuth.js',
             // 'assets/js/composables/useCan' => 'resources/assets/js/composables/useCan.js',
             // 'assets/js/composables/useRole' => 'resources/assets/js/composables/useRole.js',
@@ -64,6 +65,7 @@ return [
             'views/index' => ['LOWER_NAME'],
             'views/master' => ['LOWER_NAME', 'STUDLY_NAME'],
             'scaffold/config' => ['STUDLY_NAME'],
+            'scaffold/menu' => ['STUDLY_NAME', 'LOWER_NAME'],
             'composer' => [
                 'LOWER_NAME',
                 'STUDLY_NAME',
@@ -163,6 +165,7 @@ return [
 
             // config/
             'config' => ['path' => 'config', 'generate' => true],
+            'menu' => ['path' => 'config', 'generate' => true],
 
             // database/
             'factory' => ['path' => 'database/factories', 'generate' => true],

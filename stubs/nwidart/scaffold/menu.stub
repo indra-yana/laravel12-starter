@@ -1,0 +1,18 @@
+<?php
+
+return [
+    'name' => '$STUDLY_NAME$',
+
+    /**
+     * Define module menu here
+     */
+    'group' => 'General',
+    'menus' => [
+        [
+            'title' => '$STUDLY_NAME$',
+            'href' => '/$LOWER_NAME$',
+            'route' => '$LOWER_NAME$.index',
+            'icon' => 'LayoutGrid',
+        ]
+    ]
+];
