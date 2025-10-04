@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Services\ACL\PermissionService;
-use App\Services\ACL\RoleService;
+use Modules\Setting\Services\ACL\PermissionService;
+use Modules\Setting\Services\ACL\RoleService;
 use Illuminate\Console\Command;
 
 class MakeAclCommand extends Command

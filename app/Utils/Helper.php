@@ -1,6 +1,6 @@
 <?php
 
-use App\Services\ACL\PermissionService;
+use Modules\Setting\Services\ACL\PermissionService;
 use App\Utils\SendResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;

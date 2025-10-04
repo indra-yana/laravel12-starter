@@ -73,7 +73,7 @@ const confirmText = computed(() => {
             <DialogFooter class="flex justify-end gap-2">
                 <DialogClose as-child>
                     <Button variant="outline" :disabled="loading" @click="onCancel">
-                        {{ trans('label.cancel') }}
+                        {{ trans('button.cancel') }}
                     </Button>
                 </DialogClose>
                 <Button :variant="type === 'delete' ? 'destructive' : 'default'" :disabled="loading" @click="onConfirm">

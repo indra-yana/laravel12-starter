@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Services\ACL\PermissionService;
+use Modules\Setting\Services\ACL\PermissionService;
 use App\Utils\Translations;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;

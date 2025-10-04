@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Services\ACL\RoleService;
+use Modules\Setting\Services\ACL\RoleService;
 use Illuminate\Console\Command;
 
 class MakeAdminCommand extends Command

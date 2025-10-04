@@ -1,5 +1,6 @@
 {
     "Dashboard": true,
     "Home": true,
-    "Auth": true
+    "Auth": true,
+    "Setting": true
 }
