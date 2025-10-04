@@ -39,7 +39,7 @@ const { canAny } = useCan();
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem v-for="sub in item.items" :key="`${sub.title}-${sub.href}`" :data-state="checkIsActive(href, sub) || activeInclude(sub) ? 'on' : 'off'" class="my-1.5 cursor-pointer">
-                    <Link v-if="canAny(sub.route!!)" :href="sub.href" class="flex items-center gap-2 w-full">
+                    <Link v-if="canAny(sub.route!!) || sub.enable_permission == false" :href="sub.href" class="flex items-center gap-2 w-full">
                     <component :is="sub.icon" v-if="sub.icon" class="w-4 h-4 " />
                     <span class="w-52 text-wrap">{{ trans(sub.title) }}</span>
                     <span v-if="sub.badge" class="ms-auto text-xs">{{ sub.badge }}</span>

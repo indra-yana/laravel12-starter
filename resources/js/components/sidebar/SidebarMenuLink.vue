@@ -22,7 +22,7 @@ const { canAny } = useCan();
 
 <template>
     <SidebarMenuItem>
-        <SidebarMenuButton v-if="canAny(item.route!!)" as-child :is-active="checkIsActive(href, item)" :tooltip="item.title" :class="{'my-2': state === 'collapsed'}">
+        <SidebarMenuButton v-if="canAny(item.route!!) || item.enable_permission == false" as-child :is-active="checkIsActive(href, item)" :tooltip="item.title" :class="{'my-2': state === 'collapsed'}">
             <Link :href="href">
                 <!-- <component :is="item.icon" v-if="item.icon" /> -->
                 <Icon :name="(item.icon as string)" v-if="item.icon" />

@@ -13,6 +13,11 @@ return [
             'href' => '/$LOWER_NAME$',
             'route' => '$LOWER_NAME$.index',
             'icon' => 'LayoutGrid',
+
+            /**
+            * Please set to true and then define permissions for the module
+            */
+            'enable_permission' => false,
         ]
     ]
 ];

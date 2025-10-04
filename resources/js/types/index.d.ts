@@ -25,6 +25,7 @@ export interface NavItem {
     isActive?: boolean;
     items?: NavItem[],
     badge?: number,
+    enable_permission?: boolean;
 }
 
 export interface AppConfig {

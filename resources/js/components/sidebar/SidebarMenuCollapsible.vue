@@ -40,7 +40,7 @@ const { hasPermissionForGroup } = useMenuPermissions();
             <CollapsibleContent>
                 <SidebarMenuSub>
                     <template v-for="subItem in item.items" :key="subItem.title">
-                        <SidebarMenuSubItem v-if="canAny(subItem.route!!)">
+                        <SidebarMenuSubItem v-if="canAny(subItem.route!!) || subItem.enable_permission == false">
                             <SidebarMenuSubButton as-child :is-active="checkIsActive(href, subItem) || activeInclude(subItem)">
                                 <Link :href="subItem.href">
                                 <div :class="{ 'dark:text-accent': checkIsActive(href, subItem) }">
