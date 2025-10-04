@@ -7,7 +7,7 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from 'ziggy-js';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 import type { DefineComponent } from 'vue';
-import lang from './plugins/lang';
+import lang from '@/plugins/lang';
 
 // Extend ImportMeta interface for Vite...
 declare module 'vite/client' {
@@ -26,7 +26,28 @@ const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
-    resolve: (name) => resolvePageComponent(`./pages/${name}.vue`, import.meta.glob<DefineComponent>('./pages/**/*.vue')),
+    // resolve: (name) => resolvePageComponent(`./pages/${name}.vue`, import.meta.glob<DefineComponent>('./pages/**/*.vue')),
+    resolve: (name => {
+        let parts = name.split('::');
+        let type = parts.length > 1;
+
+        if (type) {
+            let nameVue = parts[1].split('.')[0];
+            return resolvePageComponent([
+                `../../Modules/${parts[0]}/resources/assets/js/pages/${nameVue}.vue`,
+                `../../Modules/${parts[0]}/resources/assets/js/components/*.vue`,
+                `../../Modules/${parts[0]}/resources/assets/js/layouts/*.vue`,
+            ],
+                import.meta.glob<DefineComponent>([`../../Modules/**/resources/assets/js/pages/**/*.vue`, './pages/**/*.vue'])
+            );
+        }
+
+        return resolvePageComponent([
+            `./pages/${name}.vue`,
+        ],
+            import.meta.glob<DefineComponent>('./pages/**/*.vue')
+        );
+    }),
     setup({ el, App, props, plugin }) {
         const pinia = createPinia();
         pinia.use(piniaPluginPersistedstate);
