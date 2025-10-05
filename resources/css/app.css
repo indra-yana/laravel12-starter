@@ -150,6 +150,52 @@
 	--sidebar: hsl(240 5.9% 10%);
 }
 
+/* ===== FULLCALENDAR CUSTOM STYLE ===== */
+.dark .fc {
+	--fc-border-color: rgb(63 63 70);
+	--fc-page-bg-color: rgb(24 24 27);
+	--fc-neutral-bg-color: rgb(39 39 42);
+	--fc-neutral-text-color: rgb(228 228 231);
+	--fc-list-event-hover-bg-color: rgb(63 63 70);
+	--fc-button-bg-color: rgb(63 63 70);
+	--fc-button-border-color: rgb(82 82 91);
+	--fc-button-text-color: rgb(228 228 231);
+	--fc-button-hover-bg-color: rgb(82 82 91);
+	--fc-today-bg-color: rgb(63 63 70 / 0.25);
+}
+
+/* Warna untuk list day cushion (header hari di list view) */
+.dark .fc .fc-list-day-cushion.fc-cell-shaded {
+	background-color: rgb(39 39 42);
+	color: rgb(228 228 231);
+	border-bottom: 1px solid rgb(63 63 70);
+}
+
+/* Teks hari dan tanggal */
+.dark .fc .fc-list-day-text,
+.dark .fc .fc-list-day-side-text {
+	color: rgb(228 228 231);
+}
+
+.fc .fc-button {
+	@apply hover:text-black outline-ring/50 text-xs sm:text-sm font-medium rounded-md px-2 py-1 transition hover:bg-primary/80 border border-border shadow-sm focus:outline-none focus:ring-0 focus-visible:ring-0 focus:shadow-none active:ring-0 active:outline-none active:shadow-none;
+}
+
+.fc .fc-button-active {
+	@apply bg-primary/80 ring-0 active:ring-0;
+}
+
+.fc .fc-button:focus,
+.fc .fc-button:focus-visible,
+.fc .fc-button:active {
+	outline: none !important;
+	box-shadow: none !important;
+}
+
+.fc .fc-toolbar-title {
+	@apply text-sm sm:text-lg;
+}
+
 /*
   The default border color has changed to `currentColor` in Tailwind CSS v4,
   so we've added these compatibility styles to make sure everything still
@@ -183,6 +229,7 @@
 
 	/* Prevent focus zoom on mobile devices */
 	@media screen and (max-width: 767px) {
+
 		input,
 		select,
 		textarea {
@@ -192,6 +239,7 @@
 }
 
 @layer utilities {
+
 	body,
 	html {
 		--font-sans:
@@ -255,4 +303,14 @@
 
 #nprogress .bar {
 	height: 0.14em !important;
+}
+
+ol.list-decimal {
+	list-style-type: decimal !important;
+	padding-left: 1.5rem !important;
+}
+
+ul.list-disc {
+	list-style-type: disc !important;
+	padding-left: 1.5rem !important;
 }
