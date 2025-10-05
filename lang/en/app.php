@@ -187,6 +187,7 @@ return [
         'create_an_account' => 'Create an account',
         'enter_your_details_below_to_create_your_account' => 'Enter your details below to create your account',
         'already_have_an_account' => 'Already have an account?',
+        'starter_module' => 'This is the default module page, create your awesome module here!',
     ],
     'placeholder' => [
         'email' => 'email@email.com',

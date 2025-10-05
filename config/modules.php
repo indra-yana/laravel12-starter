@@ -41,10 +41,11 @@ return [
             'package' => 'package.json',
 
             // Custom generated file
-            'views/app' => 'resources/views/app.blade.php',
-            'assets/js/bootstrap' => 'resources/assets/js/bootstrap.js',
+            // 'views/app' => 'resources/views/app.blade.php',
+            // 'assets/js/bootstrap' => 'resources/assets/js/bootstrap.js',
             'assets/css/app' => 'resources/assets/css/app.css',
             'scaffold/menu' => 'config/menu.php',
+            'assets/js/pages/Index' => 'resources/assets/js/pages/Index.vue',
             // 'assets/js/composables/useAuth' => 'resources/assets/js/composables/useAuth.js',
             // 'assets/js/composables/useCan' => 'resources/assets/js/composables/useCan.js',
             // 'assets/js/composables/useRole' => 'resources/assets/js/composables/useRole.js',
@@ -66,6 +67,7 @@ return [
             'views/master' => ['LOWER_NAME', 'STUDLY_NAME'],
             'scaffold/config' => ['STUDLY_NAME'],
             'scaffold/menu' => ['STUDLY_NAME', 'LOWER_NAME'],
+            'assets/js/pages/Index' => ['STUDLY_NAME', 'LOWER_NAME'],
             'composer' => [
                 'LOWER_NAME',
                 'STUDLY_NAME',

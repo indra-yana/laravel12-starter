@@ -16,12 +16,12 @@ class $CLASS$ extends Controller
 
     public function index()
     {
-        return inertia('$STUDLY_NAME$/Index');
+        return inertia('$STUDLY_NAME$::Index');
     }
 
     public function create()
     {
-        return inertia('$STUDLY_NAME$/Create');
+        return inertia('$STUDLY_NAME$::Create');
     }
 
     public function store(Request $request)
@@ -48,7 +48,7 @@ class $CLASS$ extends Controller
 
             $results = [];
 
-            return inertia('$STUDLY_NAME$/Show', [
+            return inertia('$STUDLY_NAME$::Show', [
                 'results' => $results,
             ]);
         } catch (\Throwable $th) {
@@ -65,7 +65,7 @@ class $CLASS$ extends Controller
 
             $results = [];
 
-            return inertia('$STUDLY_NAME$/Edit', [
+            return inertia('$STUDLY_NAME$::Edit', [
                 'results' => $results,
             ]);
         } catch (\Throwable $th) {

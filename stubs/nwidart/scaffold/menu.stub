@@ -1,18 +1,17 @@
 <?php
 
 return [
-    'name' => '$STUDLY_NAME$',
-
     /**
-     * Define module menu here
+     * Define module menu here, 
+     * Change the group name to match with your sidebar menu group
      */
-    'group' => 'General',
+    'group' => 'Ungrouped',
     'menus' => [
         [
             'title' => '$STUDLY_NAME$',
             'href' => '/$LOWER_NAME$',
             'route' => '$LOWER_NAME$.index',
-            'icon' => 'LayoutGrid',
+            'icon' => 'PanelsTopLeft',
 
             /**
             * Please set to true and then define permissions for the module

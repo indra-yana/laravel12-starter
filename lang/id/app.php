@@ -186,6 +186,7 @@ return [
         'create_an_account' => 'Buat akun',
         'enter_your_details_below_to_create_your_account' => 'Silahkan isi formulir di bawah ini untuk membuat akun.',
         'already_have_an_account' => 'Sudah punya akun?',
+        'starter_module' => 'Ini adalah halaman default modul, buat module hebatmu di sini!',
     ],
     'placeholder' => [
         'email' => 'email@email.com',
