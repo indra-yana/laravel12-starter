@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { ref, watch, computed } from 'vue';
+import { ref, watch, computed, reactive } from 'vue';
 import { SaveIcon, XCircleIcon } from 'lucide-vue-next';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
@@ -13,6 +13,14 @@ import { User } from '@/types';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import InputError from '@/components/InputError.vue';
 
+interface UserFormData {
+    id: number | null;
+    name: string;
+    email: string;
+    is_active: boolean;
+    [key: string]: any;
+}
+
 export type CurrentRow = Omit<User, 'id'> & {
     id?: number;
 }
@@ -21,7 +29,7 @@ interface Props {
     open: boolean;
     title: string;
     description?: string;
-    currentRow?: CurrentRow;
+    currentRow?: CurrentRow | null;
     onOpenChange: (open: boolean) => void;
 }
 
@@ -29,15 +37,24 @@ const userForm = ref();
 const props = defineProps<Props>();
 const isUpdate = computed(() => !!props.currentRow?.id);
 const showConfirm = ref(false);
-const form = useForm({
-    name: props.currentRow?.name || '',
-    email: props.currentRow?.email || '',
-    is_active: props.currentRow?.is_active ?? true,
+const form = useForm<UserFormData>({
+    id: null,
+    name: '',
+    email: '',
+    is_active: true,
 });
 
 watch(() => props.open, (open) => {
     if (!open) resetForm();
+    if (isUpdate) populateForm();
 });
+
+function populateForm() {
+    form.id = props.currentRow?.id || null;
+    form.name = props.currentRow?.name || '';
+    form.email = props.currentRow?.email || '';
+    form.is_active = props.currentRow?.is_active ?? true;
+}
 
 function handleSubmit() {
     if (userForm.value && userForm.value.reportValidity()) {

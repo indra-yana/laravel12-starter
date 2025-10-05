@@ -74,6 +74,11 @@ interface ActionPayload {
 	[key: string]: any
 }
 
+interface Emits {
+    (e: 'edit', user: User): void,
+}
+
+const emits = defineEmits<Emits>();
 const pagination = reactive<Pagination<User>>({
 	data: [],
 	firstPageUrl: '',
@@ -230,7 +235,7 @@ function handleDelete(user: User) {
 }
 
 function handleEdit(user: User) {
-	console.log('handleEdit', user);
+	emits('edit', user);
 }
 
 function handleOnAssignRole(userId: number) {
