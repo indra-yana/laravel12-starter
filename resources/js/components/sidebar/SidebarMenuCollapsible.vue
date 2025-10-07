@@ -24,7 +24,7 @@ const { hasPermissionForGroup } = useMenuPermissions();
 
 <template>
     <Collapsible as-child :default-open="checkIsActive(href, item)" class="group/collapsible">
-        <SidebarMenuItem v-if="hasPermissionForGroup(item)">
+        <SidebarMenuItem v-if="hasPermissionForGroup(item) || item.enable_permission == false">
             <!-- Trigger -->
             <CollapsibleTrigger as-child>
                 <SidebarMenuButton :tooltip="item.title">

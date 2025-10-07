@@ -20,7 +20,7 @@ const { hasPermissionForGroup } = useMenuPermissions();
 <template>
     <SidebarGroup class="px-2 py-0">
         <template v-for="item in items" :key="item.title">
-            <SidebarGroupLabel v-if="hasPermissionForGroup(item) || item.title == 'Ungrouped'" :class="{ 'hidden': state === 'collapsed' }">{{ trans(item.title) }}</SidebarGroupLabel>
+            <SidebarGroupLabel v-if="hasPermissionForGroup(item) || item.title == 'Ungrouped' || item.enable_permission == false" :class="{ 'hidden': state === 'collapsed' }">{{ trans(item.title) }}</SidebarGroupLabel>
             <SidebarMenu>
                 <template v-for="subitem in item.items">
                     <SidebarMenuLink v-if="!subitem.items" :item="subitem" :href="subitem.href" />
