@@ -3,5 +3,6 @@
     "Home": true,
     "Auth": true,
     "Setting": true,
-    "Logbook": true
+    "Logbook": true,
+    "Employee": true
 }
