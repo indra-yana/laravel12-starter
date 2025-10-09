@@ -1,0 +1,22 @@
+import colors from 'tailwindcss/colors';
+import defaultTheme from 'tailwindcss/defaultTheme';
+
+/** @type {import('tailwindcss').Config} */
+export default {
+    darkMode: "class",
+    content: [
+        './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
+        './storage/framework/views/*.php',
+        './resources/views/**/*.blade.php',
+        './resources/js/**/*.vue',
+        './Modules/**/resources/assets/js/**/*.vue',
+
+        './Modules/**/*.js',
+        './Modules/**/*.ts',
+        './Modules/**/*.vue',
+    ],
+    theme: {
+        
+    },
+    plugins: [],
+};
