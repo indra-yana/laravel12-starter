@@ -34,7 +34,9 @@ async function getConfig() {
         resolve: {
             alias: {
                 // '@': resolve(__dirname, './Modules/Core/resources/assets/js/'),
-                '@': path.resolve(__dirname, './resources/js'),
+                
+                '@': path.resolve(__dirname, 'resources/js'),
+                '@modules': path.resolve(__dirname, 'Modules'),
                 'ziggy-js': resolve(__dirname, 'vendor/tightenco/ziggy'),
             }
         }
