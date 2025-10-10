@@ -34,6 +34,7 @@ createInertiaApp({
         if (type) {
             let nameVue = parts[1].split('.')[0];
             return resolvePageComponent([
+                `./pages/${name}.vue`,
                 `../../Modules/${parts[0]}/resources/assets/js/pages/${nameVue}.vue`,
                 `../../Modules/${parts[0]}/resources/assets/js/components/*.vue`,
                 `../../Modules/${parts[0]}/resources/assets/js/layouts/*.vue`,

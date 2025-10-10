@@ -36,6 +36,7 @@
         "paths": {
             /* Specify a set of entries that re-map imports to additional lookup locations. */ 
             "@/*": ["./resources/js/*"],
+            "@modules/*": ["./Modules/*"],
             "ziggy-js": ["./vendor/tightenco/ziggy"]
         },
         // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
@@ -132,6 +133,5 @@
         "./Modules/**/resources/assets/js/**/*.d.ts",
         "./Modules/**/resources/assets/js/**/*.tsx", 
         "./Modules/**/resources/assets/js/**/*.vue",
-        "./Modules/Logbook/resources/assets/js/pages/**/*.vue",
     ]
 }

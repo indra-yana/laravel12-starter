@@ -4,5 +4,6 @@
     "Auth": true,
     "Setting": true,
     "Logbook": true,
-    "Employee": true
+    "Employee": true,
+    "Core": false
 }
