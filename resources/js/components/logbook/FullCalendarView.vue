@@ -144,7 +144,7 @@ function handleOpenChange(close: boolean) {
 
 <template>
 	<LkhForm :open="showLkhForm" :onOpenChange="handleOpenChange" :currentRow :selectedDate :title="trans('LKH Periode: ' + (selectedDate?.startStr || currentRow?.start))" :description="trans('Isi formulir di bawah ini untuk menambah laporan catatan kerja harian.')" />
-	<div class="flex flex-col lg:flex-row md:space-y-0 lg:space-x-6">
+	<div class="flex flex-col lg:flex-row gap-4">
 		<div class="w-full md:w-3/5 lg:w-1/3 xl:w-1/4 2xl:w-1/5">
 			<div className="flex items-center justify-between py-2">
 				<div className="flex gap-2">
@@ -202,7 +202,7 @@ function handleOpenChange(close: boolean) {
 
 		<Separator class="my-2 lg:hidden" />
 
-		<div class="flex-1 overflow-y-hidden  h-screen p-2 border bg-secondary shadow-lg rounded-lg">
+		<div class="flex-1 overflow-y-hidden h-screen p-2 border bg-secondary shadow-lg rounded-lg">
 			<FullCalendar class="p-0 w-full" :options="calendarOptions">
 				<template #eventContent="{ timeText, event }">
 					<TooltipProvider>

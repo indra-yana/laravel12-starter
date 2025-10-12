@@ -8,7 +8,7 @@ import Heading from '@/components/Heading.vue';
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Logbook',
-        href: '/logbook',
+        href: '/logbook/lkh',
     },
     {
         title: 'LKH',

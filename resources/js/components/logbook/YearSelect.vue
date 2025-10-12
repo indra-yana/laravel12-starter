@@ -12,7 +12,7 @@ const props = defineProps<Props>();
 const currentYear = new Date().getFullYear();
 const years = computed(() => {
     const arr: number[] = [];
-    for (let i = currentYear - 5; i <= currentYear + 2; i++) {
+    for (let i = currentYear - 2; i <= currentYear + 2; i++) {
         arr.push(i);
     }
 

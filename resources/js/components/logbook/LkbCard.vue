@@ -57,7 +57,7 @@ const monthNames = [
 		</CardContent>
 
 		<CardFooter class="relative mt-auto mb-auto flex justify-between z-10 px-3.5 py-1.5 overflow-auto">
-			<Button @click="emit('addTarget', id as number)" title="Tambah Sasaran" class="inline-flex items-center bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-medium text-sm rounded-lg px-2 py-2 transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5">
+			<Button @click="emit('addTarget', id as number)" title="Tambah Sasaran" class="inline-flex items-center bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-medium text-sm rounded-lg px-2 py-2 transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-0.5 gap-1.5">
 				<Plus class="size-4" />
 				<span class="block sm:hidden xl:block">Tambah Sasaran</span>
 			</Button>
