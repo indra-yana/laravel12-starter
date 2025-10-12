@@ -143,7 +143,7 @@ function handleOpenChange(close: boolean) {
 </script>
 
 <template>
-	<LkhForm :open="showLkhForm" :onOpenChange="handleOpenChange" :currentRow :selectedDate :title="trans('LKH Periode: ' + (selectedDate?.startStr || currentRow?.start))" :description="trans('Isi formulir di bawah ini untuk menambah laporan catatan kerja harian.')" />
+	<LkhForm :open="showLkhForm" :onOpenChange="handleOpenChange" :currentRow :selectedDate :title="trans('LKH Tanggal: ' + (selectedDate?.startStr || currentRow?.start))" :description="trans('Isi formulir di bawah ini untuk menambah laporan kerja harian.')" />
 	<div class="flex flex-col lg:flex-row gap-4">
 		<div class="w-full md:w-3/5 lg:w-1/3 xl:w-1/4 2xl:w-1/5">
 			<div className="flex items-center justify-between py-2">

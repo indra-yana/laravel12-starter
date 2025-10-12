@@ -256,15 +256,17 @@ function resetForm() {
                             {{ trans('button.save') }}
                         </template>
                     </Button>
-                    <Separator orientation="vertical" />
-                    <Button v-if="isUpdate" variant="destructive" form="tasks-form" type="button" @click="handleDelete" :disabled="form.processing">
-                        <Trash2 />
-                    </Button>
+                    <template v-if="isUpdate" >
+                        <Separator orientation="vertical"/>
+                        <Button variant="destructive" form="tasks-form" type="button" @click="handleDelete" :disabled="form.processing">
+                            <Trash2 />
+                        </Button>
+                    </template>
                 </div>
             </SheetFooter>
         </SheetContent>
     </Sheet>
 
     <ConfirmDialog id="submit-confirm" type="submit" :open="showConfirm" :onConfirm="submitConfirmed" :onCancel="handleCancel" :loading="form.processing" :title="trans('label.confirm_save')" :description="trans('label.are_you_sure_to_save_this_data')"></ConfirmDialog>
-    <ConfirmDialog id="delete-confirm" type="delete" :open="showDeleteConfirm" :onConfirm="deleteConfirmed" :onCancel="handleDeleteCancel" :loading="deleteform.processing" :title="trans('label.delete_confirm')" :description="trans('label.delete_data_description')"></ConfirmDialog>
+    <ConfirmDialog id="delete-confirm" v-if="isUpdate" type="delete" :open="showDeleteConfirm" :onConfirm="deleteConfirmed" :onCancel="handleDeleteCancel" :loading="deleteform.processing" :title="trans('label.delete_confirm')" :description="trans('label.delete_data_description')"></ConfirmDialog>
 </template>
