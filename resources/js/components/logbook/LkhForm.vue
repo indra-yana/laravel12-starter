@@ -10,9 +10,11 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { Separator } from '@/components/ui/separator';
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { units } from '@/lib/utils';
-import { useForm } from '@inertiajs/vue3';
+import { useForm, usePage } from '@inertiajs/vue3';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import InputError from '@/components/InputError.vue';
+import { MonthlyWorkProps } from './AddTargetsModal.vue';
+import { SharedData } from '@/types';
 
 export interface DailyWorkField extends Omit<EventInput, 'title' | 'start'> {
     id?: string | number | null;
@@ -37,10 +39,13 @@ interface Props {
 }
 
 const logbookForm = ref();
+const page = usePage<SharedData>();
 const props = defineProps<Props>();
 const isUpdate = computed(() => !!props.currentRow?.id);
 const showConfirm = ref(false);
 const showDeleteConfirm = ref(false);
+// TODO: Dynamic update based on selected month and years 
+const monthlyWorks = ref<MonthlyWorkProps[]>(page.props.monthly_works as MonthlyWorkProps[]);
 const form = useForm<DailyWorkField>({
     id: null,
     monthly_work_id: null,
@@ -53,6 +58,7 @@ const form = useForm<DailyWorkField>({
     file: {},
     uploaded_file: null as File | null,
 });
+
 
 const deleteform = useForm<Omit<DailyWorkField, 'id'>>({
     id: null,
@@ -148,6 +154,21 @@ function resetForm() {
 
             <ScrollArea class="flex-1 overflow-y-auto">
                 <form @submit.prevent="showConfirm = true" class="flex-1 space-y-4 px-4" ref="logbookForm">
+
+                    <Label for="unit" class="mb-3">Sasaran Bulanan (LKB)</Label>
+                    <Select v-model="form.monthly_work_id">
+                        <SelectTrigger id="unit" :aria-invalid="!!form.errors.unit" class="w-full">
+                            <SelectValue :placeholder="trans('Pilih sasaran')" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectGroup>
+                                <SelectItem v-for="work in monthlyWorks" :key="work.id!!" :value="work.id!!">
+                                    {{ work.title }}
+                                </SelectItem>
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
+
                     <Label for="title">{{ trans('Nama Kegiatan') }} <span class="text-destructive">*</span></Label>
                     <Input type="text" id="title" v-model="form.title" :aria-invalid="!!form.errors.title" @input="form.clearErrors('title')" required autofocus :tabindex="1" autocomplete="title" :placeholder="trans('Nama kegiatan harian')" />
                     <InputError :message="form.errors.title" />
@@ -213,8 +234,8 @@ function resetForm() {
                             {{ trans('button.save') }}
                         </template>
                     </Button>
-                    <template v-if="isUpdate" >
-                        <Separator orientation="vertical"/>
+                    <template v-if="isUpdate">
+                        <Separator orientation="vertical" />
                         <Button variant="destructive" form="tasks-form" type="button" @click="handleDelete" :disabled="form.processing">
                             <Trash2 />
                         </Button>

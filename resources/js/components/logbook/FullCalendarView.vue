@@ -14,8 +14,8 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import FullCalendar from '@fullcalendar/vue3';
 import idLocale from '@fullcalendar/core/locales/id';
 import interactionPlugin from '@fullcalendar/interaction';
-import LkhForm, { DailyWorkField } from './LkhForm.vue';
 import listPlugin from '@fullcalendar/list';
+import LkhForm, { DailyWorkField } from './LkhForm.vue';
 import timeGridPlugin from '@fullcalendar/timegrid'; 
 import type { CalendarOptions, EventApi, DateSelectArg, EventClickArg, EventChangeArg } from '@fullcalendar/core';
 
@@ -74,6 +74,7 @@ const calendarOptions = ref<CalendarOptions>({
 	weekends: true,
 	locale: locale.value,
 	locales: [idLocale],
+	datesSet: handleDateRangeChange,
 	eventsSet: handleEvents,
 	select: handleDateSelect,
 	eventClick: handleEventClick,
@@ -104,7 +105,11 @@ function handleDateSelect(selectInfo: DateSelectArg) {
 }
 
 function handleEvents(events: EventApi[]) {
-	currentEvents.value = events;
+	currentEvents.value = events;	
+}
+
+function handleDateRangeChange(events: any) {
+	console.log(events);
 }
 
 function handleEventClick(clickInfo: EventClickArg) {
