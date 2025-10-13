@@ -59,8 +59,7 @@ function handleMonthlyPeriodAdd() {
 		preserveScroll: true,
 		preserveState: ({ props }) => !!Object.keys(props.errors).length,
 		onError: () => { },
-		onSuccess: () => {
-		},
+		onSuccess: (params) => {},
 	});
 }
 
@@ -70,8 +69,7 @@ function handleMonthlyPeriodDelete(id: number) {
 }
 
 function deleteMonthlyPeriodConfirmed() {
-	const url = route('logbook.lkb.delete');
-	deleteform.delete(url, {
+	deleteform.delete(route('logbook.lkb.delete'), {
 		preserveScroll: true,
 		preserveState: ({ props }) => !!Object.keys(props.errors).length,
 		onError: () => handleMonthlyPeriodDeleteCancel(),
@@ -85,7 +83,7 @@ function handleMonthlyPeriodDeleteCancel() {
 	showDeleteConfirm.value = false;
 }
 
-function handleAddTarget(id: number) {
+function handleAddTarget(id: number) {	
 	selectedPeriodId.value = id;
 	showTargetModal.value = true;
 	selectedMonthlyPeriod.value = monthlyPeriods.filter((item) => item.id == id)[0];
@@ -160,7 +158,7 @@ function handleTargetSaved() {
 					</div>
 					<ContentSection>
 						<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3">
-							<Card v-if="!isLastMonthDecember" class="flex items-center justify-center border-dashed border-2 border-emerald-300 rounded-2xl cursor-pointer transition-all duration-300 hover:border-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-900/20" :class="{ 'cursor-pointer hover:border-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-900/20': !addMonthlyPeriodForm.processing, 'cursor-not-allowed opacity-50': addMonthlyPeriodForm.processing }" @click="!addMonthlyPeriodForm.processing && handleMonthlyPeriodAdd()">
+							<Card v-if="!isLastMonthDecember" class="flex items-center justify-center py-2.5 px-0 border-dashed border-2 border-emerald-300 rounded-2xl cursor-pointer transition-all duration-300 hover:border-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-900/20" :class="{ 'cursor-pointer hover:border-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-900/20': !addMonthlyPeriodForm.processing, 'cursor-not-allowed opacity-50': addMonthlyPeriodForm.processing }" @click="!addMonthlyPeriodForm.processing && handleMonthlyPeriodAdd()">
 								<CardContent class="flex flex-col items-center justify-center py-8">
 									<Plus class="size-8 text-emerald-500 mb-2" />
 									<span class="font-medium text-sm" :class="addMonthlyPeriodForm.processing ? 'text-gray-400' : 'text-emerald-600'">

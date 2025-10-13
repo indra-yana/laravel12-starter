@@ -44,6 +44,10 @@ const form = useForm<MonthlyWorkForm>({
     targets: [] as MonthlyWorkProps[],
 })
 
+const monthlyWorkDeleteForm = useForm<Omit<MonthlyWorkForm, 'id'>>({
+    id: null,
+})
+
 watch(() => props.monthlyPeriodId, (newVal, oldVal) => {
     form.clearErrors();
     form.reset()
@@ -77,14 +81,26 @@ function addRow() {
     })
 }
 
-function removeRow(index: number) {
-    rows.value.splice(index, 1)
+function removeRow(index: number, rowId?: number | null) {
+    if (rowId == null) {
+        rows.value.splice(index, 1);
+    } else {
+        monthlyWorkDeleteForm.id = rowId;
+        monthlyWorkDeleteForm.delete(route('logbook.lkb.monthlyworks.delete'), {
+            preserveScroll: true,
+            preserveState: true,
+            onError: () => { },
+            onSuccess: () => {
+                rows.value.splice(index, 1);
+            },
+        });
+    }
 }
 
 function handleSubmit() {
     if (targetsForm.value && targetsForm.value.reportValidity()) {
         form.targets = rows.value
-        form.post(route("logbook.lkb.storemonthlyworks"), {
+        form.post(route("logbook.lkb.monthlyworks.store"), {
             preserveScroll: true,
             preserveState: ({ props }) => !!Object.keys(props.errors).length,
             onSuccess: () => {
@@ -143,10 +159,10 @@ function handleClose() {
 
                         <div class="sm:col-span-2">
                             <div class="w-full flex justify-end gap-1 mt-6">
-                                <Button v-if="rows.length > 1" type="button" variant="destructive" size="icon" :title="trans('Hapus Baris')" @click="removeRow(index)">
+                                <Button v-if="rows.length > 1" type="button" variant="destructive" size="icon" :disabled="monthlyWorkDeleteForm.processing" :title="trans('Hapus Baris')" @click="removeRow(index, row.id)">
                                     <Trash2 class="size-5" />
                                 </Button>
-                                <Button v-if="index === rows.length - 1" type="button" variant="outline" :title="trans('Tambah Baris')" size="icon" @click="addRow">
+                                <Button v-if="index === rows.length - 1" type="button" variant="outline" :title="trans('Tambah Baris')" size="icon" :disabled="monthlyWorkDeleteForm.processing" @click="addRow">
                                     <Plus class="size-5" />
                                 </Button>
                             </div>
