@@ -9,6 +9,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select";
 import { Separator } from '@/components/ui/separator';
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from '@/components/ui/sheet';
+import { units } from '@/lib/utils';
 import { useForm } from '@inertiajs/vue3';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import InputError from '@/components/InputError.vue';
@@ -56,50 +57,6 @@ const form = useForm<DailyWorkField>({
 const deleteform = useForm<Omit<DailyWorkField, 'id'>>({
     id: null,
 });
-
-const units = [
-    // Aktivitas dan Kegiatan
-    'Kegiatan',
-    'Aktivitas',
-    'Tugas',
-    'Program',
-    'Proyek',
-
-    // Dokumen dan Arsip
-    'Dokumen',
-    'File',
-    'Arsip',
-    'Berkas',
-    'Surat',
-
-    // Output Kerja
-    'Laporan',
-    'Rekap',
-
-    // Pengguna & Entitas
-    'Pengguna',
-    'Siswa',
-    'Pegawai',
-    'Admin',
-    'Tim',
-
-    // Data dan Sistem
-    'Data',
-    'Entry',
-    'Record',
-    'Transaksi',
-    'Akses',
-
-    // Visual dan Interaksi
-    'Viewer',
-    'Halaman',
-    'Formulir',
-
-    // Umum / Lainnya
-    'Unit',
-    'Item',
-    'Lainnya',
-];
 
 watch(() => props.open, (open) => {
     if (!open) resetForm();

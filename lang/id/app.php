@@ -218,6 +218,7 @@ return [
         'close' => 'Tutup',
         'cancel' => 'Batal',
         'save' => 'Simpan',
+        'saving' => 'Menyimpan...',
         'save_changes' => 'Simpan Perubahan',
         'save_password' => 'Simpan Kata Sandi',
         'delete_account' => 'Hapus Akun',

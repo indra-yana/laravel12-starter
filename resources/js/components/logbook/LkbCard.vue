@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Target, Trash2, EllipsisVertical, Plus, Printer } from "lucide-vue-next";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
+import { monthNames } from "@/lib/utils";
+import { MonthlyWorkProps } from "./AddTargetsModal.vue";
 
 export interface MonthlyPeriodProps {
 	id?: string | number | null;
 	month: number;
-	monthly_work_count: number;
+	monthlyworks_count: number;
+	monthlyworks?: MonthlyWorkProps[] | null;
 	year: number;
 	[key: string]: any;
 }
@@ -20,10 +23,6 @@ const props = defineProps<Partial<MonthlyPeriodProps> & {
 	index?: number;
 }>()
 
-const monthNames = [
-	"Januari", "Februari", "Maret", "April", "Mei", "Juni",
-	"Juli", "Agustus", "September", "Oktober", "November", "Desember"
-]
 </script>
 
 <template>
@@ -44,7 +43,7 @@ const monthNames = [
 				<div class="flex items-center">
 					<Target class="size-5 text-emerald-500 mr-2 mt-0.5" />
 					<p class="text-muted-foreground text-md line-clamp-1">
-						Sasaran: {{ monthly_work_count || 0 }}
+						Sasaran: {{ monthlyworks_count || 0 }}
 					</p>
 				</div>
 				<div class="flex items-center">
@@ -65,9 +64,9 @@ const monthNames = [
 				<Button type="button" title="Hapus" @click="emit('delete', id as number)" class="inline-flex items-center size-9 bg-red text-red-600 rounded-full shadow-sm text-sm font-medium border border-red-100/60 hover:bg-red-50/25 transition-all duration-300 hover:shadow-md">
 					<Trash2 class="size-4" />
 				</Button>
-				<Button type="button" title="Aksi Lainnya" class="inline-flex items-center size-9 bg-transparant text-emerald-600 rounded-full shadow-sm text-sm font-medium border border-emerald-100/60 hover:bg-emerald-50/25 transition-all duration-300 hover:shadow-md">
+				<!-- <Button type="button" title="Aksi Lainnya" class="inline-flex items-center size-9 bg-transparant text-emerald-600 rounded-full shadow-sm text-sm font-medium border border-emerald-100/60 hover:bg-emerald-50/25 transition-all duration-300 hover:shadow-md">
 					<EllipsisVertical class="w-4" />
-				</Button>
+				</Button> -->
 			</div>
 		</CardFooter>
 	</Card>

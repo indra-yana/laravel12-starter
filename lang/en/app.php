@@ -219,6 +219,7 @@ return [
         'close' => 'CLose',
         'cancel' => 'Cancel',
         'save' => 'Save',
+        'saving' => 'Saving...',
         'save_changes' => 'Save Changes',
         'save_password' => 'Save Password',
         'delete_account' => 'Delete Account',

@@ -1,19 +1,20 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { computed, ref } from 'vue';
 import { Head, useForm, usePage } from '@inertiajs/vue3';
 import { Info, Plus } from 'lucide-vue-next';
 import { Label } from '@/components/ui/label';
-import { computed, ref } from 'vue';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { type BreadcrumbItem } from '@/types';
+import AddTargetsModal, { MonthlyWorkProps } from '@/components/logbook/AddTargetsModal.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import ContentSection from '@/layouts/ContentSection.vue';
 import Heading from '@/components/Heading.vue';
 import LkbCard, { MonthlyPeriodProps } from '@/components/logbook/LkbCard.vue';
-import YearSelect from '@/components/logbook/YearSelect.vue';
 import type { PageProps } from '@inertiajs/core';
+import YearSelect from '@/components/logbook/YearSelect.vue';
 
 interface PagePropsData extends PageProps {
 	monthly_periods: MonthlyPeriodProps[];
@@ -40,8 +41,13 @@ const deleteform = useForm<Omit<MonthlyPeriodProps, 'id'>>({
 });
 const addMonthlyPeriodForm = useForm<Omit<MonthlyPeriodProps, 'id'>>({
 	id: null,
+	year: currentYear,
 });
 
+const showTargetModal = ref(false);
+const selectedPeriodId = ref<number | null>(null);
+const selectedMonthlyPeriod = ref<MonthlyPeriodProps | null>(null);
+const selectedExistingTargets = ref<MonthlyWorkProps[] | null>();
 const isLastMonthDecember = computed(() => {
 	if (!monthlyPeriods.length) return false;
 	const last = monthlyPeriods[0];
@@ -80,9 +86,14 @@ function handleMonthlyPeriodDeleteCancel() {
 }
 
 function handleAddTarget(id: number) {
-	// TODO: Create target next target 
-	// After success show modal to create multiple sasaran
-	console.log("Tambah target untuk ID:", id)
+	selectedPeriodId.value = id;
+	showTargetModal.value = true;
+	selectedMonthlyPeriod.value = monthlyPeriods.filter((item) => item.id == id)[0];
+	selectedExistingTargets.value = selectedMonthlyPeriod.value.monthlyworks;
+}
+
+function handleTargetSaved() {
+	showTargetModal.value = false
 }
 
 </script>
@@ -94,6 +105,8 @@ function handleAddTarget(id: number) {
 	<AppLayout :breadcrumbs="breadcrumbs">
 
 		<ConfirmDialog id="delete-confirm" type="delete" :open="showDeleteConfirm" :onConfirm="deleteMonthlyPeriodConfirmed" :onCancel="handleMonthlyPeriodDeleteCancel" :loading="deleteform.processing" :title="trans('label.delete_confirm')" :description="trans('label.delete_data_description')"></ConfirmDialog>
+
+		<AddTargetsModal :show="showTargetModal" :monthlyPeriodId="selectedPeriodId" :monthlyPeriod="selectedMonthlyPeriod" :existingTargets="selectedExistingTargets" @close="showTargetModal = false" @saved="handleTargetSaved" />
 
 		<div class="px-4 py-6">
 			<Heading :title="trans('LKB')" :description="trans('Buat dan kelola Laporan Kerja Bulanan')" class="mb-4" />
@@ -150,7 +163,9 @@ function handleAddTarget(id: number) {
 							<Card v-if="!isLastMonthDecember" class="flex items-center justify-center border-dashed border-2 border-emerald-300 rounded-2xl cursor-pointer transition-all duration-300 hover:border-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-900/20" :class="{ 'cursor-pointer hover:border-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-900/20': !addMonthlyPeriodForm.processing, 'cursor-not-allowed opacity-50': addMonthlyPeriodForm.processing }" @click="!addMonthlyPeriodForm.processing && handleMonthlyPeriodAdd()">
 								<CardContent class="flex flex-col items-center justify-center py-8">
 									<Plus class="size-8 text-emerald-500 mb-2" />
-									<span class="text-emerald-600 font-medium text-sm">Tambah LKB</span>
+									<span class="font-medium text-sm" :class="addMonthlyPeriodForm.processing ? 'text-gray-400' : 'text-emerald-600'">
+										{{ addMonthlyPeriodForm.processing ? trans('Menambahkan...') : trans('Tambah LKB') }}
+									</span>
 								</CardContent>
 							</Card>
 							<template v-if="monthlyPeriods.length">
