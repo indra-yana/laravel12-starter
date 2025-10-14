@@ -21,6 +21,7 @@ const emit = defineEmits<{
 
 const props = defineProps<Partial<MonthlyPeriodProps> & {
 	index?: number;
+	currentMonth?: number;
 }>()
 
 </script>
@@ -43,14 +44,14 @@ const props = defineProps<Partial<MonthlyPeriodProps> & {
 				<div class="flex items-center">
 					<Target class="size-5 text-emerald-500 mr-2 mt-0.5" />
 					<p class="text-muted-foreground text-md line-clamp-1">
-						Sasaran: {{ monthlyworks_count || 0 }}
+						Sasaran: <Button variant="link" @click="emit('addTarget', id as number)" class="p-0 m-0 text-muted-foreground text-sm line-clamp-1 inline-flex" title="Klik untuk kelola sasaran">{{ monthlyworks_count || 0 }}</Button>
 					</p>
 				</div>
 				<div class="flex items-center">
 					<Printer class="size-5 text-emerald-500 mr-2 mt-0.5" />
-					<Button variant="link" class="p-0 m-0 text-muted-foreground text-sm line-clamp-1">
-						Cetak LKB
-					</Button>
+					<a :href="route('logbook.lkb.print', { id })" variant="link" class=" hover:underline p-0 m-0 text-muted-foreground text-sm line-clamp-1">
+						Cetak LKB + LKH
+					</a>
 				</div>
 			</div>
 		</CardContent>
@@ -61,7 +62,7 @@ const props = defineProps<Partial<MonthlyPeriodProps> & {
 				<span class="block sm:hidden xl:block">Tambah Sasaran</span>
 			</Button>
 			<div class="flex gap-2">
-				<Button type="button" title="Hapus" @click="emit('delete', id as number)" class="inline-flex items-center size-9 bg-red text-red-600 rounded-full shadow-sm text-sm font-medium border border-red-100/60 hover:bg-red-50/25 transition-all duration-300 hover:shadow-md">
+				<Button v-if=" (props.currentMonth || 0) <= (props.month || 0)" type="button" title="Hapus" @click="emit('delete', id as number)" class="inline-flex items-center size-9 bg-red text-red-600 rounded-full shadow-sm text-sm font-medium border border-red-100/60 hover:bg-red-50/25 transition-all duration-300 hover:shadow-md">
 					<Trash2 class="size-4" />
 				</Button>
 				<!-- <Button type="button" title="Aksi Lainnya" class="inline-flex items-center size-9 bg-transparant text-emerald-600 rounded-full shadow-sm text-sm font-medium border border-emerald-100/60 hover:bg-emerald-50/25 transition-all duration-300 hover:shadow-md">

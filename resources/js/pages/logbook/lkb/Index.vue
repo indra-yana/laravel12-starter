@@ -15,6 +15,8 @@ import Heading from '@/components/Heading.vue';
 import LkbCard, { MonthlyPeriodProps } from '@/components/logbook/LkbCard.vue';
 import type { PageProps } from '@inertiajs/core';
 import YearSelect from '@/components/logbook/YearSelect.vue';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger, } from "@/components/ui/tooltip";
 
 interface PagePropsData extends PageProps {
 	monthly_periods: MonthlyPeriodProps[];
@@ -33,7 +35,8 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 const props = usePage<PagePropsData>().props;
-const currentYear = props.selected_year || new Date().getFullYear()
+const currentYear = props.selected_year || new Date().getFullYear();
+const currentMonth = props.selected_month || new Date().getMonth();
 const monthlyPeriods = props.monthly_periods;
 const showDeleteConfirm = ref(false);
 const deleteform = useForm<Omit<MonthlyPeriodProps, 'id'>>({
@@ -42,6 +45,7 @@ const deleteform = useForm<Omit<MonthlyPeriodProps, 'id'>>({
 const addMonthlyPeriodForm = useForm<Omit<MonthlyPeriodProps, 'id'>>({
 	id: null,
 	year: currentYear,
+	duplicate_target: false,
 });
 
 const showTargetModal = ref(false);
@@ -59,7 +63,7 @@ function handleMonthlyPeriodAdd() {
 		preserveScroll: true,
 		preserveState: ({ props }) => !!Object.keys(props.errors).length,
 		onError: () => { },
-		onSuccess: (params) => {},
+		onSuccess: (params) => { },
 	});
 }
 
@@ -83,7 +87,7 @@ function handleMonthlyPeriodDeleteCancel() {
 	showDeleteConfirm.value = false;
 }
 
-function handleAddTarget(id: number) {	
+function handleAddTarget(id: number) {
 	selectedPeriodId.value = id;
 	showTargetModal.value = true;
 	selectedMonthlyPeriod.value = monthlyPeriods.filter((item) => item.id == id)[0];
@@ -93,7 +97,7 @@ function handleAddTarget(id: number) {
 function handleTargetSaved() {
 	showTargetModal.value = false
 }
-
+const isDuplicate = ref(false)
 </script>
 
 <template>
@@ -159,15 +163,33 @@ function handleTargetSaved() {
 					<ContentSection>
 						<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3">
 							<Card v-if="!isLastMonthDecember" class="flex items-center justify-center py-2.5 px-0 border-dashed border-2 border-emerald-300 rounded-2xl cursor-pointer transition-all duration-300 hover:border-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-900/20" :class="{ 'cursor-pointer hover:border-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-900/20': !addMonthlyPeriodForm.processing, 'cursor-not-allowed opacity-50': addMonthlyPeriodForm.processing }" @click="!addMonthlyPeriodForm.processing && handleMonthlyPeriodAdd()">
-								<CardContent class="flex flex-col items-center justify-center py-8">
+								<CardContent class="flex flex-col items-center justify-center py-4">
 									<Plus class="size-8 text-emerald-500 mb-2" />
 									<span class="font-medium text-sm" :class="addMonthlyPeriodForm.processing ? 'text-gray-400' : 'text-emerald-600'">
 										{{ addMonthlyPeriodForm.processing ? trans('Menambahkan...') : trans('Tambah LKB') }}
 									</span>
 								</CardContent>
+
+								<div class="grid gap-1.5 leading-none">
+									<TooltipProvider>
+										<Tooltip>
+											<TooltipTrigger as-child>
+												<div class="flex items-center space-x-2" @click.stop>
+													<Checkbox id="terms" v-model="addMonthlyPeriodForm.duplicate_target" />
+													<label for="terms" title="Duplikat sasaran bulan sebelumnya" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+														Duplikat sasaran LKB sebelumnya
+													</label>
+												</div>
+											</TooltipTrigger>
+											<TooltipContent>
+												<p>Duplikat sasaran dari bulan sebelumnya ke bulan berjalan</p>
+											</TooltipContent>
+										</Tooltip>
+									</TooltipProvider>
+								</div>
 							</Card>
 							<template v-if="monthlyPeriods.length">
-								<LkbCard v-for="(period, index) in monthlyPeriods" :key="index" v-bind="period" :index="index" @addTarget="handleAddTarget" @delete="handleMonthlyPeriodDelete" />
+								<LkbCard v-for="(period, index) in monthlyPeriods" :key="index" v-bind="period" :index="index" :currentMonth @addTarget="handleAddTarget" @delete="handleMonthlyPeriodDelete" />
 							</template>
 						</div>
 					</ContentSection>

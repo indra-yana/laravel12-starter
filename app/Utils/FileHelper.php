@@ -101,6 +101,12 @@ class FileHelper
         return strtolower(preg_replace('/[\W_]+/', '', $prefix) . '-' . date('Ymd-His') . '-' . $filename . $extension);
     }
 
+    public static function createPdfFileName($filename)
+    {
+        $filename = "{$filename}_" . Str::random(8) . ".pdf";
+        return preg_replace("/[\W]+/", "_", $filename);
+    }
+
     public static function getCleanName($filename)
     {
         return preg_replace("/[\W]+/", "_", $filename);
