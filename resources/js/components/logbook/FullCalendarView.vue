@@ -16,7 +16,7 @@ import idLocale from '@fullcalendar/core/locales/id';
 import interactionPlugin from '@fullcalendar/interaction';
 import listPlugin from '@fullcalendar/list';
 import LkhForm, { DailyWorkField } from './LkhForm.vue';
-import timeGridPlugin from '@fullcalendar/timegrid'; 
+import timeGridPlugin from '@fullcalendar/timegrid';
 import type { CalendarOptions, EventApi, DateSelectArg, EventClickArg, EventChangeArg } from '@fullcalendar/core';
 
 const page = usePage<SharedData>();
@@ -106,14 +106,14 @@ function handleDateSelect(selectInfo: DateSelectArg) {
 }
 
 function handleEvents(events: EventApi[]) {
-	currentEvents.value = events;	
+	currentEvents.value = events;
 }
 
 function handleDateRangeChange(events: any) {
 	console.log(events);
 }
 
-function handleEventClick(clickInfo: EventClickArg) {	
+function handleEventClick(clickInfo: EventClickArg) {
 	const { evidence_link, file, monthly_work_id, output, quantity, unit } = clickInfo.event.extendedProps;
 	currentRow.value = {
 		id: clickInfo.event.id,
@@ -191,6 +191,12 @@ function handleOpenChange(close: boolean) {
 				</div>
 
 				<Separator class="my-3" />
+
+				<div className="flex items-center justify-between py-2 mb-2">
+					<div className="flex gap-2">
+						<h2 className="text-xl font-bold">Aksi Lainnya</h2>
+					</div>
+				</div>
 
 				<div class="flex items-center space-x-2">
 					<Switch id="airplane-mode" :modelValue="!calendarOptions.weekends" @update:modelValue="handleWeekendsToggle" />
