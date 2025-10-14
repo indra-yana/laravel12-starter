@@ -167,7 +167,7 @@
 .fc .fc-event-title,
 .fc .fc-event-time,
 .fc .fc-event-main {
-  @apply line-clamp-1 overflow-hidden text-ellipsis;
+	@apply line-clamp-1 overflow-hidden text-ellipsis;
 }
 
 /* Warna untuk list day cushion (header hari di list view) */
@@ -200,6 +200,13 @@
 
 .fc .fc-toolbar-title {
 	@apply text-sm sm:text-lg;
+}
+
+.fc-event {
+	@apply text-white rounded-sm px-1 py-0.5 bg-gradient-to-r from-emerald-400 to-emerald-600 hover:from-emerald-500 hover:to-emerald-700 transition-colors border-0;
+
+	/* dark mode support */
+	@apply dark:from-emerald-700 dark:to-emerald-900 dark:hover:from-emerald-600 dark:hover:to-emerald-800;
 }
 
 /*
