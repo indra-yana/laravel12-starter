@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button';
-import { DAILY_WORK_FIELDS } from '@/lib/event-utils';
+import { DailyWorkEvent } from '@/lib/event-utils';
 import { Info } from 'lucide-vue-next';
 import { Label } from '@/components/ui/label';
 import { ref } from 'vue';
@@ -21,6 +21,7 @@ import type { CalendarOptions, EventApi, DateSelectArg, EventClickArg, EventChan
 
 const page = usePage<SharedData>();
 const locale = ref<string>(page.props.app.locale || page.props.app.fallback_locale);
+const dailyWorks = ref<DailyWorkEvent[]>(page.props.daily_works as DailyWorkEvent[]);
 const currentEvents = ref<EventApi[]>([]);
 const showLkhForm = ref(false);
 const currentRow = ref<DailyWorkField | null>(null);
@@ -66,7 +67,7 @@ const calendarOptions = ref<CalendarOptions>({
 		}
 	},
 	initialView: 'dayGridMonth',
-	events: DAILY_WORK_FIELDS,
+	events: dailyWorks.value,
 	editable: true,
 	selectable: true,
 	selectMirror: true,
@@ -112,7 +113,7 @@ function handleDateRangeChange(events: any) {
 	console.log(events);
 }
 
-function handleEventClick(clickInfo: EventClickArg) {
+function handleEventClick(clickInfo: EventClickArg) {	
 	const { evidence_link, file, monthly_work_id, output, quantity, unit } = clickInfo.event.extendedProps;
 	currentRow.value = {
 		id: clickInfo.event.id,
@@ -122,6 +123,7 @@ function handleEventClick(clickInfo: EventClickArg) {
 		unit,
 		output,
 		start: clickInfo.event.startStr,
+		end: clickInfo.event.endStr,
 		evidence_link,
 		file,
 	}

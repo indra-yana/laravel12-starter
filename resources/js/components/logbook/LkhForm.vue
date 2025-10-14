@@ -3,18 +3,18 @@ import { Button } from '@/components/ui/button';
 import { DateSelectArg, EventInput } from '@fullcalendar/core/index.js';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { MonthlyWorkProps } from './AddTargetsModal.vue';
 import { ref, watch, computed } from 'vue';
 import { SaveIcon, Trash2, XCircleIcon } from 'lucide-vue-next';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select";
 import { Separator } from '@/components/ui/separator';
+import { SharedData } from '@/types';
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { units } from '@/lib/utils';
 import { useForm, usePage } from '@inertiajs/vue3';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import InputError from '@/components/InputError.vue';
-import { MonthlyWorkProps } from './AddTargetsModal.vue';
-import { SharedData } from '@/types';
 
 export interface DailyWorkField extends Omit<EventInput, 'title' | 'start'> {
     id?: string | number | null;
@@ -24,6 +24,7 @@ export interface DailyWorkField extends Omit<EventInput, 'title' | 'start'> {
     unit: string;
     output: string;
     start: string;
+    end: string;
     evidence_link: string;
     file: object | null;
     [key: string]: any;
@@ -55,6 +56,7 @@ const form = useForm<DailyWorkField>({
     unit: 'Kegiatan',
     evidence_link: '',
     start: '',
+    end: '',
     file: {},
     uploaded_file: null as File | null,
 });
@@ -76,7 +78,9 @@ function populateForm() {
     form.quantity = props.currentRow?.quantity || 1;
     form.unit = props.currentRow?.unit || 'Kegiatan';
     form.output = props.currentRow?.output || '';
-    form.start = props.currentRow?.start ?? '';
+    form.start = props.currentRow?.start ?? (props.selectedDate?.startStr || '');
+    form.end = form.start;
+    // form.end = props.currentRow?.end ?? (props.selectedDate?.endStr || props.selectedDate?.startStr || '');
     form.evidence_link = props.currentRow?.evidence_link ?? '';
 }
 
@@ -92,8 +96,7 @@ function handleDelete() {
 }
 
 function deleteConfirmed() {
-    const url = route('logbook.lkh.delete');
-    deleteform.delete(url, {
+    deleteform.delete(route('logbook.lkh.delete'), {
         preserveScroll: true,
         preserveState: ({ props }) => !!Object.keys(props.errors).length,
         onError: () => handleDeleteCancel(),
@@ -141,6 +144,11 @@ function resetForm() {
     form.clearErrors();
 }
 
+function handleLkbUSelect(id: any) {
+    const selectedLkb = monthlyWorks.value.filter((e) => e.id == id)[0];
+    form.unit = selectedLkb.unit;
+}
+
 </script>
 
 <template>
@@ -156,7 +164,7 @@ function resetForm() {
                 <form @submit.prevent="showConfirm = true" class="flex-1 space-y-4 px-4" ref="logbookForm">
 
                     <Label for="unit" class="mb-3">Sasaran Bulanan (LKB)</Label>
-                    <Select v-model="form.monthly_work_id">
+                    <Select v-model="form.monthly_work_id" @update:model-value="handleLkbUSelect">
                         <SelectTrigger id="unit" :aria-invalid="!!form.errors.unit" class="w-full">
                             <SelectValue :placeholder="trans('Pilih sasaran')" />
                         </SelectTrigger>
@@ -170,7 +178,7 @@ function resetForm() {
                     </Select>
 
                     <Label for="title">{{ trans('Nama Kegiatan') }} <span class="text-destructive">*</span></Label>
-                    <Input type="text" id="title" v-model="form.title" :aria-invalid="!!form.errors.title" @input="form.clearErrors('title')" required autofocus :tabindex="1" autocomplete="title" :placeholder="trans('Nama kegiatan harian')" />
+                    <Input type="text" id="title" v-model="form.title" :aria-invalid="!!form.errors.title" @input="form.clearErrors('title')" required autofocus :tabindex="1" :placeholder="trans('Nama kegiatan harian')" />
                     <InputError :message="form.errors.title" />
 
                     <Label for="output">{{ trans('Output') }} <span class="text-destructive">*</span></Label>
@@ -201,12 +209,13 @@ function resetForm() {
                     <InputError :message="form.errors.quantity" />
 
                     <Label for="evidence_link">{{ trans('Link Data Dukung') }}</Label>
-                    <Input type="text" id="evidence_link" v-model="form.evidence_link" :aria-invalid="!!form.errors.evidence_link" @input="form.clearErrors('evidence_link')" autocomplete="false" :placeholder="trans('Link google drive')" />
+                    <Input type="text" id="evidence_link" v-model="form.evidence_link" :aria-invalid="!!form.errors.evidence_link" @input="form.clearErrors('evidence_link')" :placeholder="trans('Link google drive')" />
                     <InputError :message="form.errors.evidence_link" />
 
-                    <Label for="uploaded_file">{{ trans('Data Dukung (Opsional)') }}</Label>
+                    <!-- TODO: handle upload file -->
+                    <!-- <Label for="uploaded_file">{{ trans('Data Dukung (Opsional)') }}</Label>
                     <Input type="file" id="uploaded_file" @change="handleFileChange" :aria-invalid="!!form.errors.uploaded_file" :placeholder="trans('Data pendukung')" />
-                    <InputError :message="form.errors.uploaded_file" />
+                    <InputError :message="form.errors.uploaded_file" /> -->
 
                     <!-- <Label for="status">
                         <Checkbox id="status" :model-value="form.is_active" @update:model-value="(toggleStatus as any)" />
