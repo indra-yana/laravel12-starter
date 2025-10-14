@@ -103,8 +103,8 @@ class FileHelper
 
     public static function createPdfFileName($filename)
     {
-        $filename = "{$filename}_" . Str::random(8) . ".pdf";
-        return preg_replace("/[\W]+/", "_", $filename);
+        $filename = "{$filename}_" . Str::random(8);
+        return preg_replace("/[\W]+/", "_", $filename) . ".pdf";
     }
 
     public static function getCleanName($filename)
