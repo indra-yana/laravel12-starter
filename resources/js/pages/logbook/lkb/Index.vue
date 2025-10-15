@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
 import { computed, ref } from 'vue';
 import { Head, useForm, usePage } from '@inertiajs/vue3';
 import { Info, Plus } from 'lucide-vue-next';
 import { Label } from '@/components/ui/label';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger, } from "@/components/ui/tooltip";
 import { type BreadcrumbItem } from '@/types';
 import AddTargetsModal, { MonthlyWorkProps } from '@/components/logbook/AddTargetsModal.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
@@ -15,8 +17,6 @@ import Heading from '@/components/Heading.vue';
 import LkbCard, { MonthlyPeriodProps } from '@/components/logbook/LkbCard.vue';
 import type { PageProps } from '@inertiajs/core';
 import YearSelect from '@/components/logbook/YearSelect.vue';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger, } from "@/components/ui/tooltip";
 
 interface PagePropsData extends PageProps {
 	monthly_periods: MonthlyPeriodProps[];
@@ -189,7 +189,7 @@ const isDuplicate = ref(false)
 								</div>
 							</Card>
 							<template v-if="monthlyPeriods.length">
-								<LkbCard v-for="(period, index) in monthlyPeriods" :key="index" v-bind="period" :index="index" :currentMonth @addTarget="handleAddTarget" @delete="handleMonthlyPeriodDelete" />
+								<LkbCard v-for="(period, index) in monthlyPeriods" :key="index" v-bind="period" :index="index" :currentMonth :currentYear @addTarget="handleAddTarget" @delete="handleMonthlyPeriodDelete" />
 							</template>
 						</div>
 					</ContentSection>

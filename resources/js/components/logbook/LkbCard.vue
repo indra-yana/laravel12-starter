@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
-import { Target, Trash2, EllipsisVertical, Plus, Printer } from "lucide-vue-next";
 import { Button } from "@/components/ui/button";
-import { monthNames } from "@/lib/utils";
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { MonthlyWorkProps } from "./AddTargetsModal.vue";
+import { monthNames } from "@/lib/utils";
+import { SharedData } from "@/types";
+import { Target, Trash2, Plus, Printer } from "lucide-vue-next";
+import { usePage } from "@inertiajs/vue3";
 
 export interface MonthlyPeriodProps {
 	id?: string | number | null;
@@ -15,14 +17,19 @@ export interface MonthlyPeriodProps {
 }
 
 const emit = defineEmits<{
-  (e: 'delete', id: number): void
-  (e: 'addTarget', id: number): void
+	(e: 'delete', id: number): void
+	(e: 'addTarget', id: number): void
 }>()
 
 const props = defineProps<Partial<MonthlyPeriodProps> & {
 	index?: number;
 	currentMonth?: number;
-}>()
+	currentYear?: number;
+}>();
+const page = usePage<SharedData>();
+const queryParams = page.props.ziggy.query;
+const yearSelect = parseInt(queryParams.year) || props.currentYear;
+const currYear = new Date().getFullYear();
 
 </script>
 
@@ -62,7 +69,7 @@ const props = defineProps<Partial<MonthlyPeriodProps> & {
 				<span class="block sm:hidden xl:block">Tambah Sasaran</span>
 			</Button>
 			<div class="flex gap-2">
-				<Button v-if=" (props.currentMonth || 0) <= (props.month || 0)" type="button" title="Hapus" @click="emit('delete', id as number)" class="inline-flex items-center size-9 bg-red text-red-600 rounded-full shadow-sm text-sm font-medium border border-red-100/60 hover:bg-red-50/25 transition-all duration-300 hover:shadow-md">
+				<Button v-if="((props.currentMonth || 0) <= (props.month || 0)) || ((yearSelect || 0) > currYear)" type="button" title="Hapus" @click="emit('delete', id as number)" class="inline-flex items-center size-9 bg-red text-red-600 rounded-full shadow-sm text-sm font-medium border border-red-100/60 hover:bg-red-50/25 transition-all duration-300 hover:shadow-md">
 					<Trash2 class="size-4" />
 				</Button>
 				<!-- <Button type="button" title="Aksi Lainnya" class="inline-flex items-center size-9 bg-transparant text-emerald-600 rounded-full shadow-sm text-sm font-medium border border-emerald-100/60 hover:bg-emerald-50/25 transition-all duration-300 hover:shadow-md">

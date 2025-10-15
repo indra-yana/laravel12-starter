@@ -42,7 +42,10 @@ export interface AppConfig {
 export interface SharedData extends PageProps {
     quote: { message: string; author: string };
     auth: Auth;
-    ziggy: Config & { location: string };
+    ziggy: Config & { 
+        location: string; 
+        [key: string]: any;
+    };
     sidebarOpen: boolean;
     translations: Record<string, any>;
     menus: Array;
