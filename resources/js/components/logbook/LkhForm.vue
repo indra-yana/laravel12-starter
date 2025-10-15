@@ -164,7 +164,7 @@ function handleLkbUSelect(id: any) {
                 <form @submit.prevent="showConfirm = true" class="flex-1 space-y-4 px-4" ref="logbookForm">
 
                     <Label for="unit" class="mb-3">Sasaran Bulanan (LKB)</Label>
-                    <Select v-model="form.monthly_work_id" @update:model-value="handleLkbUSelect">
+                    <Select v-model="form.monthly_work_id" @update:model-value="handleLkbUSelect" required>
                         <SelectTrigger id="unit" :aria-invalid="!!form.errors.unit" class="w-full">
                             <SelectValue :placeholder="trans('Pilih sasaran')" />
                         </SelectTrigger>
