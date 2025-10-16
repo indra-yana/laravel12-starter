@@ -36,7 +36,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 const props = usePage<PagePropsData>().props;
 const currentYear = props.selected_year || new Date().getFullYear();
-const currentMonth = props.selected_month || new Date().getMonth();
+const currentMonth = props.selected_month || new Date().getMonth() + 1;
 const monthlyPeriods = props.monthly_periods;
 const showDeleteConfirm = ref(false);
 const deleteform = useForm<Omit<MonthlyPeriodProps, 'id'>>({

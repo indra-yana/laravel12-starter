@@ -1,3 +1,4 @@
+import { MonthlyPeriodProps } from '@/components/logbook/LkbCard.vue';
 import type { PageProps } from '@inertiajs/core';
 import type { LucideIcon } from 'lucide-vue-next';
 import type { Config } from 'ziggy-js';
@@ -86,6 +87,7 @@ export interface LogbookRecap {
     work_unit?: string; 
     month?: string;
     status: 'done' | 'pending',
+    monthlyperiods?: MonthlyPeriodProps[] | null;
 }
 
 export type BreadcrumbItemType = BreadcrumbItem;

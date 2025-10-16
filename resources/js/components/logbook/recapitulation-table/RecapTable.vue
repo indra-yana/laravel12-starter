@@ -4,10 +4,10 @@ import { availableFilters, columns } from './columns';
 import { computed, onMounted, reactive, ref, watch } from 'vue';
 import { DeleteIcon, EyeIcon, Filter, WrenchIcon, XCircleIcon, XIcon } from 'lucide-vue-next';
 import { FlexRender, getCoreRowModel, getExpandedRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, Updater, useVueTable, } from '@tanstack/vue-table';
-import { LogbookRecap, PaginationResponse, PaginationType } from '@/types';
+import { LogbookRecap, PaginationResponse, PaginationType, SharedData } from '@/types';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from '@/components/ui/table';
 import { useDebounceFn } from '@vueuse/core';
-import { useForm } from '@inertiajs/vue3';
+import { useForm, usePage } from '@inertiajs/vue3';
 import { useRecapTableStore } from './useRecapTableStore';
 import axios from 'axios';
 import Badge from '@/components/ui/badge/Badge.vue';
@@ -103,6 +103,9 @@ onMounted(async () => {
 	await fetchData();
 })
 
+const page = usePage<SharedData>();
+const queryParams = page.props.ziggy.query;
+
 async function fetchData() {
 	isFetching.value = true;
 	try {
@@ -114,6 +117,7 @@ async function fetchData() {
 				sorting: table.getState().sorting[0]?.id,
 				direction: table.getState().sorting[0]?.desc ? 'desc' : 'asc',
 				column_filters: table.getState().columnFilters,
+				...queryParams,
 			},
 		});
 

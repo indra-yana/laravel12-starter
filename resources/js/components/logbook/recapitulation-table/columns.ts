@@ -45,8 +45,8 @@ export const availableFilters: Record<string, ColumnConfig> = {
         key: 'status',
         label: 'Status',
         mapper: {
-            'Selesai': 'done',
-            'Belum': 'pending',
+            'selesai': 'done',
+            'belum': 'pending',
         }
     },
 };
@@ -160,7 +160,8 @@ export const columns: ColumnDef<LogbookRecap>[] = [
         ]
         )),
         cell: ({ row }) => {
-            const status = row.original.status == 'done' ? 'Selesai' : 'Belum';
+            const statusValue = row.original?.monthlyperiods?.[0]?.status ?? '';
+            const status = statusValue.toLowerCase() === 'done' ? 'Selesai' : 'Belum';
 
             return h('div', { class: 'text-center font-medium' }, h(Badge, {
                 variant: status === 'Selesai' ? 'success' : 'destructive',

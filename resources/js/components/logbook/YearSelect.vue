@@ -31,7 +31,7 @@ function onYearSelected(year: any): any {
 
 <template>
     <Select v-model="selectedYear" @update:modelValue="onYearSelected">
-        <SelectTrigger class="text-left w-full sm:w-[220px] bg-primary/40 outline-amber-800">
+        <SelectTrigger class="text-left w-full sm:w-[120px] bg-primary/40 outline-amber-800">
             <SelectValue placeholder="Pilih Tahun" />
         </SelectTrigger>
         <SelectContent>
