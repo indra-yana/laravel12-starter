@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { computed, ref } from 'vue';
-import { Head, useForm, usePage } from '@inertiajs/vue3';
+import { Head, router, useForm, usePage } from '@inertiajs/vue3';
 import { Info, Plus } from 'lucide-vue-next';
 import { Label } from '@/components/ui/label';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -97,7 +97,13 @@ function handleAddTarget(id: number) {
 function handleTargetSaved() {
 	showTargetModal.value = false
 }
-const isDuplicate = ref(false)
+
+function handleYearSelected(year: number) {
+	router.get(route("logbook.lkb.index"), { year }, {
+		preserveScroll: true,
+		preserveState: false,
+	});
+}
 </script>
 
 <template>
@@ -158,7 +164,7 @@ const isDuplicate = ref(false)
 						<Label for="year-select" class="text-md font-medium text-muted-foreground">
 							Periode
 						</Label>
-						<YearSelect :year="currentYear" routeName="logbook.lkb.index" />
+						<YearSelect :year="currentYear" @year-selected="handleYearSelected" />
 					</div>
 					<ContentSection>
 						<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3">
@@ -177,7 +183,7 @@ const isDuplicate = ref(false)
 												<div class="flex items-center space-x-2" @click.stop>
 													<Checkbox id="terms" v-model="addMonthlyPeriodForm.duplicate_target" />
 													<label for="terms" title="Duplikat sasaran bulan sebelumnya" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-														Duplikat sasaran LKB sebelumnya
+														Duplikat sasaran LKB bulan lalu
 													</label>
 												</div>
 											</TooltipTrigger>

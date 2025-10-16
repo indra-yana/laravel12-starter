@@ -9,10 +9,6 @@ import Button from '@/components/ui/button/Button.vue';
 import type { ColumnDef, } from '@tanstack/vue-table';
 
 export const availableFilters: Record<string, ColumnConfig> = {
-    id: {
-        key: 'id',
-        label: 'Id',
-    },
     name: {
         key: 'name',
         label: 'Name',
@@ -25,22 +21,26 @@ export const availableFilters: Record<string, ColumnConfig> = {
         key: 'employment_status',
         label: 'Status Pegawai',
     },
-    rank_code: {
-        key: 'rank_code',
-        label: 'Golongan Ruang',
+    grade_level: {
+        key: 'grade_level',
+        label: 'Golongan',
     },
-    rank_title: {
-        key: 'rank_title',
+    grade_title: {
+        key: 'grade_title',
         label: 'Pangkat',
     },
-    work_unit: {
-        key: 'work_unit',
+    organizational_unit: {
+        key: 'organizational_unit',
         label: 'Satuan Kerja',
     },
-    month: {
-        key: 'month',
-        label: 'Bulan',
-    },
+    // work_unit: {
+    //     key: 'work_unit',
+    //     label: 'Unit Kerja',
+    // },
+    // month: {
+    //     key: 'month',
+    //     label: 'Bulan',
+    // },
     status: {
         key: 'status',
         label: 'Status',
@@ -102,65 +102,50 @@ export const columns: ColumnDef<LogbookRecap>[] = [
         cell: ({ row }) => h('div', { class: 'lowercase' }, row.getValue('employment_status')),
     },
     {
-        accessorKey: availableFilters.rank_code.key,
+        accessorKey: availableFilters.grade_level.key,
         enableSorting: true,
         header: ({ column }) => h('div', { class: 'text-center' }, h(Button, {
             variant: column.getIsSorted() ? 'outline' : 'ghost',
             onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
         }, () => [
-            availableFilters.rank_code.label,
+            availableFilters.grade_level.label,
             column.getIsSorted() === 'asc'
                 ? h(ArrowUpAZ, { class: 'ml-2 h-4 w-4' }) : column.getIsSorted() === 'desc' ? h(ArrowDownZA, { class: 'ml-2 h-4 w-4' })
                     : h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })
         ]
         )),
-        cell: ({ row }) => h('div', { class: 'lowercase' }, row.getValue('rank_code')),
+        cell: ({ row }) => h('div', { class: 'lowercase' }, row.getValue('grade_level')),
     },
     {
-        accessorKey: availableFilters.rank_title.key,
+        accessorKey: availableFilters.grade_title.key,
         enableSorting: true,
         header: ({ column }) => h('div', { class: 'text-center' }, h(Button, {
             variant: column.getIsSorted() ? 'outline' : 'ghost',
             onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
         }, () => [
-            availableFilters.rank_title.label,
+            availableFilters.grade_title.label,
             column.getIsSorted() === 'asc'
                 ? h(ArrowUpAZ, { class: 'ml-2 h-4 w-4' }) : column.getIsSorted() === 'desc' ? h(ArrowDownZA, { class: 'ml-2 h-4 w-4' })
                     : h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })
         ]
         )),
-        cell: ({ row }) => h('div', { class: 'lowercase' }, row.getValue('rank_title')),
+        cell: ({ row }) => h('div', { class: 'lowercase' }, row.getValue('grade_title')),
     },
     {
-        accessorKey: availableFilters.work_unit.key,
+        accessorKey: availableFilters.organizational_unit.key,
         enableSorting: true,
         header: ({ column }) => h('div', { class: 'text-center' }, h(Button, {
             variant: column.getIsSorted() ? 'outline' : 'ghost',
             onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
         }, () => [
-            availableFilters.work_unit.label,
+            availableFilters.organizational_unit.label,
             column.getIsSorted() === 'asc'
                 ? h(ArrowUpAZ, { class: 'ml-2 h-4 w-4' }) : column.getIsSorted() === 'desc' ? h(ArrowDownZA, { class: 'ml-2 h-4 w-4' })
                     : h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })
         ]
         )),
-        cell: ({ row }) => h('div', { class: 'lowercase' }, row.getValue('work_unit')),
+        cell: ({ row }) => h('div', { class: 'lowercase' }, row.getValue('organizational_unit')),
     },
-    // {
-    //     accessorKey: availableFilters.month.key,
-    //     enableSorting: true,
-    //     header: ({ column }) => h('div', { class: 'text-center' }, h(Button, {
-    //         variant: column.getIsSorted() ? 'outline' : 'ghost',
-    //         onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
-    //     }, () => [
-    //         availableFilters.month.label,
-    //         column.getIsSorted() === 'asc'
-    //             ? h(ArrowUpAZ, { class: 'ml-2 h-4 w-4' }) : column.getIsSorted() === 'desc' ? h(ArrowDownZA, { class: 'ml-2 h-4 w-4' })
-    //                 : h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })
-    //     ]
-    //     )),
-    //     cell: ({ row }) => h('div', { class: 'lowercase' }, row.getValue('month')),
-    // },
     {
         accessorKey: availableFilters.status.key,
         enableSorting: true,

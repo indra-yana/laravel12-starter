@@ -80,9 +80,9 @@ export interface LogbookRecap {
     name: string;
     nip: string;
     employment_status?: 'cpns' | 'pns' | 'pppk';
-    rank_group?: string | null;      // Golongan  "III"
-    rank_code?: string | null;       // Golongan Ruang  "III/a"
-    rank_title?: string | null;      // Pangkat   "Penata Muda"
+    grade_level?: string | null;          // Golongan/Ruang  "III/a"
+    grade_title?: string | null;     // Pangkat   "Penata Muda"
+    organizational_unit?: string; 
     work_unit?: string; 
     month?: string;
     status: 'done' | 'pending',

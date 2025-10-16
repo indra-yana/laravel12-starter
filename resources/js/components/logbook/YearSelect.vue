@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import { router } from "@inertiajs/vue3";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface Props {
     year?: number | string;
-    routeName?: string;
 }
 
 const props = defineProps<Props>();
+const emits = defineEmits<{
+	(e: 'yearSelected', year: number): void
+}>();
 const currentYear = new Date().getFullYear();
 const years = computed(() => {
     const arr: number[] = [];
@@ -24,12 +25,7 @@ const selectedYear = ref<string>(
 );
 
 function onYearSelected(year: any): any {
-    router.get(route(props.routeName ?? "periods.index"), { year },
-        {
-            preserveScroll: true,
-            preserveState: false,
-        }
-    );
+    emits('yearSelected', year);
 }
 </script>
 
