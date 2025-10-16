@@ -69,4 +69,50 @@ export interface User {
     is_active: boolean,
 }
 
+export interface LogbookRecap {
+    id: number;
+    name: string;
+    nip: string;
+    employment_status?: 'cpns' | 'pns' | 'pppk';
+    rank_group?: string | null;      // Golongan  "III"
+    rank_code?: string | null;       // Golongan Ruang  "III/a"
+    rank_title?: string | null;      // Pangkat   "Penata Muda"
+    work_unit?: string; 
+    month?: string;
+    status: 'done' | 'pending',
+}
+
 export type BreadcrumbItemType = BreadcrumbItem;
+
+export interface PaginationResponse<T> {
+	data: T[]
+	first_page_url: string;
+	last_page_url: string;
+	prev_page_url: string;
+	next_page_url: string;
+	total: number;
+	per_page: number;
+	current_page: number;
+	last_page: number;
+	links: PaginationLink[];
+}
+
+export interface PaginationLink {
+	url: string | null;
+	separator: string | boolean | null | true;
+	label: string;
+	active: boolean;
+}
+
+export interface PaginationType<T> {
+	data: T[];
+	firstPageUrl: string;
+	lastPageUrl: string;
+	prevPageUrl: string;
+	nextPageUrl: string;
+	totalPage: number;
+	pageSize: number;
+	pageIndex: number;
+	lastPage: number;
+	links: PaginationLink[];
+}
