@@ -57,6 +57,12 @@ export interface SharedData extends PageProps {
     };
 }
 
+export interface ColumnConfig {
+    key: string;
+    label: string;
+    mapper?: Record<string, string>;
+}
+
 export interface User {
     id: number;
     name: string;

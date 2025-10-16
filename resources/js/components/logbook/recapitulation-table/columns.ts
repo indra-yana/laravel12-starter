@@ -1,14 +1,18 @@
 import { ActionMeta } from './RecapTable.vue';
 import { ArrowDownZA, ArrowUpAZ, ArrowUpDown } from 'lucide-vue-next';
 import { Checkbox } from '@/components/ui/checkbox';
+import { ColumnConfig, LogbookRecap } from '@/types';
 import { h } from 'vue';
-import { LogbookRecap } from '@/types';
 import Actions from './Actions.vue';
 import Badge from '@/components/ui/badge/Badge.vue';
 import Button from '@/components/ui/button/Button.vue';
 import type { ColumnDef, } from '@tanstack/vue-table';
 
-export const availableFilters: Record<string, any> = {
+export const availableFilters: Record<string, ColumnConfig> = {
+    id: {
+        key: 'id',
+        label: 'Id',
+    },
     name: {
         key: 'name',
         label: 'Name',
@@ -41,11 +45,11 @@ export const availableFilters: Record<string, any> = {
         key: 'status',
         label: 'Status',
         mapper: {
-            'Selesai' : 'done',
-            'Belum' : 'pending',
+            'Selesai': 'done',
+            'Belum': 'pending',
         }
     },
-} as const;
+};
 
 export const columns: ColumnDef<LogbookRecap>[] = [
     {
@@ -142,21 +146,21 @@ export const columns: ColumnDef<LogbookRecap>[] = [
         )),
         cell: ({ row }) => h('div', { class: 'lowercase' }, row.getValue('work_unit')),
     },
-    {
-        accessorKey: availableFilters.month.key,
-        enableSorting: true,
-        header: ({ column }) => h('div', { class: 'text-center' }, h(Button, {
-            variant: column.getIsSorted() ? 'outline' : 'ghost',
-            onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
-        }, () => [
-            availableFilters.month.label,
-            column.getIsSorted() === 'asc'
-                ? h(ArrowUpAZ, { class: 'ml-2 h-4 w-4' }) : column.getIsSorted() === 'desc' ? h(ArrowDownZA, { class: 'ml-2 h-4 w-4' })
-                    : h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })
-        ]
-        )),
-        cell: ({ row }) => h('div', { class: 'lowercase' }, row.getValue('month')),
-    },
+    // {
+    //     accessorKey: availableFilters.month.key,
+    //     enableSorting: true,
+    //     header: ({ column }) => h('div', { class: 'text-center' }, h(Button, {
+    //         variant: column.getIsSorted() ? 'outline' : 'ghost',
+    //         onClick: () => column.toggleSorting(column.getIsSorted() === 'asc')
+    //     }, () => [
+    //         availableFilters.month.label,
+    //         column.getIsSorted() === 'asc'
+    //             ? h(ArrowUpAZ, { class: 'ml-2 h-4 w-4' }) : column.getIsSorted() === 'desc' ? h(ArrowDownZA, { class: 'ml-2 h-4 w-4' })
+    //                 : h(ArrowUpDown, { class: 'ml-2 h-4 w-4' })
+    //     ]
+    //     )),
+    //     cell: ({ row }) => h('div', { class: 'lowercase' }, row.getValue('month')),
+    // },
     {
         accessorKey: availableFilters.status.key,
         enableSorting: true,
