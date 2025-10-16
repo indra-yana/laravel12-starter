@@ -24,6 +24,8 @@ const breadcrumbs: BreadcrumbItem[] = [
         <div class=" w-full px-4 py-6">
             <Heading :title="trans('Rekapitulasi')" :description="trans('Monitoring dan rekapitulasi pelaporan LKH & LKB')" class="mb-4" />
 
+            
+
             <div class="flex w-full overflow-y-hidden overflow-x-auto sticky h-screen px-1">
                 <ContentSection>
                     <RecapTable />

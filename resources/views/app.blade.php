@@ -39,7 +39,7 @@
         @vite(\Nwidart\Modules\Module::getAssets())
         @inertiaHead
     </head>
-    <body class="font-sans antialiased bg-transparent">
+    <body class="font-sans antialiased bg-transparent overflow-x-hidden">
         @inertia
     </body>
 </html>
