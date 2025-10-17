@@ -15,6 +15,15 @@ export const buttonVariants = cva(
         link: 'text-primary underline-offset-4 hover:underline',
         'outline-default': 'border border-primary/90 text-primary/90 bg-transparent shadow-xs hover:bg-primary/5 hover:text-primary',
         'outline-destructive': 'border border-destructive text-destructive bg-transparent shadow-xs hover:bg-destructive/10 hover:text-destructive dark:hover:bg-destructive/20',
+
+        primary: 'bg-blue-600 text-white shadow-xs hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600',
+        secondary_bs: 'bg-gray-600 text-white shadow-xs hover:bg-gray-700 dark:bg-gray-500 dark:hover:bg-gray-600',
+        success: 'bg-green-600 text-white shadow-xs hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600',
+        danger: 'bg-red-600 text-white shadow-xs hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600',
+        warning: 'bg-yellow-500 text-black shadow-xs hover:bg-yellow-600 dark:bg-yellow-400 dark:hover:bg-yellow-500',
+        info: 'bg-cyan-600 text-white shadow-xs hover:bg-cyan-700 dark:bg-cyan-500 dark:hover:bg-cyan-600',
+        light: 'bg-gray-100 text-gray-800 shadow-xs hover:bg-gray-200 dark:bg-gray-200 dark:hover:bg-gray-300',
+        dark: 'bg-gray-900 text-white shadow-xs hover:bg-gray-800 dark:bg-gray-800 dark:hover:bg-gray-700',
       },
       size: {
         default: 'h-9 px-4 py-2 has-[>svg]:px-3',
