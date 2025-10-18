@@ -101,9 +101,9 @@ class FileHelper
         return strtolower(preg_replace('/[\W_]+/', '', $prefix) . '-' . date('Ymd-His') . '-' . $filename . $extension);
     }
 
-    public static function createPdfFileName($filename)
+    public static function createPdfFileName($filename, $useRandomStr = true)
     {
-        $filename = "{$filename}_" . Str::random(8);
+        $filename = "{$filename}_" . ($useRandomStr ? Str::random(8) : '');
         return preg_replace("/[\W]+/", "_", $filename) . ".pdf";
     }
 

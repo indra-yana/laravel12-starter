@@ -5,6 +5,8 @@ use App\Utils\SendResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Route;
+use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 
 function sendSuccess($result = [], $message = "Success!", $redirect = null, $code = 200): RedirectResponse|JsonResponse
 {
@@ -43,4 +45,39 @@ function hasRoutePermission(array|string $permission = null): bool
     }
 
     return true;
+}
+
+function getMonthName(int $month, bool $short = false): string
+{
+    static $cache = [];
+    $key = $month . ($short ? '_short' : '_long');
+
+    if (isset($cache[$key])) {
+        return $cache[$key];
+    }
+
+    $date = CarbonImmutable::create(2025, $month, 1)->locale(config('app.locale'));
+    $cache[$key] = $short ? $date->translatedFormat('M') : $date->translatedFormat('F');
+
+    return $cache[$key];
+}
+
+function mapMonthNameToShort(string $monthName): string
+{
+    static $mapCache = [];
+    $locale = config('app.locale');
+
+    if (isset($mapCache[$monthName])) {
+        return $mapCache[$monthName];
+    }
+
+    if (empty($mapCache)) {
+        foreach (range(1, 12) as $m) {
+            $long = CarbonImmutable::create(2025, $m, 1)->locale($locale)->translatedFormat('F');
+            $short = CarbonImmutable::create(2025, $m, 1)->locale($locale)->translatedFormat('M');
+            $mapCache[$long] = $short;
+        }
+    }
+
+    return $mapCache[$monthName] ?? $monthName;
 }

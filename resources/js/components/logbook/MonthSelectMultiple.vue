@@ -55,6 +55,11 @@ function toggleMonth(month: number) {
 onMounted(() => {
 	updateSelectedLabel();
 });
+
+const isDisabled = (monthNumber: number) => {
+  // Jika sudah pilih 4 bulan dan bulan ini belum dipilih, disable
+  return selectedMonths.value.length >= 4 && !selectedMonths.value.includes(monthNumber)
+}
 </script>
 
 <template>
@@ -65,8 +70,8 @@ onMounted(() => {
 		<SelectContent>
 			<div class="flex flex-col gap-2 p-2">
 				<label v-for="(monthLabel, index) in monthNames" :key="index" class="flex items-center gap-2 cursor-pointer">
-					<Checkbox v-model="listMonths[monthLabel]" @update:model-value="() => toggleMonth(index + 1)" />
-					<span>{{ monthLabel }}</span>
+					<Checkbox v-model="listMonths[monthLabel]" @update:model-value="() => toggleMonth(index + 1)" :disabled="isDisabled(index + 1)"/>
+					<span :class="{'text-muted-foreground': isDisabled(index + 1)}">{{ monthLabel }}</span>
 				</label>
 			</div>
 		</SelectContent>

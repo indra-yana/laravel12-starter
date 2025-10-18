@@ -30,12 +30,12 @@ function destroy(recap: LogbookRecap) {
 
 <template>
     <div class="space-x-2">
-        <Button variant="default" size="sm" @click="edit(recap)">
+        <!-- <Button variant="default" size="sm" @click="edit(recap)">
             <Edit class="size-4" /> {{ trans('label.edit') }}
-        </Button>
-        <Button variant="destructive" size="sm" @click="destroy(recap)">
+        </Button> -->
+        <!-- <Button variant="destructive" size="sm" @click="destroy(recap)">
             <Trash2 class="size-4" /> {{ trans('label.delete') }}
-        </Button>
+        </Button> -->
         <DropdownMenu>
             <DropdownMenuTrigger as-child>
                 <Button variant="ghost" class="w-8 h-8 p-0">

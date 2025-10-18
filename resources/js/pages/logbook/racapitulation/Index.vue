@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button';
-import { Download } from 'lucide-vue-next';
+import { Download, FileWarning } from 'lucide-vue-next';
 import { Head, usePage } from '@inertiajs/vue3';
 import { Label } from '@/components/ui/label';
 import { ref } from 'vue';
@@ -11,6 +11,7 @@ import Heading from '@/components/Heading.vue';
 import HeadingSmall from '@/components/HeadingSmall.vue';
 import MonthSelectMultiple from '@/components/logbook/MonthSelectMultiple.vue';
 import RecapTable from '@/components/logbook/recapitulation-table/RecapTable.vue';
+import ReportList from '@/components/logbook/ReportList.vue';
 import type { PageProps } from '@inertiajs/core';
 import YearSelect from '@/components/logbook/YearSelect.vue';
 
@@ -68,7 +69,7 @@ function handleDownload() {
     <Head title="Logbook - Rekapitulasi" />
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class=" w-full px-4 py-6">
-            <div class='mb-2 flex flex-wrap items-center justify-between space-y-2'>
+            <div class='mb-2 flex flex-wrap items-start justify-between space-y-2'>
 
                 <Heading :title="trans('Rekapitulasi')" :description="trans('Monitoring dan rekapitulasi pelaporan LKH & LKB')" class="mb-4" />
 
@@ -79,7 +80,7 @@ function handleDownload() {
                         </Label>
                     </legend>
                     <span class="text-sm text-muted-foreground">{{ trans('Pilih bulan dan tahun di bawah ini lalu klik Download') }}</span>
-                    <div class="flex flex-col md:flex-row sm:items-center gap-1 sm:gap-2 w-full sm:w-auto mt-2">
+                    <div class="flex flex-col md:flex-row sm:items-center gap-1 sm:gap-2 w-full sm:w-auto my-2">
                         <MonthSelectMultiple :months="monthsSelected" @month-selected="handleMonthSelection" />
                         <YearSelect :year="currentYear" @year-selected="handleYearSelected" />
                         <Button variant="info" @click="handleDownload">
@@ -87,10 +88,15 @@ function handleDownload() {
                             {{ trans('Download') }}
                         </Button>
                     </div>
+                    <span class="text-sm text-destructive inline-flex content-center items-center" v-if="monthsSelected.length >= 4">
+                        <FileWarning class="size-4 mr-1" /> Hanya boleh memilih 4 bulan untuk cetak rekapitulasi.
+                    </span>
+
+                    <ReportList />
                 </fieldset>
             </div>
 
-            <div class=" overflow-y-hidden overflow-x-auto sticky h-screen px-1">
+            <div class=" overflow-y-hidden overflow-x-auto sticky h-screen px-1 mt-5">
                 <HeadingSmall class="w-full" :title="trans('Daftar Rekapitulasi')" :description="trans('Menampilkan progres pelaporan bulan berjalan')" />
                 <ContentSection>
                     <RecapTable />

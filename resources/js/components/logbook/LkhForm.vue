@@ -30,12 +30,18 @@ export interface DailyWorkField extends Omit<EventInput, 'title' | 'start'> {
     [key: string]: any;
 }
 
+export interface FormOption {
+    monthly_works: MonthlyWorkProps[];
+    [key: string]: any;
+}
+
 interface Props {
     open: boolean;
     title: string;
     description?: string;
     selectedDate?: DateSelectArg;
     currentRow?: DailyWorkField | null;
+    formOption?: FormOption;
     onOpenChange: (open: boolean) => void;
 }
 
@@ -45,8 +51,7 @@ const props = defineProps<Props>();
 const isUpdate = computed(() => !!props.currentRow?.id);
 const showConfirm = ref(false);
 const showDeleteConfirm = ref(false);
-// TODO: Dynamic update based on selected month and years 
-const monthlyWorks = ref<MonthlyWorkProps[]>(page.props.monthly_works as MonthlyWorkProps[]);
+const monthlyWorks = ref<MonthlyWorkProps[]>([]);
 const form = useForm<DailyWorkField>({
     id: null,
     monthly_work_id: null,
@@ -61,7 +66,6 @@ const form = useForm<DailyWorkField>({
     uploaded_file: null as File | null,
 });
 
-
 const deleteform = useForm<Omit<DailyWorkField, 'id'>>({
     id: null,
 });
@@ -69,6 +73,8 @@ const deleteform = useForm<Omit<DailyWorkField, 'id'>>({
 watch(() => props.open, (open) => {
     if (!open) resetForm();
     if (isUpdate) populateForm();
+    
+    monthlyWorks.value = props.formOption?.monthly_works || [];
 });
 
 function populateForm() {

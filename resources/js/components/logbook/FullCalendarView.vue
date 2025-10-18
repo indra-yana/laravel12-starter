@@ -3,21 +3,24 @@ import { Button } from '@/components/ui/button';
 import { DailyWorkEvent } from '@/lib/event-utils';
 import { Info } from 'lucide-vue-next';
 import { Label } from '@/components/ui/label';
+import { MonthlyWorkProps } from './AddTargetsModal.vue';
 import { ref } from 'vue';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { SharedData } from '@/types';
 import { Switch } from '@/components/ui/switch';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger, } from "@/components/ui/tooltip";
+import { useDebounceFn } from '@vueuse/core';
 import { usePage } from '@inertiajs/vue3';
+import axios from 'axios';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import FullCalendar from '@fullcalendar/vue3';
 import idLocale from '@fullcalendar/core/locales/id';
 import interactionPlugin from '@fullcalendar/interaction';
 import listPlugin from '@fullcalendar/list';
-import LkhForm, { DailyWorkField } from './LkhForm.vue';
+import LkhForm, { DailyWorkField, FormOption } from './LkhForm.vue';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import type { CalendarOptions, EventApi, DateSelectArg, EventClickArg, EventChangeArg } from '@fullcalendar/core';
+import type { CalendarOptions, EventApi, DateSelectArg, EventClickArg, EventChangeArg, DatesSetArg, ViewApi } from '@fullcalendar/core';
 
 const page = usePage<SharedData>();
 const locale = ref<string>(page.props.app.locale || page.props.app.fallback_locale);
@@ -26,6 +29,11 @@ const currentEvents = ref<EventApi[]>([]);
 const showLkhForm = ref(false);
 const currentRow = ref<DailyWorkField | null>(null);
 const selectedDate = ref<DateSelectArg>();
+const currentCalendarView = ref<ViewApi>();
+const formOption = ref<FormOption>({
+	monthly_works: page.props.monthly_works as MonthlyWorkProps[],
+});
+const isFetchingEvents = ref(false);
 const calendarOptions = ref<CalendarOptions>({
 	themeSystem: 'standard',
 	plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin],
@@ -67,7 +75,8 @@ const calendarOptions = ref<CalendarOptions>({
 		}
 	},
 	initialView: 'dayGridMonth',
-	events: dailyWorks.value,
+	initialEvents: dailyWorks.value,
+	events: [],
 	editable: true,
 	selectable: true,
 	selectMirror: true,
@@ -109,8 +118,15 @@ function handleEvents(events: EventApi[]) {
 	currentEvents.value = events;
 }
 
-function handleDateRangeChange(events: any) {
-	console.log(events);
+function handleDateRangeChange(events: DatesSetArg) {
+	const prev = currentCalendarView.value;
+	currentCalendarView.value = events.view;
+
+	if (!prev) {
+		console.log('📅 FULL CALENDAR — first load');
+	} else {
+		debouncedFetch();
+	}
 }
 
 function handleEventClick(clickInfo: EventClickArg) {
@@ -147,10 +163,39 @@ function handleOpenChange(close: boolean) {
 	showLkhForm.value = close;
 }
 
+const debouncedFetch = useDebounceFn(() => {
+	fetchEventData()
+}, 500)
+
+async function fetchEventData() {
+	isFetchingEvents.value = true;
+	try {
+		const startDate = currentCalendarView.value?.currentStart;
+		const response = await axios.get(route('logbook.lkh.events'), {
+			params: {
+				month: (startDate?.getMonth() || 0) + 1,
+				year: startDate?.getFullYear() || new Date().getFullYear(),
+			},
+		});
+
+		const result = response.data;
+		const data = result?.data;
+
+		if (data) {
+			calendarOptions.value.events = data.daily_works;
+			formOption.value.monthly_works = data.monthly_works;
+		}
+	} catch (err) {
+		console.error(err);
+	} finally {
+		isFetchingEvents.value = false;
+	}
+}
+
 </script>
 
 <template>
-	<LkhForm :open="showLkhForm" :onOpenChange="handleOpenChange" :currentRow :selectedDate :title="trans('LKH Tanggal: ' + (selectedDate?.startStr || currentRow?.start))" :description="trans('Isi formulir di bawah ini untuk menambah laporan kerja harian.')" />
+	<LkhForm :open="showLkhForm" :onOpenChange="handleOpenChange" :currentRow :selectedDate :formOption :title="trans('LKH Tanggal: ' + (selectedDate?.startStr || currentRow?.start))" :description="trans('Isi formulir di bawah ini untuk menambah laporan kerja harian.')" />
 	<div class="flex flex-col lg:flex-row gap-4">
 		<div class="w-full md:w-3/5 lg:w-1/3 xl:w-1/4 2xl:w-1/5">
 			<div className="flex items-center justify-between py-2">

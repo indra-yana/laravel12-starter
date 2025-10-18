@@ -46,11 +46,11 @@ class UserSeeder extends Seeder
         // Hanya jalankan dummy di non-production
         if (!app()->isProduction()) {
             // Hapus semua user dummy kecuali admin dan superadmin
-            User::whereNotIn('email', ['admin@laravel.com', 'superadmin@laravel.com'])->delete();
+            User::whereNotIn('email', [$admin->email, $superadmin->email])->delete();
             Employee::whereNotIn('user_id', [$admin->id, $superadmin->id])->delete();
 
             // Buat 2000 user dummy dan employee terkait
-            User::factory()->count(100)->create()->each(function ($user) {
+            User::factory()->count(2000)->create()->each(function ($user) {
                 Employee::create([
                     'user_id' => $user->id,
                     'nip' => fake()->unique()->numerify('1989##############'),
