@@ -15,6 +15,8 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
+    'tagline' => env('APP_TAGLINE', 'A PHP framework'),
+
     'version' => env('APP_VERSION', 'v1.0.0'),
 
     /*

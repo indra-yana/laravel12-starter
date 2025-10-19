@@ -68,6 +68,7 @@ class HandleInertiaRequests extends Middleware
             'app' => fn() => array_merge(
                 configPick('app', [
                     'name',
+                    'tagline',
                     'env',
                     'version',
                     'debug',

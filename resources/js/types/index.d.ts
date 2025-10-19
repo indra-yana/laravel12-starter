@@ -31,6 +31,7 @@ export interface NavItem {
 
 export interface AppConfig {
     name: string;
+    tagline: string;
     version: string;
     env: string;
     debug: boolean;

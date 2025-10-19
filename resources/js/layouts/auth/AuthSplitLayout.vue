@@ -6,6 +6,7 @@ import ThemeSwitcher from '@/components/ThemeSwitcher.vue';
 
 const page = usePage<SharedData>();
 const name = page.props.app.name;
+const tagline = page.props.app.tagline;
 const version = page.props.app.version;
 const quote = page.props.quote;
 
@@ -29,8 +30,10 @@ defineProps<{
                             <Link :href="route('home')" class="relative z-20 flex items-center text-lg font-medium mb-6">
                             <AppLogoIcon class="mr-2 size-8 fill-current text-dark dark:text-white rounded-md" />
                             <div class="flex flex-col gap-0.5 leading-none">
-                                <span class="truncate font-semibold leading-none">{{ name }}</span>
-                                <span class="text-sm">{{ version }}</span>
+                                <span class="truncate font-semibold leading-none">
+                                    {{ name }} <span class="text-xs font-light text-muted-foreground ml-1">{{ version }}</span>
+                                </span>
+                                <span class="text-xs font-light">{{ tagline || 'Your Awesome Tagline!' }}</span>
                             </div>
                             </Link>
                             <ThemeSwitcher class="flex-auto" />
